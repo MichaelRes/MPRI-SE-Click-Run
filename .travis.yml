@@ -4,4 +4,4 @@ rvm:
 install:
  - pip install -r requirements.txt
 script:
- - py.test --doctest-modules
+ - pytest --doctest-modules
