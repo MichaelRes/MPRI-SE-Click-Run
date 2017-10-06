@@ -20,6 +20,7 @@ class Game(object):
         self.states = states
         self.current_state = start_state
         self.state = self.states[self.current_state]
+        self.done = False
 
     def event_loop(self):
         """
@@ -59,7 +60,7 @@ class Game(object):
             self.draw()
             pg.display.update()
 
-classe GameState(object):
+class GameState(object):
     """
     Parent class for individual game states to inherit from
     """
