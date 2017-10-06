@@ -86,6 +86,12 @@ class GameState(object):
         """
         pass
 
+    def update(self, dt):
+        """
+        @param dt: time since last frame
+        """
+        pass
+
     def draw(self, surface):
         """
         Draw everything to the screen
