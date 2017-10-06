@@ -9,6 +9,6 @@ class GameObject:
         self.v_y = vy0
         self.hitbox = [(0,0)]
 
-class Player(game_object):
+class Player(GameObject):
     def __init__(self, x0, y0, vx0, vy0):
         GameObject.__init__(self, x0, y0, vx0, vy0)
