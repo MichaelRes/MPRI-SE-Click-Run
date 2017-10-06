@@ -14,6 +14,6 @@ class Action(Enum):
     JUMPING = 2
 
 class Player(game_object):
-    __init__(self, x0, y0, vx0, vy0):
+    def __init__(self, x0, y0, vx0, vy0):
         GameObject.__init__(self, x0, y0, vx0, vy0)
         self.action = action.RUNNING
