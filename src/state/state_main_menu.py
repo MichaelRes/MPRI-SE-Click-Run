@@ -9,7 +9,6 @@ class MainMenu(GameState):
         pass
 
     def get_event(self, event):
-        if(
         pass
 
     def update(self, dt):
