@@ -33,7 +33,11 @@ class Game(object):
         """
         Switch to the next game state.
         """
-        pass
+        next_state = self.state.next_state
+        self.state.done = False
+        persistent = self.state.persist
+        self.state = self.states[next_state]
+        self.state.startup(persistent)
 
     def update(self, dt):
         """
@@ -41,7 +45,12 @@ class Game(object):
 
         @dt : milliseconds since last frame
         """
-        pass
+        if self.state.quit:
+            self.done = True
+        elif self.state.done:
+            self.flip_state()
+        self.state.update(dt)
+
 
     def draw(self):
         """

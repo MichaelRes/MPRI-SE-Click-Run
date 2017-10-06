@@ -19,8 +19,11 @@ class MainMenu(GameState):
                 self.current_select = (self.current_select - 1) % len(self.available_state)
             elif event.key == pg.K_DOWN:
                 self.current_select = (self.current_select + 1) % len(self.available_state)
-            elif event.key == pg.K_KP_ENTER:
+            #elif event.key == pg.K_KP_ENTER:
+            elif event.key == pg.K_RIGHT:
+                print("ici")
                 self.next_state = self.available_state[self.current_select]
+                self.done = True
 
     def update(self, dt):
         pass
@@ -33,7 +36,7 @@ class MainMenu(GameState):
             if i == self.current_select:
                 text_color = 255, 0, 0
             else:
-                text_color = 0, 0, 255
+                text_color = 255, 255, 255
             text = self.font.render(name_state, 1, text_color)
             width_text, _ = text.get_size()
             surface.blit(text, ((width - width_text)/ 2, i*100))
