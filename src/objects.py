@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Game_object:
+class GameObject:
     """An object for simple objects"""
     def __init__(self, x0, y0, vx0, vy0):
         self.pos_x = x0
@@ -15,5 +15,5 @@ class Action(Enum):
 
 class Player(game_object):
     __init__(self, x0, y0, vx0, vy0):
-        Game_object.__init__(self, x0, y0, vx0, vy0)
+        GameObject.__init__(self, x0, y0, vx0, vy0)
         self.action = action.RUNNING
