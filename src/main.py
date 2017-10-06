@@ -1,2 +1,2 @@
-class god:
+class God:
     """Responsible for the actualisation of things"""
