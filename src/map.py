@@ -18,15 +18,15 @@ class Map():
         self.length = 2400
         self.pos = 0
 
-    def on_the_ground(self, pos0, hitbox):
+    def on_the_ground(self, x0, y0, hitbox):
         """
         Returns a boolean indicating if the object given by pos0 ans his hitbox is on the ground
         """
         pass
 
-    def move_test(self, pos0, hitbox, mvt):
+    def move_test(self, x0, y0, hitbox, dx, dy):
         """
-        test if a given movement is possible and returns the tuple of his physical deplacement and the boolean saying if he is dead during this movement
+        test if a given movement is possible and returns the tuple of his new position and the boolean saying if he is dead during this movement
         """
         pass
 
