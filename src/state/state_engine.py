@@ -27,6 +27,9 @@ class Game(object):
         Events are passed for handling to the current state.
         """
         for event in pg.event.get():
+            # modifier l'emplacement des deux lignes suivantes qui sont pas forcément au meilleur endroit
+            if event.type == pg.QUIT:
+                pg.quit()
             self.state.get_event(event)
 
     def flip_state(self):
@@ -50,7 +53,6 @@ class Game(object):
         elif self.state.done:
             self.flip_state()
         self.state.update(dt)
-
 
     def draw(self):
         """
