@@ -9,14 +9,14 @@ class BestScore(GameState):
         with open("best_score", 'r') as f:
             self.score_data = [l.strip().split() for l in f]
 
-
-
     def startup(self, persistent):
         pass
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
-            pass
+            if event.key == pg.K_ESCAPE:
+                self.next_state = "MAIN_MENU"
+                self.done = True
 
     def update(self, dt):
         pass

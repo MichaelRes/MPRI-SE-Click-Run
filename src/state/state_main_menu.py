@@ -19,9 +19,7 @@ class MainMenu(GameState):
                 self.current_select = (self.current_select - 1) % len(self.available_state)
             elif event.key == pg.K_DOWN:
                 self.current_select = (self.current_select + 1) % len(self.available_state)
-            #elif event.key == pg.K_KP_ENTER:
-            elif event.key == pg.K_RIGHT:
-                print("ici")
+            elif event.key == pg.K_RETURN:
                 self.next_state = self.available_state[self.current_select]
                 self.done = True
 
