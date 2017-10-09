@@ -48,7 +48,8 @@ class StateGame(GameState):
                                                            self.player.hitbox,
                                                            self.player.v_x,
                                                            self.player.v_y)
-        self.player.pos_x = x
+
+        # Because of the movement of the screen, we dont change the pos_x of the player : the screen will move later.
         self.player.pos_y = y
 
         # Something to do in case the game is over
@@ -56,7 +57,7 @@ class StateGame(GameState):
             self.done = True
 
         # Update depending on whether the player is on the ground or not
-        # This part should go in object class eventually, but, who cares ?
+        # This part should go in the game object class eventually
 
         if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y, self.player.hitbox):
             self.player.action = Action.RUNNING
