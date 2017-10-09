@@ -30,15 +30,15 @@ class GameOver(GameState):
 
         text = self.font.render("GAME_OVER", 1, text_color)
         width_text, height_text = text.get_size()
-        surface.blit(text, ((width - width_text)/ 2, (height - height_text) / 2))
+        surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2))
 
         text = self.font.render("Press enter if you want to start a new game\n", 1, text_color)
         width_text, height_text = text.get_size()
-        surface.blit(text, ((width - width_text)/ 2, (height - height_text) / 2 + 24))
+        surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + 24))
 
         text = self.font.render("Press escape if you want to go back to the main menu\n", 1, text_color)
         width_text, height_text = text.get_size()
-        surface.blit(text, ((width - width_text)/ 2, (height - height_text) / 2 + 48))
+        surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + 48))
 
         pg.display.flip()
 
