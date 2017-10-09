@@ -6,7 +6,7 @@ class MainMenu(GameState):
 
     def __init__(self):
         GameState.__init__(self)
-        self.available_state = ["START_GAME", "BEST_SCORE", "OPTIONS", "CREDITS"]
+        self.available_state = ["GAME", "BEST_SCORE", "OPTIONS", "CREDITS"]
         self.current_select = 0
         self.next_state = None
 

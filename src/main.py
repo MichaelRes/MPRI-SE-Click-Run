@@ -7,7 +7,7 @@ from state_best_score import *
 from state_options import *
 from state_credits import *
 from state_game_over import *
-# from state_game import *
+from state_game import *
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
         "OPTIONS": Options(),
         "CREDITS": Credits(),
         "GAME_OVER": GameOver(),
-        # "GAME": StateGame(),
+        "GAME": StateGame(),
             }
     game = Game(screen, states, "MAIN_MENU")
     game.run()
