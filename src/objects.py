@@ -1,4 +1,5 @@
 from enum import Enum
+from ressources import load_image
 
 
 class GameObject:
