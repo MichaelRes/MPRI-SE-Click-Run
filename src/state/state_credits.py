@@ -27,5 +27,5 @@ class Credits(GameState):
 
         text = self.font.render("METTRE LES CREDITS ICI", 1, text_color)
         width_text, height_text = text.get_size()
-        surface.blit(text, ((width - width_text)/ 2, (height - height_text) / 2))
+        surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2))
         pg.display.flip()
