@@ -3,7 +3,7 @@ import pygame
 
 def load_image(name):
     try:
-        image = pygame.image.load("/../ressources/"+name)
+        image = pygame.image.load("../ressources/"+name)
     except:
         print("Ressource manquante : ",name)
         image=pygame.Surface((20,20))
