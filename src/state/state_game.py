@@ -1,3 +1,11 @@
+from state_engine import GameState
+import sys
+sys.path.append("..")
+from objects import Action,Player
+from map import Map
+
+
+
 class StateGame(GameState):
     """
     Main state for the game, is the master for the map and the player.
@@ -71,6 +79,6 @@ class StateGame(GameState):
 
     def draw(self, surface):
         GameState.draw(self, surface)
-        game_map.draw()
+        game_map.display()
         surface.blit(self.player.choose_sprite(),
                      (self.player.pos_x, self.player.pos_y))
