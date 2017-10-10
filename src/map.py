@@ -1,4 +1,5 @@
 from enum import Enum
+from ressources import load_image
 import numpy as np
 
 class Material(Enum):
@@ -20,6 +21,15 @@ class Map():
         self.pos = 0
         self.gen = 0
         self.data = np.zeros((self.width, self.length))
+
+
+        #Choices of the sprite for the map
+        self.taille_bloc = (1, 1)
+        self.image = [pygame.surface(self.taille_bloc),
+                      pygame.surface(self.taille_bloc)]
+        for i in range(2):
+            self.image[i]=self.image[i].convert()
+            self.image[i].fill((10+140*i,150-140*i,10))
 
     def on_the_ground(self, x0, y0, hitbox):
         """
@@ -71,3 +81,8 @@ class Map():
         """
         Draws the map on the surface
         """
+        for i in range(self.width):
+            for j in range(self.display_length):
+                surface.blit(
+                    self.image[int(self.data[(j+self.pos)%self.length,i] in [Material.empty])],
+                    (j,i))
