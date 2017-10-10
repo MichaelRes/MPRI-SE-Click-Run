@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 from objects import Action,Player
 from map import Map
-
+import pygame as pg
 
 
 class StateGame(GameState):
@@ -25,16 +25,16 @@ class StateGame(GameState):
 
     def get_event(self, event):
         GameState.get_event(self, event)
-        if event.type == KEYDOWN:
+        if event.type == pg.KEYDOWN:
             # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
-            if event.key == K_SPACE:
-                if game_map.on_the_ground(self.player.pos_x, self.player.pos_y, self.player.hitbox):
+            if event.key == pg.K_SPACE:
+                if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y, self.player.hitbox):
                     self.player.v_y = max(10, self.player.v_y)
                     # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
                     self.player.action = Action.ASCEND
                     self.player.last_jump = self.frame
-        if event.type == KEYUP:
-            if event.key == K_SPACE:
+        if event.type == pg.KEYUP:
+            if event.key == pg.K_SPACE:
                 if self.player.action == Action.ASCEND:
                     self.player.action == Action.JUMPING
 
@@ -80,6 +80,6 @@ class StateGame(GameState):
 
     def draw(self, surface):
         GameState.draw(self, surface)
-        game_map.display()
+        self.game_map.display(surface)
         surface.blit(self.player.choose_sprite(),
                      (self.player.pos_x, self.player.pos_y))
