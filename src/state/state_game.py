@@ -43,7 +43,7 @@ class StateGame(GameState):
 
         # Update of the pos
         x0 = self.player.pos_x
-        (x, y), is_the_game_over = self.game_map.move_test(self.player.pos_x,
+        is_the_game_over, (x,y) = self.game_map.move_test(self.player.pos_x,
                                                            self.player.pos_y,
                                                            self.player.hitbox,
                                                            self.player.v_x,
@@ -73,7 +73,7 @@ class StateGame(GameState):
                 min(self.player.v_y + self.acceleration_y - 2, self.max_speed), -self.max_speed)
 
         # Update of the game_map
-        game_map.update(x - x0)
+        self.game_map.update(x - x0)
 
         # This part got to stay updated
         self.frame += 1
