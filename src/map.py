@@ -21,7 +21,7 @@ class Map():
         self.display_length = 800
         self.pos = 0
         self.gen = 0
-        self.data = np.full((self.width, self.length), Material.EMPTY)
+        self.data = np.full((self.length, self.width), Material.EMPTY)
 
 
         #Choices of the sprite for the map
@@ -85,4 +85,4 @@ class Map():
         for i in range(self.width):
             for j in range(self.display_length):
                 surface.blit(
-                    self.image[int(self.data[(j+self.pos)%self.length,i] in [Material.empty])],(j,i))
+                    self.image[int(self.data[(j+self.pos)%self.length,i] in [Material.EMPTY])],(j,i))
