@@ -68,7 +68,7 @@ class Map():
         Launches a procedural generation for the map.
         """
         for i in range(self.display_length):
-            self.data[(self.gen + i) % slef.length, self.width - 1] = Material.GROUND
+            self.data[(self.gen + i) % self.length, self.width - 1] = Material.GROUND
 
     def update(self, dx):
         """
