@@ -29,7 +29,7 @@ class Map():
         self.image = [pygame.Surface(self.taille_bloc),
                       pygame.Surface(self.taille_bloc)]
         for i in range(2):
-            self.image[i]=self.image[i].convert()
+            self.image[i] = self.image[i].convert()
             self.image[i].fill((10+140*i,150-140*i,10))
 
     def on_the_ground(self, x0, y0, hitbox):
