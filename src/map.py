@@ -69,6 +69,7 @@ class Map():
         """
         for i in range(self.display_length):
             self.data[(self.gen + i) % self.length, self.width - 1] = Material.GROUND
+        self.length += self.length 
 
     def update(self, dx):
         """
