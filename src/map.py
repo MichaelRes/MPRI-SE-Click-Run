@@ -34,7 +34,12 @@ class Map():
         """
         Tests if a given movement is possible and returns the tuple of his new position and the boolean saying if he is dead during this movement
         """
-        pass
+        isdead = False
+        x = x0
+        y = y0
+        for i in range(dx + dy + 1):
+            x = int(x0 + (i / (dx + dy)) * dx)
+            y = int(y0 + (i / (dx + dy)) * dy)
 
     def gen_proc(self):
         """
