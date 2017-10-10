@@ -34,12 +34,23 @@ class Map():
         """
         Tests if a given movement is possible and returns the tuple of his new position and the boolean saying if he is dead during this movement
         """
-        isdead = False
         x = x0
         y = y0
+        failed = False
         for i in range(dx + dy + 1):
             x = int(x0 + (i / (dx + dy)) * dx)
             y = int(y0 + (i / (dx + dy)) * dy)
+            for a in hitbox[0]:
+                for b in hitbox[1]:
+                    failed = failed or self.data[x + x.pos + a, y + b] == Material.GROUND or self.data[x + x.pos + a, y + b] == Material.WALL
+            if self.on_the_ground(x, y, hitbox):
+                break
+        for i in range(x0+dx-x):
+            x +=1
+            for a in hitbox[0]:
+                for b in hitbox[1]:
+                    failed = failed or self.data[x + x.pos + a, y + b] == Material.GROUND or self.data[x + x.pos + a, y + b] == Material.WALL
+        return (failed, (x,y))
 
     def gen_proc(self):
         """
