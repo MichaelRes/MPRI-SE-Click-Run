@@ -43,7 +43,7 @@ class StateGame(GameState):
 
         # Update of the pos
         x0 = self.player.pos_x
-        (x, y), is_the_game_over = self.game_map.move_test(self.player.pos_x,
+        is_the_game_over, (x,y) = self.game_map.move_test(self.player.pos_x,
                                                            self.player.pos_y,
                                                            self.player.hitbox,
                                                            self.player.v_x,
