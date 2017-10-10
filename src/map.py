@@ -20,7 +20,7 @@ class Map():
         self.display_length = 800
         self.pos = 0
         self.gen = 0
-        self.data = np.zeros((self.width, self.length))
+        self.data = np.full((self.width, self.length), Material.EMPTY)
 
 
         #Choices of the sprite for the map
@@ -67,7 +67,7 @@ class Map():
         Launches a procedural generation for the map.
         """
         for i in range(self.display_length):
-            self.data[(self.gen + i) % slef.length, self.width - 1] = Material.GROUND
+            self.data[(self.gen + i) % self.length, self.width - 1] = Material.GROUND
 
     def update(self, dx):
         """
