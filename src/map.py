@@ -1,6 +1,7 @@
 from enum import Enum
 from ressources import load_image
 import numpy as np
+import pygame
 
 class Material(Enum):
     GROUND = 1
@@ -25,8 +26,8 @@ class Map():
 
         #Choices of the sprite for the map
         self.taille_bloc = (1, 1)
-        self.image = [pygame.surface(self.taille_bloc),
-                      pygame.surface(self.taille_bloc)]
+        self.image = [pygame.Surface(self.taille_bloc),
+                      pygame.Surface(self.taille_bloc)]
         for i in range(2):
             self.image[i]=self.image[i].convert()
             self.image[i].fill((10+140*i,150-140*i,10))
@@ -37,7 +38,7 @@ class Map():
         """
         test = False
         for x in range(hitbox[0]):
-            test = test or (self.data[x0 + x + self.pos, y0 + hitbox[1]] == Material.GROUND
+            test = test or (self.data[x0 + x + self.pos, y0 + hitbox[1]] == Material.GROUND)
         return test
 
     def move_test(self, x0, y0, hitbox, dx, dy):
@@ -84,5 +85,4 @@ class Map():
         for i in range(self.width):
             for j in range(self.display_length):
                 surface.blit(
-                    self.image[int(self.data[(j+self.pos)%self.length,i] in [Material.empty])],
-                    (j,i))
+                    self.image[int(self.data[(j+self.pos)%self.length,i] in [Material.empty])],(j,i))
