@@ -16,16 +16,20 @@ class Map():
         """
         Initialize the Map object.
         """
-        self.width = 600
-        self.length = 2400
-        self.display_length = 800
+
+        self.dim_bloc = 50
+        self.taille_bloc = (self.dim_bloc, self.dim_bloc)
+
+        
+        self.width = 600 //self.dim_bloc
+        self.length = 2400 //self.dim_bloc
+        self.display_length = 800 //self.dim_bloc
         self.pos = 0
         self.gen = 0
         self.data = np.full((self.length, self.width), Material.EMPTY)
 
 
         #Choices of the sprite for the map
-        self.taille_bloc = (1, 1)
         self.image = [pygame.Surface(self.taille_bloc),
                       pygame.Surface(self.taille_bloc)]
         for i in range(2):
@@ -36,11 +40,23 @@ class Map():
         """
         Returns a boolean indicating if the object given by pos0 ans his hitbox is on the ground
         """
-        test = False
-        for x in range(hitbox[0]):
-            test = test or (self.data[x0 + x + self.pos, y0 + hitbox[1]] == Material.GROUND)
-        return test
+        if (y0+hitbox[1]) % self.dim_bloc == self.dim_bloc-1:
+            for i in range((hitbox[0]) // self.dim_bloc + 1):
+                if self.point_on_the_ground(max(x0 + hitbox[0], x0 + i*self.dim_bloc),y0 + hitbox[1]):
+                    return True
+        return False
 
+    def point_on_the_ground(self, x, y):
+        """
+        This function do as before but works only for a point.
+        """
+        if y % self.dim_bloc == self.dim_bloc-1:
+            return self.data[(x + self.pos)//self.dim_bloc,y//self.dim_bloc+1] == Material.GROUND
+            
+        #This case shouldnt occur.
+        return False
+                
+    
     def move_test(self, x0, y0, hitbox, dx, dy):
         """
         Tests if a given movement is possible and returns the tuple of his new position and the boolean saying if he is dead during this movement
@@ -48,19 +64,20 @@ class Map():
         x = x0
         y = y0
         failed = False
-        for i in range(dx + dy + 1):
-            x = int(x0 + (i / (dx + dy)) * dx)
-            y = int(y0 + (i / (dx + dy)) * dy)
-            for a in range(hitbox[0]):
-                for b in range(hitbox[1]):
-                    failed = failed or self.data[x + self.pos + a, y + b] == Material.GROUND or self.data[x + self.pos + a, y + b] == Material.WALL
-            if self.on_the_ground(x, y, hitbox):
+        for i in range(np.abs(dx) + np.abs(dy) + 1):
+            x = int(x0 + (i / (np.abs(dx) + np.abs(dy))) * dx)
+            y = int(y0 + (i / (np.abs(dx) + np.abs(dy))) * dy)
+            print(y)
+            for b in range(hitbox[1]):
+                failed = failed or self.data[(x + self.pos + hitbox[0])//self.dim_bloc,( y + b)//self.dim_bloc] == Material.GROUND
+            if dy >= 0 and self.on_the_ground(x, y, hitbox):
                 break
         for i in range(x0+dx-x):
-            x +=1
+            x += 1
             for a in range(hitbox[0]):
                 for b in range(hitbox[1]):
-                    failed = failed or self.data[x + self.pos + a, y + b] == Material.GROUND or self.data[x + self.pos + a, y + b] == Material.WALL
+                    failed = failed or self.data[(x + self.pos + a)//self.dim_bloc, (y + b)//self.dim_bloc] == Material.GROUND
+        print(x0,y0,hitbox,dx,dy,x,y)
         return (failed, (x,y))
 
     def gen_proc(self):
@@ -69,6 +86,10 @@ class Map():
         """
         for i in range(self.display_length):
             self.data[(self.gen + i) % self.length, self.width - 1] = Material.GROUND
+            if np.random.random()>0.95:
+                self.data[(self.gen+i) % self.length, self.width //2] = Material.GROUND
+            else:
+                self.data[(self.gen+i) % self.length, self.width //2] = Material.EMPTY
         self.gen += self.display_length
 
     def update(self, dx):
@@ -86,4 +107,4 @@ class Map():
         for i in range(self.width):
             for j in range(self.display_length):
                 surface.blit(
-                    self.image[int(self.data[(j+self.pos)%self.length,i] in [Material.EMPTY])],(j,i))
+                    self.image[int(self.data[(j+self.pos)%self.length,i] in [Material.EMPTY])],(j*self.dim_bloc,i*self.dim_bloc))
