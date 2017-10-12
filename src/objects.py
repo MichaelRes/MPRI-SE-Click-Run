@@ -10,7 +10,7 @@ class GameObject:
         self.pos_y = y0
         self.v_x = vx0
         self.v_y = vy0
-        self.hitbox = [0, 0]
+        self.hitbox = [50, 50]
 
 
 class Action(Enum):
