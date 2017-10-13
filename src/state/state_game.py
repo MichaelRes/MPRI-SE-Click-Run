@@ -19,6 +19,7 @@ class StateGame(GameState):
         self.acceleration_y = 2
         self.frame = 0  # Number of frame since begininng
         self.max_speed = 1000
+        self.next_state="MAIN_MENU"
 
     def startup(self, persistent):
         GameState.startup(self, persistent)
@@ -36,7 +37,7 @@ class StateGame(GameState):
         if event.type == pg.KEYUP:
             if event.key == pg.K_SPACE:
                 if self.player.action == Action.ASCEND:
-                    self.player.action == Action.JUMPING
+                    self.player.action = Action.JUMPING
 
     def update(self, dt): # Le dt ne sert à rien, je sais pas pourquoi on le met encore
         GameState.update(self,dt)
@@ -56,6 +57,7 @@ class StateGame(GameState):
 
         # Something to do in case the game is over
         if is_the_game_over:
+            print("Boum")
             self.done = True
 
         # Update depending on whether the player is on the ground or not
@@ -64,7 +66,7 @@ class StateGame(GameState):
         if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y, self.player.hitbox) and self.player.action != Action.ASCEND:
             self.player.action = Action.RUNNING
             self.player.v_y = min(self.player.v_y, 0)
-        elif self.player.action == Action.JUMPING or (self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 10):
+        elif self.player.action == Action.JUMPING or (self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 30):
             # Either is the player in jump state, or he stopped his ascension
             self.player.action = Action.JUMPING
             self.player.v_y = max(min(self.player.v_y + self.acceleration_y, self.max_speed), -self.max_speed)
@@ -78,6 +80,7 @@ class StateGame(GameState):
 
         # This part got to stay updated
         self.frame += 1
+
 
     def draw(self, surface):
         GameState.draw(self, surface)

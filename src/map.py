@@ -17,7 +17,7 @@ class Map():
         Initialize the Map object.
         """
 
-        self.dim_bloc = 50
+        self.dim_bloc = 40
         self.taille_bloc = (self.dim_bloc, self.dim_bloc)
 
         
@@ -46,12 +46,23 @@ class Map():
                     return True
         return False
 
+    def data_read(self,bl):
+        """
+        This Function allows to access to self.data with the modulo
+        """
+        return self.data[bl[0]%(self.length),bl[1]]
+    def data_write(self,bl,value):
+        """
+        As the previous function, this allow to write in the good spot of the value.
+        """
+        self.data[bl[0]%(self.length),bl[1]]=value
+    
     def point_on_the_ground(self, x, y):
         """
         This function do as before but works only for a point.
         """
         if y % self.dim_bloc == self.dim_bloc-1:
-            return self.data[(x + self.pos)//self.dim_bloc,y//self.dim_bloc+1] == Material.GROUND
+            return self.data_read([(x + self.pos)//self.dim_bloc,y//self.dim_bloc+1]) == Material.GROUND
             
         #This case shouldnt occur.
         return False
@@ -63,22 +74,29 @@ class Map():
         """
         x = x0
         y = y0
-        failed = False
         for i in range(np.abs(dx) + np.abs(dy) + 1):
             x = int(x0 + (i / (np.abs(dx) + np.abs(dy))) * dx)
             y = int(y0 + (i / (np.abs(dx) + np.abs(dy))) * dy)
-            print(y)
+
             for b in range(hitbox[1]):
-                failed = failed or self.data[(x + self.pos + hitbox[0])//self.dim_bloc,( y + b)//self.dim_bloc] == Material.GROUND
+                if self.data_read([(x + self.pos + hitbox[0])//self.dim_bloc,( y + b)//self.dim_bloc]) == Material.GROUND:
+                    print(x,self.pos,y,b)
+                    print([(x + self.pos + hitbox[0])//self.dim_bloc,( y + b)//self.dim_bloc])
+                    print(self.data)
+                    return True, (x0, y0)
+            for a in range(hitbox[0]):
+                if self.data_read([(x + self.pos + a)//self.dim_bloc, y//self.dim_bloc]) == Material.GROUND:
+                    print(x, self.pos,a, y)
+                    print([(x + self.pos + a)//self.dim_bloc, y//self.dim_bloc])
+                    return True, (x0,y0)
             if dy >= 0 and self.on_the_ground(x, y, hitbox):
                 break
         for i in range(x0+dx-x):
             x += 1
-            for a in range(hitbox[0]):
-                for b in range(hitbox[1]):
-                    failed = failed or self.data[(x + self.pos + a)//self.dim_bloc, (y + b)//self.dim_bloc] == Material.GROUND
-        print(x0,y0,hitbox,dx,dy,x,y)
-        return (failed, (x,y))
+            for b in range(hitbox[1]):
+                if self.data_read([(x + self.pos + hitbox[0])//self.dim_bloc, (y + b)//self.dim_bloc]) == Material.GROUND:
+                    return True, (x0,y0)
+        return (False, (x,y))
 
     def gen_proc(self):
         """
@@ -86,19 +104,16 @@ class Map():
         """
         for i in range(self.display_length):
             self.data[(self.gen + i) % self.length, self.width - 1] = Material.GROUND
-            if np.random.random()>0.95:
-                self.data[(self.gen+i) % self.length, self.width //2] = Material.GROUND
-            else:
-                self.data[(self.gen+i) % self.length, self.width //2] = Material.EMPTY
         self.gen += self.display_length
 
     def update(self, dx):
         """
         Updates the position of the map between two frames with speed dx/frame
         """
-        if self.gen >= self.pos and (self.gen - self.pos) < self.display_length or self.gen <= self.pos and (self.length - self.pos) + self.gen < self.display_length:
+        if (self.gen - self.pos//self.dim_bloc) < self.display_length:
             self.gen_proc()
         self.pos = self.pos + dx
+        print(self.pos)
 
     def display(self, surface):
         """
@@ -107,4 +122,7 @@ class Map():
         for i in range(self.width):
             for j in range(self.display_length):
                 surface.blit(
-                    self.image[int(self.data[(j+self.pos)%self.length,i] in [Material.EMPTY])],(j*self.dim_bloc,i*self.dim_bloc))
+                    self.image[
+                        int(self.data_read([(j+self.pos//self.dim_bloc)%self.length,i]) in [Material.EMPTY])],
+                    (j*self.dim_bloc,i*self.dim_bloc)
+                )

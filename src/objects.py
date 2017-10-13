@@ -26,14 +26,16 @@ class Player(GameObject):
         # This variable takes trace of last frame where the player jumped in order to stop the ascending phase
         self.last_jump = None
         # The sprite are stored in a dict
-        self.sprite = {"JUMP": load_image("red.png"), "RUN": load_image("green.png")}
+        self.sprite = {"JUMP": load_image("red.png"), "RUN": load_image("green.png"), "ASCEND": load_image("black.png")}
 
 
     def choose_sprite(self):
         """
         This function choose the good sprite and returns it
         """
-        if self.action in {Action.JUMPING, Action.ASCEND}:
+        if self.action in {Action.JUMPING}:
             return self.sprite["JUMP"]
         if self.action in {Action.RUNNING}:
             return self.sprite["RUN"]
+        if self.action in {Action.ASCEND}:
+            return self.sprite["ASCEND"]
