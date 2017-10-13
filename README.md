@@ -1,11 +1,11 @@
 # MPRI-SE-Click-Run
 
-##Compiling
+## Compiling
 
-##Dependencies
+## Dependencies
 
-##Documentation
+## Documentation
 
-##Tests
+## Tests
 
 Authors : Clément Lalanne, Hector Dang-Nhu, Joseph Marotte.
