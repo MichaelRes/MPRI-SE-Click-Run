@@ -41,4 +41,3 @@ class GameOver(GameState):
         surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + 48))
 
         pg.display.flip()
-

@@ -4,8 +4,9 @@ import pygame as pg
 
 class Game(object):
     """
-    An instance of this pyclass is responsible for managing which individiual game state is active and keeping it updated.
-    The run methodes serves as the "game loop"
+    An instance of this pyclass is responsible for managing which individiual game state is active and keeping
+    it updated.
+    The run methods serves as the "game loop"
     """
     def __init__(self, screen, states, start_state):
         """
@@ -27,7 +28,7 @@ class Game(object):
         Events are passed for handling to the current state.
         """
         for event in pg.event.get():
-            # modifier l'emplacement des deux lignes suivantes qui sont pas forcément au meilleur endroit
+            # modifier l'emplacement des deux lignes suivantes qui sont pas forcement au meilleur endroit
             if event.type == pg.QUIT:
                 pg.quit()
             self.state.get_event(event)
@@ -71,6 +72,7 @@ class Game(object):
             self.draw()
             pg.display.update()
 
+
 class GameState(object):
     """
     Parent class for individual game states to inherit from
@@ -89,7 +91,7 @@ class GameState(object):
 
         @param persistent: a dict passed from state to state
         """
-        self.persistent = persistent
+        self.persist = persistent
 
     def get_event(self, event):
         """
