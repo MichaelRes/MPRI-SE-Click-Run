@@ -28,7 +28,6 @@ class Player(GameObject):
         # The sprite are stored in a dict
         self.sprite = {"JUMP": load_image("red.png"), "RUN": load_image("green.png"), "ASCEND": load_image("black.png")}
 
-
     def choose_sprite(self):
         """
         This function choose the good sprite and returns it
