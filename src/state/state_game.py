@@ -16,7 +16,7 @@ class StateGame(GameState):
         self.player = Player(5, 0, 1, 0)
         self.game_map = Map()
         self.acceleration_x = 0  # As said, x variables aint of any use at the moment
-        self.acceleration_y = 3
+        self.acceleration_y = 6
         self.frame = 0  # Number of frame since begininng
         self.max_speed = 1000
         self.next_state = "MAIN_MENU"
@@ -30,7 +30,7 @@ class StateGame(GameState):
             # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
             if event.key == pg.K_SPACE:
                 if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y, self.player.hitbox):
-                    self.player.v_y = min(-25, self.player.v_y)
+                    self.player.v_y = min(-36, self.player.v_y)
                     # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
                     self.player.action = Action.ASCEND
                     self.player.last_jump = self.frame
@@ -67,13 +67,13 @@ class StateGame(GameState):
             self.player.action = Action.RUNNING
             self.player.v_y = min(self.player.v_y, 0)
         elif self.player.action == Action.JUMPING or (
-                        self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 10):
+                        self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 6):
             # Either is the player in jump state, or he stopped his ascension
             self.player.action = Action.JUMPING
             self.player.v_y = max(min(self.player.v_y + self.acceleration_y, self.max_speed), -self.max_speed)
         elif self.player.action == Action.ASCEND:
             # In that case, the player continues his ascension
-            self.player.v_y = max(min(self.player.v_y + self.acceleration_y - 3, self.max_speed), -self.max_speed)
+            self.player.v_y = max(min(self.player.v_y + self.acceleration_y - 4, self.max_speed), -self.max_speed)
 
         # Update of the game_map
         self.game_map.update(x - x0)
