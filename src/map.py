@@ -18,12 +18,12 @@ class Map(object):
         """
         Initialize the Map object.
         """
-        self.dim_bloc = 40
+        self.dim_bloc = 30
         self.taille_bloc = (self.dim_bloc, self.dim_bloc)
 
-        self.width = 600 // self.dim_bloc
+        self.width = 720 // self.dim_bloc
         self.length = 2400 // self.dim_bloc
-        self.display_length = 800 // self.dim_bloc
+        self.display_length = 1200 // self.dim_bloc
         # An important note : both of pos and gen aint on the same scale, self.gen is a number of bloc when self.pos is
         # a matter of px. Those should not be compared without a self.dim_bloc factor
         self.pos = 0
@@ -37,6 +37,9 @@ class Map(object):
         for i in range(2):
             self.image[i] = self.image[i].convert()
             self.image[i].fill((10+140*i, 150-140*i, 10))
+        self.background=[pygame.Surface((self.length*self.dim_bloc,self.width*self.dim_bloc))]
+        self.background[0]=self.background[0].convert()
+        self.background[0].fill((200,200,200))
 
     def on_the_ground(self, x0, y0, hitbox):
         """
@@ -116,10 +119,12 @@ class Map(object):
         """
         Draws the map on the surface
         """
+        #we blit the backgrounds
+        surface.blit(self.background[0],(0,0))
+        for i in range(len(self.background)-1):
+            pass
+        #We blit self.data
         for i in range(self.width):
             for j in range(self.display_length):
-                surface.blit(
-                    self.image[
-                        int(self.data_read([j*self.dim_bloc,i*self.dim_bloc]) in [Material.EMPTY])],
-                    (j*self.dim_bloc,i*self.dim_bloc)
-                )
+                if self.data_read([j*self.dim_bloc,i*self.dim_bloc])== Material.GROUND:
+                    surface.blit(self.image[0],(j*self.dim_bloc,i*self.dim_bloc))
