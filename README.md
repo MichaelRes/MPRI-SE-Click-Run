@@ -31,7 +31,7 @@ sudo yum install python34-setuptools
 sudo easy_install pip
 ```
 
-Then here is the list of the packages we use and how to install them :
+Then here is the list of used packages and how to install them :
 1. Numpy :
 ```
 pip3 install numpy
