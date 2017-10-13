@@ -24,8 +24,10 @@ class Map():
         self.width = 600 //self.dim_bloc
         self.length = 2400 //self.dim_bloc
         self.display_length = 800 //self.dim_bloc
+        # An important note : both of pos and gen aint on the same scale, self.gen is a number of bloc when self.pos is a matter of px. Those shouldnot be compared without a self.dim_bloc factor
         self.pos = 0
         self.gen = 0
+        
         self.data = np.full((self.length, self.width), Material.EMPTY)
 
 
@@ -50,7 +52,7 @@ class Map():
         """
         This Function allows to access to self.data with the modulo
         """
-        return self.data[bl[0]%(self.length),bl[1]]
+        return self.data[((bl[0]+self.pos)//self.dim_bloc)%(self.length),(bl[1]//self.dim_bloc)]
     def data_write(self,bl,value):
         """
         As the previous function, this allow to write in the good spot of the value.
@@ -62,7 +64,7 @@ class Map():
         This function do as before but works only for a point.
         """
         if y % self.dim_bloc == self.dim_bloc-1:
-            return self.data_read([(x + self.pos)//self.dim_bloc,y//self.dim_bloc+1]) == Material.GROUND
+            return self.data_read([x ,y + self.dim_bloc - 1]) == Material.GROUND
             
         #This case shouldnt occur.
         return False
@@ -79,22 +81,17 @@ class Map():
             y = int(y0 + (i / (np.abs(dx) + np.abs(dy))) * dy)
 
             for b in range(hitbox[1]):
-                if self.data_read([(x + self.pos + hitbox[0])//self.dim_bloc,( y + b)//self.dim_bloc]) == Material.GROUND:
-                    print(x,self.pos,y,b)
-                    print([(x + self.pos + hitbox[0])//self.dim_bloc,( y + b)//self.dim_bloc])
-                    print(self.data)
+                if self.data_read([x +hitbox[0],y + b]) == Material.GROUND:
                     return True, (x0, y0)
             for a in range(hitbox[0]):
-                if self.data_read([(x + self.pos + a)//self.dim_bloc, y//self.dim_bloc]) == Material.GROUND:
-                    print(x, self.pos,a, y)
-                    print([(x + self.pos + a)//self.dim_bloc, y//self.dim_bloc])
+                if self.data_read([x +  a, y]) == Material.GROUND:
                     return True, (x0,y0)
             if dy >= 0 and self.on_the_ground(x, y, hitbox):
                 break
         for i in range(x0+dx-x):
             x += 1
             for b in range(hitbox[1]):
-                if self.data_read([(x + self.pos + hitbox[0])//self.dim_bloc, (y + b)//self.dim_bloc]) == Material.GROUND:
+                if self.data_read([x+ hitbox[0], y + b]) == Material.GROUND:
                     return True, (x0,y0)
         return (False, (x,y))
 
@@ -113,7 +110,6 @@ class Map():
         if (self.gen - self.pos//self.dim_bloc) < self.display_length:
             self.gen_proc()
         self.pos = self.pos + dx
-        print(self.pos)
 
     def display(self, surface):
         """
@@ -123,6 +119,6 @@ class Map():
             for j in range(self.display_length):
                 surface.blit(
                     self.image[
-                        int(self.data_read([(j+self.pos//self.dim_bloc)%self.length,i]) in [Material.EMPTY])],
+                        int(self.data_read([j*self.dim_bloc,i*self.dim_bloc]) in [Material.EMPTY])],
                     (j*self.dim_bloc,i*self.dim_bloc)
                 )
