@@ -3,7 +3,7 @@
 Do you want to test your skills in an old school 2D run and jump game ?
 Well you're at the right place !
 
-## Compiling
+## Running
 
 We use Python 3 to run our game.
 If you don't have it already installed you can find it [here](https://www.python.org/downloads/)
