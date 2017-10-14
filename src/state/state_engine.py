@@ -93,7 +93,7 @@ class GameState(object):
         Called when a state resumes being active.
         @param persistent: a dict passed from state to state
         """
-        self.persist = persistent
+        pass
 
     def get_event(self, event):
         """
