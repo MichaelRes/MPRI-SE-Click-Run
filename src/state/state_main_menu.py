@@ -9,6 +9,7 @@ class MainMenu(GameState):
         self.available_state = ["GAME", "BEST_SCORE", "OPTIONS", "CREDITS"]
         self.current_select = 0
         self.next_state = None
+        self.restart_next_state = True
 
     def startup(self, persistent):
         pass
