@@ -8,6 +8,7 @@ from state_options import *
 from state_credits import *
 from state_game_over import *
 from state_game import *
+from state_pause import *
 
 
 def main():
@@ -20,6 +21,7 @@ def main():
         "CREDITS": Credits(),
         "GAME_OVER": GameOver(),
         "GAME": StateGame(),
+        "PAUSE": Pause(),
             }
     game = Game(screen, states, "MAIN_MENU")
     game.run()

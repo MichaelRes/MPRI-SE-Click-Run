@@ -26,6 +26,10 @@ class StateGame(GameState):
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE:
+                self.next_state = "PAUSE"
+                self.done = True
+        if event.type == pg.KEYDOWN:
             # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
             if event.key == pg.K_SPACE:
                 if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y, self.player.hitbox):
