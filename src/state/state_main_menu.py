@@ -14,9 +14,6 @@ class MainMenu(GameState):
         self.restart_next_state = True
         self.main_menu_map = Map()
 
-    def startup(self, persistent):
-        pass
-
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
@@ -33,7 +30,6 @@ class MainMenu(GameState):
     def draw(self, surface):
         width, height = surface.get_size()
         self.main_menu_map.display(surface)
-        #surface.fill(pg.Color("black"))
         for i, name_state in enumerate(self.available_state):
             if i == self.current_select:
                 text_color = 255, 0, 0

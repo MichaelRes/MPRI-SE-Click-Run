@@ -10,9 +10,6 @@ class Pause(GameState):
         self.current_select = 0
         self.next_state = None
 
-    def startup(self, persistent):
-        pass
-
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
@@ -22,9 +19,6 @@ class Pause(GameState):
             elif event.key == pg.K_RETURN:
                 self.next_state = self.available_state[self.current_select]
                 self.done = True
-
-    def update(self, dt):
-        pass
 
     def draw(self, surface):
         width, height = surface.get_size()

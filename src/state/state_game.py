@@ -21,9 +21,6 @@ class StateGame(GameState):
         self.max_speed = 1000
         self.next_state = "MAIN_MENU"
 
-    def startup(self, persistent):
-        GameState.startup(self, persistent)
-
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
@@ -43,8 +40,6 @@ class StateGame(GameState):
                     self.player.action = Action.JUMPING
 
     def update(self, dt):  # Le dt ne sert a rien, je sais pas pourquoi on le met encore
-        GameState.update(self, dt)
-
         # Update of the pos
         x0 = self.player.pos_x
 
@@ -86,7 +81,6 @@ class StateGame(GameState):
         self.frame += 1
 
     def draw(self, surface):
-        GameState.draw(self, surface)
         self.game_map.display(surface)
         surface.blit(self.player.choose_sprite(),
                      (self.player.pos_x, self.player.pos_y))
