@@ -25,7 +25,6 @@ class StateGame(GameState):
         GameState.startup(self, persistent)
 
     def get_event(self, event):
-        GameState.get_event(self, event)
         if event.type == pg.KEYDOWN:
             # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
             if event.key == pg.K_SPACE:
