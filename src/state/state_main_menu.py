@@ -1,6 +1,8 @@
-from state_engine import GameState
+import sys
 import pygame as pg
-
+from state_engine import GameState
+sys.path.append("..")
+from map import Map
 
 class MainMenu(GameState):
 
@@ -10,6 +12,7 @@ class MainMenu(GameState):
         self.current_select = 0
         self.next_state = None
         self.restart_next_state = True
+        self.main_menu_map = Map()
 
     def startup(self, persistent):
         pass
@@ -25,12 +28,12 @@ class MainMenu(GameState):
                 self.done = True
 
     def update(self, dt):
-        pass
+        self.main_menu_map.update(5)
 
     def draw(self, surface):
         width, height = surface.get_size()
-
-        surface.fill(pg.Color("black"))
+        self.main_menu_map.display(surface)
+        #surface.fill(pg.Color("black"))
         for i, name_state in enumerate(self.available_state):
             if i == self.current_select:
                 text_color = 255, 0, 0
