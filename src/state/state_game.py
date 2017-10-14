@@ -60,6 +60,7 @@ class StateGame(GameState):
         # Something to do in case the game is over
         if is_the_game_over:
             print("Boum")
+            self.next_state = "GAME_OVER"
             self.done = True
 
         # Update depending on whether the player is on the ground or not

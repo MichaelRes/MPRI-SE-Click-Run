@@ -14,10 +14,13 @@ class GameOver(GameState):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
+                self.restart_next_state = False
                 self.done = True
 
             elif event.key == pg.K_RETURN:
-                pass
+                self.next_state = "GAME"
+                self.restart_next_state = True
+                self.done = True
 
     def update(self, dt):
         pass
