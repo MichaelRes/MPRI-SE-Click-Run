@@ -36,7 +36,7 @@ class Map(object):
                       pygame.Surface(self.taille_bloc)]
         for i in range(2):
             self.image[i] = self.image[i].convert()
-            self.image[i].fill((10+140*i, 150-140*i, 10))
+            self.image[i].fill((10+140*i, 150-140*i, 10+140*i))
         self.background=[pygame.Surface((self.length*self.dim_bloc,self.width*self.dim_bloc))]
         self.background[0]=self.background[0].convert()
         self.background[0].fill((200,200,200))
@@ -55,12 +55,16 @@ class Map(object):
         """
         This Function allows to access to self.data with the modulo
         """
+        if (bl[1]<0):
+            return Material.EMPTY
         return self.data[((bl[0]+self.pos)//self.dim_bloc) % self.length, (bl[1]//self.dim_bloc)]
 
     def data_write(self, bl, value):
         """
         As the previous function, this allow to write in the good spot of the value.
         """
+        if (bl[1]<0):
+            return
         self.data[bl[0] % self.length, bl[1]] = value
     
     def point_on_the_ground(self, x, y):
@@ -78,6 +82,9 @@ class Map(object):
         Tests if a given movement is possible and returns the tuple of his new position and the boolean saying if he is
         dead during this movement
         """
+        # death by falling out of the screen
+        if y0 + dy>self.width*self.dim_bloc:
+            return True, (x0, y0)
         x = x0
         y = y0
         for i in range(np.abs(dx) + np.abs(dy) + 1):
@@ -128,3 +135,4 @@ class Map(object):
             for j in range(self.display_length):
                 if self.data_read([j*self.dim_bloc,i*self.dim_bloc])== Material.GROUND:
                     surface.blit(self.image[0],(j*self.dim_bloc,i*self.dim_bloc))
+
