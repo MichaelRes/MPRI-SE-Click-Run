@@ -118,7 +118,7 @@ class Map(object):
         """
         Updates the position of the map between two frames with speed dx/frame
         """
-        if (self.gen - self.pos//self.dim_bloc) < self.display_length:
+        while (self.gen - self.pos//self.dim_bloc) < self.display_length:
             self.gen_proc()
         self.pos = self.pos + dx
 
