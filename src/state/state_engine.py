@@ -8,7 +8,7 @@ class Game(object):
     it updated.
     """
     # TODO voir comment on type un dict d'objets
-    def __init__(self, screen: pg.Surface, states: {}, start_state):
+    def __init__(self, screen: pg.Surface, states: {'GameState'}, start_state: 'GameState') -> ():
         """
         Initialize the Game object.
         @param screen: the screen where the game will be displayed
@@ -45,7 +45,7 @@ class Game(object):
         self.state = self.states[next_state]
         self.state.startup(persistent)
 
-    def update(self, dt):
+    def update(self, dt: float):
         """
         Check for state flip and update active state
         @dt : milliseconds since last frame
@@ -87,7 +87,7 @@ class GameState(object):
         self.font = pg.font.Font(None, 24)
         self.restart_next_state = False
 
-    def startup(self, persistent):
+    def startup(self, persistent: {}):
         """
         Called when a state resumes being active.
         @param persistent: a dict passed from state to state
@@ -101,7 +101,7 @@ class GameState(object):
         """
         pass
 
-    def update(self, dt):
+    def update(self, dt: float):
         """
         Update the state. Called by the game object once per frame.
         @param dt: time since last frame
