@@ -11,8 +11,8 @@ class Pause(GameState):
 
     def get_event(self, event):
         """
-        Give the last event to the state.
-        @param event: a event that happened
+        Do something according to the last event that happened
+        @param event: the last event that occurred
         """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
