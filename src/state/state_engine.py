@@ -1,19 +1,19 @@
-import sys
 import pygame as pg
 
 
 class Game(object):
     """
-    An instance of this pyclass is responsible for managing which individiual game state is active and keeping
+    An instance of this class is responsible for managing
+    which individual game state is active and keeping
     it updated.
-    The run methods serves as the "game loop"
     """
-    def __init__(self, screen, states, start_state):
+    # TODO voir comment on type un dict d'objets
+    def __init__(self, screen: pg.Surface, states: {}, start_state):
         """
         Initialize the Game object.
-        @param screen:
-        @param states:
-        @param start_state:
+        @param screen: the screen where the game will be displayed
+        @param states: the possible states of the game
+        @param start_state: the state the game will start in
         """
         self.screen = screen
         self.clock = pg.time.Clock()
@@ -28,10 +28,10 @@ class Game(object):
         Events are passed for handling to the current state.
         """
         for event in pg.event.get():
-            # modifier l'emplacement des deux lignes suivantes qui sont pas forcement au meilleur endroit
             if event.type == pg.QUIT:
-                pg.quit()
-            self.state.get_event(event)
+                self.state.quit = True
+            else:
+                self.state.get_event(event)
 
     def flip_state(self):
         """
@@ -48,7 +48,6 @@ class Game(object):
     def update(self, dt):
         """
         Check for state flip and update active state
-
         @dt : milliseconds since last frame
         """
         if self.state.quit:
@@ -65,7 +64,7 @@ class Game(object):
 
     def run(self):
         """
-        This is the game_loop
+        This is the game loop
         """
         while not self.done:
             dt = self.clock.tick(self.fps)
@@ -95,20 +94,23 @@ class GameState(object):
         """
         pass
 
-    def get_event(self, event):
+    def get_event(self, event: pg.event):
         """
-        Update the state. Called by the game object once per frame.
+        Give the last event to the state.
+        @param event: a event that happened
         """
         pass
 
     def update(self, dt):
         """
+        Update the state. Called by the game object once per frame.
         @param dt: time since last frame
         """
         pass
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface):
         """
         Draw everything to the screen
+        @param surface: The surface that will be displayed.
         """
         pass

@@ -4,8 +4,8 @@ from state_engine import GameState
 sys.path.append("..")
 from map import Map
 
-class MainMenu(GameState):
 
+class MainMenu(GameState):
     def __init__(self):
         GameState.__init__(self)
         self.available_state = ["GAME", "BEST_SCORE", "OPTIONS", "CREDITS"]
