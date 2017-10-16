@@ -45,10 +45,9 @@ class Game(object):
         self.state = self.states[next_state]
         self.state.startup(persistent)
 
-    def update(self, dt: float):
+    def update(self):
         """
         Check for state flip and update active state
-        @dt : milliseconds since last frame
         """
         if self.state.quit:
             self.done = True
@@ -101,10 +100,9 @@ class GameState(object):
         """
         pass
 
-    def update(self, dt: float):
+    def update(self):
         """
         Update the state. Called by the game object once per frame.
-        @param dt: time since last frame
         """
         pass
 

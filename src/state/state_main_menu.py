@@ -1,8 +1,8 @@
 import sys
 import pygame as pg
 from state_engine import GameState
-sys.path.append("..")
 from map import Map
+sys.path.append("..")
 
 
 class MainMenu(GameState):
@@ -14,7 +14,7 @@ class MainMenu(GameState):
         self.restart_next_state = True
         self.main_menu_map = Map()
 
-    def get_event(self, event):
+    def get_event(self, event: pg.event):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
                 self.current_select = (self.current_select - 1) % len(self.available_state)
@@ -24,7 +24,7 @@ class MainMenu(GameState):
                 self.next_state = self.available_state[self.current_select]
                 self.done = True
 
-    def update(self, dt):
+    def update(self):
         self.main_menu_map.update(5)
 
     def draw(self, surface):
