@@ -29,7 +29,7 @@ class Map(object):
         self.pos = 0
         self.gen = 0
         
-        self.data = np.full((self.length, self.width), Material.EMPTY)
+        self.data = np.full((self.length, self.width), Material.EMPTY, dtype=Material)
 
         # Choices of the sprite for the map
         self.image = [pygame.Surface(self.taille_bloc),
