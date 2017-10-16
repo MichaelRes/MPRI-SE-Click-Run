@@ -53,7 +53,7 @@ class Game(object):
             self.done = True
         elif self.state.done:
             self.flip_state()
-        self.state.update(dt)
+        self.state.update()
 
     def draw(self):
         """
@@ -66,9 +66,8 @@ class Game(object):
         This is the game loop
         """
         while not self.done:
-            dt = self.clock.tick(self.fps)
             self.event_loop()
-            self.update(dt)
+            self.update()
             self.draw()
             pg.display.update()
 
