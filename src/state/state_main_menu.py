@@ -15,6 +15,10 @@ class MainMenu(GameState):
         self.main_menu_map = Map()
 
     def get_event(self, event: pg.event):
+        """
+        Do something according to the last event that happened.
+        @param event: the last event that occurred.
+        """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
                 self.current_select = (self.current_select - 1) % len(self.available_state)
@@ -25,9 +29,16 @@ class MainMenu(GameState):
                 self.done = True
 
     def update(self):
+        """
+        Update the state.
+        """
         self.main_menu_map.update(5)
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface):
+        """
+        Draw everything to the screen
+        @param surface: The surface that will be displayed.
+        """
         width, height = surface.get_size()
         self.main_menu_map.display(surface)
         for i, name_state in enumerate(self.available_state):
