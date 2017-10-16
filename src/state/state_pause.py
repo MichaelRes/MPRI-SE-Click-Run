@@ -3,7 +3,6 @@ import pygame as pg
 
 
 class Pause(GameState):
-
     def __init__(self):
         GameState.__init__(self)
         self.available_state = ["GAME", "MAIN_MENU"]
@@ -11,6 +10,10 @@ class Pause(GameState):
         self.next_state = None
 
     def get_event(self, event):
+        """
+        Give the last event to the state.
+        @param event: a event that happened
+        """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
                 self.current_select = (self.current_select - 1) % len(self.available_state)
@@ -21,6 +24,10 @@ class Pause(GameState):
                 self.done = True
 
     def draw(self, surface):
+        """
+        Draw everything to the screen
+        @param surface: The surface that will be displayed.
+        """
         width, height = surface.get_size()
 
         for i, name_state in enumerate(self.available_state):
