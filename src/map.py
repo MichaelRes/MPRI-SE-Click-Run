@@ -19,7 +19,7 @@ class Map(object):
         Initialize the Map object.
         """
         self.dim_bloc = 30
-        self.taille_bloc = (self.dim_bloc, self.dim_bloc)
+        self.size_bloc = (self.dim_bloc, self.dim_bloc)
 
         self.width = 720 // self.dim_bloc
         self.length = 2400 // self.dim_bloc
@@ -32,18 +32,23 @@ class Map(object):
         self.data = np.full((self.length, self.width), Material.EMPTY, dtype=Material)
 
         # Choices of the sprite for the map
-        self.image = [pygame.Surface(self.taille_bloc),
-                      pygame.Surface(self.taille_bloc)]
+        self.image = [pygame.Surface(self.size_bloc),
+                      pygame.Surface(self.size_bloc)]
         for i in range(2):
             self.image[i] = self.image[i].convert()
             self.image[i].fill((10+140*i, 150-140*i, 10+140*i))
-        self.background=[pygame.Surface((self.length*self.dim_bloc,self.width*self.dim_bloc))]
+        self.background=[pygame.Surface((self.length*self.dim_bloc, self.width*self.dim_bloc))]
         self.background[0]=self.background[0].convert()
         self.background[0].fill((200,200,200))
 
-    def on_the_ground(self, x0, y0, hitbox):
+    # TODO pourquoi on n'utilise pas directement la classe objects qui contient tous les éléments qu'on utilise ici
+    def on_the_ground(self, x0: int, y0: int, hitbox: [int]) -> bool:
         """
-        Returns a boolean indicating if the object given by pos0 ans his hitbox is on the ground
+        Returns a boolean indicating if the object given by pos ans
+        his hitbox is on the ground
+        @param x0: x-axis position of the object
+        @param y0: y-axis position of the object
+        @param hitbox: hitbox of the object
         """
         if (y0+hitbox[1]) % self.dim_bloc == self.dim_bloc - 1:
             for i in range((hitbox[0]) // self.dim_bloc + 1):
@@ -51,23 +56,25 @@ class Map(object):
                     return True
         return False
 
+    # TODO c'est quoi bl ?
     def data_read(self, bl):
         """
         This Function allows to access to self.data with the modulo
         """
-        if (bl[1]<0):
+        if bl[1] < 0:
             return Material.EMPTY
         return self.data[((bl[0]+self.pos)//self.dim_bloc) % self.length, (bl[1]//self.dim_bloc)]
 
+    # TODO c'est quoi bl ?
     def data_write(self, bl, value):
         """
         As the previous function, this allow to write in the good spot of the value.
         """
-        if (bl[1]<0):
+        if bl[1] < 0:
             return
         self.data[bl[0] % self.length, bl[1]] = value
     
-    def point_on_the_ground(self, x, y):
+    def point_on_the_ground(self, x: int, y: int) -> bool:
         """
         This function do as before but works only for a point.
         """
