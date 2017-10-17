@@ -7,7 +7,6 @@ class Game(object):
     which individual game state is active and keeping
     it updated.
     """
-    # TODO voir comment on type un dict d'objets
     def __init__(self, screen: pg.Surface, states: {'GameState'}, start_state: 'GameState') -> ():
         """
         Initialize the Game object.

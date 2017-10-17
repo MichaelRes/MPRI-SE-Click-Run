@@ -18,7 +18,7 @@ class Map(object):
         """
         Initialize the Map object.
         """
-        self.dim_bloc = 30
+        self.dim_bloc = 80
         self.size_bloc = (self.dim_bloc, self.dim_bloc)
 
         self.width = 720 // self.dim_bloc
@@ -51,11 +51,20 @@ class Map(object):
         @param hitbox: hitbox of the object
         """
         if (y0+hitbox[1]) % self.dim_bloc == self.dim_bloc - 1:
-            for i in range((hitbox[0]) // self.dim_bloc + 1):
-                if self.point_on_the_ground(max(x0 + hitbox[0], x0 + i*self.dim_bloc), y0 + hitbox[1]):
+            for i in range((hitbox[0]) // self.dim_bloc + 2):
+                if self.point_on_the_ground(min(x0 + hitbox[0], x0 + i*self.dim_bloc), y0 + hitbox[1]):
                     return True
         return False
-
+    
+    def point_on_the_ground(self, x: int, y: int) -> bool:
+        """
+        This function do as before but works only for a point.
+        """
+        if y % self.dim_bloc == self.dim_bloc - 1:
+            return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
+            
+        # This case should not occur.
+        return False
 
     def data_read(self, loc_pixel):
         """
@@ -74,16 +83,6 @@ class Map(object):
             return
         self.data[loc_pixel[0] % self.length, loc_pixel[1]] = value
     
-    def point_on_the_ground(self, x: int, y: int) -> bool:
-        """
-        This function do as before but works only for a point.
-        """
-        if y % self.dim_bloc == self.dim_bloc - 1:
-            return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
-            
-        # This case should not occur.
-        return False
-
     def move_test(self, x0, y0, hitbox, dx, dy):
         """
         Tests if a given movement is possible and returns the tuple of his new position and the boolean saying if he is
@@ -119,13 +118,15 @@ class Map(object):
         """
         for i in range(self.display_length):
             self.data[(self.gen + i) % self.length, self.width - 1] = Material.GROUND
+            if (self.gen + i)%self.length > self.length//2:
+                self.data[(self.gen + i) % self.length, self.width - 2] = Material.GROUND
         self.gen += self.display_length
 
     def update(self, dx):
         """
         Updates the position of the map between two frames with speed dx/frame
         """
-        while (self.gen - self.pos//self.dim_bloc) < self.display_length:
+        while (self.gen - self.pos//self.dim_bloc) < 2*self.display_length:
             self.gen_proc()
         self.pos = self.pos + dx
 
@@ -133,13 +134,15 @@ class Map(object):
         """
         Draws the map on the surface
         """
+        
         #we blit the backgrounds
         surface.blit(self.background[0],(0,0))
         for i in range(len(self.background)-1):
             pass
+        
         #We blit self.data
         for i in range(self.width):
-            for j in range(self.display_length):
-                if self.data_read([j*self.dim_bloc,i*self.dim_bloc])== Material.GROUND:
-                    surface.blit(self.image[0],(j*self.dim_bloc,i*self.dim_bloc))
+            for j in range(self.display_length + 1):
+                if self.data_read([j*self.dim_bloc,i*self.dim_bloc]) == Material.GROUND:
+                    surface.blit(self.image[0],(j*self.dim_bloc - self.pos%self.dim_bloc,i*self.dim_bloc))
 
