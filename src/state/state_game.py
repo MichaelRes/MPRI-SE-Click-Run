@@ -13,7 +13,7 @@ class StateGame(GameState):
     """
     def __init__(self):
         GameState.__init__(self)
-        self.player = Player(5, 0, 1, 0)
+        self.player = Player(5, 0, 3, 0)
         self.game_map = Map()
         self.acceleration_x = 0  # As said, x variables aint of any use at the moment
         self.acceleration_y = 6
