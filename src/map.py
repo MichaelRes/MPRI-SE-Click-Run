@@ -56,23 +56,23 @@ class Map(object):
                     return True
         return False
 
-    # TODO c'est quoi bl ?
-    def data_read(self, bl):
+
+    def data_read(self, loc_pixel):
         """
         This Function allows to access to self.data with the modulo
         """
-        if bl[1] < 0:
+        if loc_pixel[1] < 0:
             return Material.EMPTY
-        return self.data[((bl[0]+self.pos)//self.dim_bloc) % self.length, (bl[1]//self.dim_bloc)]
+        return self.data[((loc_pixel[0]+self.pos)//self.dim_bloc) % self.length, (loc_pixel[1]//self.dim_bloc)]
 
-    # TODO c'est quoi bl ?
-    def data_write(self, bl, value):
+
+    def data_write(self, loc_pixel, value):
         """
         As the previous function, this allow to write in the good spot of the value.
         """
-        if bl[1] < 0:
+        if loc_pixel[1] < 0:
             return
-        self.data[bl[0] % self.length, bl[1]] = value
+        self.data[loc_pixel[0] % self.length, loc_pixel[1]] = value
     
     def point_on_the_ground(self, x: int, y: int) -> bool:
         """
