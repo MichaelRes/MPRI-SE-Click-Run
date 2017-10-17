@@ -39,7 +39,7 @@ class StateGame(GameState):
                 if self.player.action == Action.ASCEND:
                     self.player.action = Action.JUMPING
 
-    def update(self, dt):  # Le dt ne sert a rien, je sais pas pourquoi on le met encore
+    def update(self):
         # Update of the pos
         x0 = self.player.pos_x
 
