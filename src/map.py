@@ -113,6 +113,9 @@ class Map(object):
                     return True, (x0, y0)
             if dy >= 0 and self.on_the_ground(x, y, hitbox):
                 break
+            
+        #We hit the floor, we go right
+        
         for i in range(x0+dx-x):
             x += 1
             for b in range(hitbox[1]):

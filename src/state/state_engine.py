@@ -65,6 +65,7 @@ class Game(object):
         This is the game loop
         """
         while not self.done:
+            dt = self.clock.tick(self.fps)
             self.event_loop()
             self.update()
             self.draw()
