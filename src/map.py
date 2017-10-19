@@ -91,8 +91,16 @@ class Map(object):
         # death by falling out of the screen
         if y0 + dy>self.width*self.dim_bloc:
             return True, (x0, y0)
+
         x = x0
         y = y0
+
+        # We try to move, if this is successful, we stop here
+        if [[True,True],[True,True]] == [[self.data_read([x0 + dx+i*hitbox[0],y0 +dy+j*hitbox[1]])!=Material.GROUND for j in range(2)] for i in range(2)]:
+            return False, (x0+dx,y0+dy)
+
+        #Else, we try to find where to stop
+        
         for i in range(np.abs(dx) + np.abs(dy) + 1):
             x = int(x0 + (i / (np.abs(dx) + np.abs(dy))) * dx)
             y = int(y0 + (i / (np.abs(dx) + np.abs(dy))) * dy)
