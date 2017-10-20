@@ -1,6 +1,7 @@
 from enum import Enum
 import numpy as np
 import pygame as pg
+import objects
 
 
 class Material(Enum):
@@ -43,7 +44,14 @@ class Map(object):
         self.background[0] = self.background[0].convert()
         self.background[0].fill((200, 200, 200))
 
-    # TODO pourquoi on n'utilise pas directement la classe objects qui contient tous les éléments qu'on utilise ici
+    def object_on_the_ground(self, obj: objects.GameObject) -> bool:
+        """
+        Return a bool indicating if the given objects is on the ground.
+        @param obj: The object the user want to check is on the ground.
+        @return: True if the object is on the ground, False otherwise.
+        """
+        return self.on_the_ground(obj.pos_x, obj.pos_y, obj.hitbox)
+
     def on_the_ground(self, x0: int, y0: int, hitbox: [int]) -> bool:
         """
         Returns a boolean indicating if the object given by pos and
@@ -51,6 +59,7 @@ class Map(object):
         @param x0: x-axis position of the object
         @param y0: y-axis position of the object
         @param hitbox: hitbox of the object
+        @return: True if the object is on the ground, False otherwise.
         """
         if (y0+hitbox[1]) % self.dim_bloc == self.dim_bloc - 1:
             for i in range((hitbox[0]) // self.dim_bloc + 2):
@@ -64,6 +73,7 @@ class Map(object):
         point is on the ground or not.
         @param x: The position on the x-axis of the point.
         @param y: The position on the y-axis of the point.
+        @return: True if the point is on the ground, False otherwise.
         """
         if y % self.dim_bloc == self.dim_bloc - 1:
             return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
