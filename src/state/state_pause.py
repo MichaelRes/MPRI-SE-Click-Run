@@ -3,16 +3,19 @@ import pygame as pg
 
 
 class Pause(GameState):
-    def __init__(self):
+    """
+    The class for the pause state.
+    """
+    def __init__(self) -> None:
         GameState.__init__(self)
         self.available_state = ["GAME", "MAIN_MENU"]
         self.current_select = 0
         self.next_state = None
 
-    def get_event(self, event):
+    def get_event(self, event: pg.event) -> None:
         """
-        Do something according to the last event that happened
-        @param event: the last event that occurred
+        Do something according to the last event that happened.
+        @param event: the last event that occurred.
         """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
@@ -23,9 +26,9 @@ class Pause(GameState):
                 self.next_state = self.available_state[self.current_select]
                 self.done = True
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface) -> None:
         """
-        Draw everything to the screen
+        Draw everything to the screen.
         @param surface: The surface that will be displayed.
         """
         width, height = surface.get_size()
@@ -37,5 +40,5 @@ class Pause(GameState):
                 text_color = 255, 255, 255
             text = self.font.render(name_state, 1, text_color)
             width_text, _ = text.get_size()
-            surface.blit(text, ((width - width_text) / 2, i*100))
+            surface.blit(text, ((width - width_text)/2, i*100))
         pg.display.flip()

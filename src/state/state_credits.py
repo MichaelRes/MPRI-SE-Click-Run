@@ -3,23 +3,25 @@ import pygame as pg
 
 
 class Credits(GameState):
-
+    """
+    The classe for the credits state.
+    """
     def __init__(self):
         GameState.__init__(self)
 
-    def get_event(self, event: pg.event):
+    def get_event(self, event: pg.event) -> None:
         """
-        Do something according to the last event that happened
-        @param event: the last event that occurred
+        Do something according to the last event that happened.
+        @param event: the last event that occurred.
         """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
                 self.done = True
 
-    def draw(self, surface: pg.Surface):
+    def draw(self, surface: pg.Surface) -> None:
         """
-        Draw everything to the screen
+        Draw everything to the screen.
         @param surface: The surface that will be displayed.
         """
         width, height = surface.get_size()

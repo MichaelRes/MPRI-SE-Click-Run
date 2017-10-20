@@ -6,7 +6,10 @@ sys.path.append("..")
 
 
 class MainMenu(GameState):
-    def __init__(self):
+    """
+    The state for the main menu.
+    """
+    def __init__(self) -> None:
         GameState.__init__(self)
         self.available_state = ["GAME", "BEST_SCORE", "OPTIONS", "CREDITS"]
         self.current_select = 0
@@ -14,7 +17,7 @@ class MainMenu(GameState):
         self.restart_next_state = True
         self.main_menu_map = Map()
 
-    def get_event(self, event: pg.event):
+    def get_event(self, event: pg.event) -> None:
         """
         Do something according to the last event that happened.
         @param event: the last event that occurred.
@@ -28,13 +31,13 @@ class MainMenu(GameState):
                 self.next_state = self.available_state[self.current_select]
                 self.done = True
 
-    def update(self):
+    def update(self) -> None:
         """
         Update the state.
         """
         self.main_menu_map.update(5)
 
-    def draw(self, surface: pg.Surface):
+    def draw(self, surface: pg.Surface) -> None:
         """
         Draw everything to the screen
         @param surface: The surface that will be displayed.
