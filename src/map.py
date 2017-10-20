@@ -160,7 +160,7 @@ class Map(object):
         surface.blit(self.background[0], (0, 0))
         for i in range(len(self.background)-1):
             pass
-        
+
         # We blit self.data
         for i in range(self.width):
             for j in range(self.display_length + 1):
