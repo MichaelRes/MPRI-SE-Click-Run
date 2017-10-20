@@ -47,7 +47,7 @@ class Map(object):
     def on_the_ground(self, x0: int, y0: int, hitbox: [int]) -> bool:
         """
         Returns a boolean indicating if the object given by pos and
-        his hitbox is on the ground
+        his hitbox is on the ground.
         @param x0: x-axis position of the object
         @param y0: y-axis position of the object
         @param hitbox: hitbox of the object
@@ -60,7 +60,10 @@ class Map(object):
     
     def point_on_the_ground(self, x: int, y: int) -> bool:
         """
-        This function do as before but works only for a point.
+        This function return a boolean indication whether the given
+        point is on the ground or not.
+        @param x: The position on the x-axis of the point.
+        @param y: The position on the y-axis of the point.
         """
         if y % self.dim_bloc == self.dim_bloc - 1:
             return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
@@ -74,7 +77,7 @@ class Map(object):
         """
         if loc_pixel[1] < 0:
             return Material.EMPTY
-        return self.data[((loc_pixel[0]+self.pos)//self.dim_bloc) % self.length, (loc_pixel[1]//self.dim_bloc)]
+        return self.data[((loc_pixel[0]+self.pos)//self.dim_bloc) % self.length, loc_pixel[1]//self.dim_bloc]
 
     def data_write(self, loc_pixel, value):
         """
@@ -83,14 +86,19 @@ class Map(object):
         if loc_pixel[1] < 0:
             return
         self.data[loc_pixel[0] % self.length, loc_pixel[1]] = value
-    
-    def move_test(self, x0, y0, hitbox, dx, dy):
+
+    def move_test(self, x0: int, y0: int, hitbox: [int], dx: int, dy: int) -> (bool, (int, int)):
         """
-        Tests if a given movement is possible and returns the tuple of his new position and the boolean saying if he is
-        dead during this movement
+        Tests if, according to a initial position and a hitbox the given movement is possible.
+        @param x0: The position on the x-axis of the initial position.
+        @param y0: The position on the y-axis of the initial position.
+        @param hitbox: The hitbox of the object moving.
+        @param dx: The movement on the x-axis.
+        @param dy: The movement on the y-axis.
+        @return: The boolean indicating if the movement was possible and a tuple of the new position
         """
         # death by falling out of the screen
-        if y0 + dy > self.width*self.dim_bloc:
+        if y0 + dy > self.width * self.dim_bloc:
             return True, (x0, y0)
 
         x = x0
@@ -134,19 +142,20 @@ class Map(object):
                 self.data[(self.gen + i) % self.length, self.width - 2] = Material.GROUND
         self.gen += self.display_length
 
-    def update(self, dx):
+    def update(self, dx: int):
         """
-        Updates the position of the map between two frames with speed dx/frame
+        Updates the position of the map between two frames according to the speed dx.
+        @param dx: The speed over the x-axis.
         """
-        while (self.gen - self.pos//self.dim_bloc) < 2*self.display_length:
+        while self.gen - self.pos // self.dim_bloc < 2 * self.display_length:
             self.gen_proc()
         self.pos = self.pos + dx
 
     def display(self, surface: pg.Surface):
         """
         Draws the map on the surface
+        @param surface: The surface the map will be drawn on.
         """
-        
         # We blit the backgrounds
         surface.blit(self.background[0], (0, 0))
         for i in range(len(self.background)-1):
