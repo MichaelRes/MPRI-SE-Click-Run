@@ -1,10 +1,12 @@
 from enum import Enum
-from ressources import load_image
 import numpy as np
-import pygame
+import pygame as pg
 
 
 class Material(Enum):
+    """
+    Class for the different material of the map
+    """
     GROUND = 1
     WALL = 2
     EMPTY = 3
@@ -32,19 +34,19 @@ class Map(object):
         self.data = np.full((self.length, self.width), Material.EMPTY, dtype=Material)
 
         # Choices of the sprite for the map
-        self.image = [pygame.Surface(self.size_bloc),
-                      pygame.Surface(self.size_bloc)]
+        self.image = [pg.Surface(self.size_bloc),
+                      pg.Surface(self.size_bloc)]
         for i in range(2):
             self.image[i] = self.image[i].convert()
             self.image[i].fill((10+140*i, 150-140*i, 10+140*i))
-        self.background=[pygame.Surface((self.length*self.dim_bloc, self.width*self.dim_bloc))]
-        self.background[0]=self.background[0].convert()
-        self.background[0].fill((200,200,200))
+        self.background = [pg.Surface((self.length*self.dim_bloc, self.width*self.dim_bloc))]
+        self.background[0] = self.background[0].convert()
+        self.background[0].fill((200, 200, 200))
 
     # TODO pourquoi on n'utilise pas directement la classe objects qui contient tous les éléments qu'on utilise ici
     def on_the_ground(self, x0: int, y0: int, hitbox: [int]) -> bool:
         """
-        Returns a boolean indicating if the object given by pos ans
+        Returns a boolean indicating if the object given by pos and
         his hitbox is on the ground
         @param x0: x-axis position of the object
         @param y0: y-axis position of the object
@@ -74,7 +76,6 @@ class Map(object):
             return Material.EMPTY
         return self.data[((loc_pixel[0]+self.pos)//self.dim_bloc) % self.length, (loc_pixel[1]//self.dim_bloc)]
 
-
     def data_write(self, loc_pixel, value):
         """
         As the previous function, this allow to write in the good spot of the value.
@@ -89,17 +90,17 @@ class Map(object):
         dead during this movement
         """
         # death by falling out of the screen
-        if y0 + dy>self.width*self.dim_bloc:
+        if y0 + dy > self.width*self.dim_bloc:
             return True, (x0, y0)
 
         x = x0
         y = y0
 
         # We try to move, if this is successful, we stop here
-        if [[True,True],[True,True]] == [[self.data_read([x0 + dx+i*hitbox[0],y0 +dy+j*hitbox[1]])!=Material.GROUND for j in range(2)] for i in range(2)]:
-            return False, (x0+dx,y0+dy)
+        if [[True, True], [True, True]] == [[self.data_read([x0 + dx+i*hitbox[0], y0 + dy + j*hitbox[1]]) != Material.GROUND for j in range(2)] for i in range(2)]:
+            return False, (x0+dx, y0+dy)
 
-        #Else, we try to find where to stop
+        # Else, we try to find where to stop
         
         for i in range(np.abs(dx) + np.abs(dy) + 1):
             x = int(x0 + (i / (np.abs(dx) + np.abs(dy))) * dx)
@@ -114,7 +115,7 @@ class Map(object):
             if dy >= 0 and self.on_the_ground(x, y, hitbox):
                 break
             
-        #We hit the floor, we go right
+        # We hit the floor, we go right
         
         for i in range(x0+dx-x):
             x += 1
@@ -129,7 +130,7 @@ class Map(object):
         """
         for i in range(self.display_length):
             self.data[(self.gen + i) % self.length, self.width - 1] = Material.GROUND
-            if (self.gen + i)%self.length > self.length//2:
+            if (self.gen + i) % self.length > self.length // 2:
                 self.data[(self.gen + i) % self.length, self.width - 2] = Material.GROUND
         self.gen += self.display_length
 
@@ -141,19 +142,18 @@ class Map(object):
             self.gen_proc()
         self.pos = self.pos + dx
 
-    def display(self, surface):
+    def display(self, surface: pg.Surface):
         """
         Draws the map on the surface
         """
         
-        #we blit the backgrounds
-        surface.blit(self.background[0],(0,0))
+        # We blit the backgrounds
+        surface.blit(self.background[0], (0, 0))
         for i in range(len(self.background)-1):
             pass
         
-        #We blit self.data
+        # We blit self.data
         for i in range(self.width):
             for j in range(self.display_length + 1):
-                if self.data_read([j*self.dim_bloc,i*self.dim_bloc]) == Material.GROUND:
-                    surface.blit(self.image[0],(j*self.dim_bloc - self.pos%self.dim_bloc,i*self.dim_bloc))
-
+                if self.data_read([j*self.dim_bloc, i*self.dim_bloc]) == Material.GROUND:
+                    surface.blit(self.image[0], (j*self.dim_bloc - self.pos % self.dim_bloc, i*self.dim_bloc))
