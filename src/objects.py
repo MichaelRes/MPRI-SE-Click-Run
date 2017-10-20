@@ -3,9 +3,16 @@ from ressources import load_image
 
 
 class GameObject:
-    """An object for simple objects"""
-
-    def __init__(self, x0, y0, vx0, vy0):
+    """
+    The class for the objects in the game.
+    """
+    def __init__(self, x0: int, y0: int, vx0: int, vy0: int):
+        """
+        @param x0: The x-axis position of the object.
+        @param y0: The y-axis position of the object.
+        @param vx0: The speed of the object on the x-axis.
+        @param vy0: The speed of the object on the y-axis.
+        """
         self.pos_x = x0
         self.pos_y = y0
         self.v_x = vx0
@@ -14,13 +21,26 @@ class GameObject:
 
 
 class Action(Enum):
+    """
+    The class which represent the different state in which the player
+     can be.
+    """
     RUNNING = 1
     JUMPING = 2
     ASCEND = 3
 
 
 class Player(GameObject):
-    def __init__(self, x0, y0, vx0, vy0):
+    """
+    The class for the main character
+    """
+    def __init__(self, x0: int, y0: int, vx0: int, vy0: int):
+        """
+        @param x0: The x-axis position of the object.
+        @param y0: The y-axis position of the object.
+        @param vx0: The speed of the object on the x-axis.
+        @param vy0: The speed of the object on the y-axis.
+        """
         GameObject.__init__(self, x0, y0, vx0, vy0)
         self.action = Action.JUMPING
         # This variable takes trace of last frame where the player jumped in order to stop the ascending phase
@@ -28,6 +48,7 @@ class Player(GameObject):
         # The sprite are stored in a dict
         self.sprite = {"JUMP": load_image("red.png"), "RUN": load_image("green.png"), "ASCEND": load_image("black.png")}
 
+    # TODO AJOUTER TYPE DE RETOUR
     def choose_sprite(self):
         """
         This function choose the good sprite and returns it
