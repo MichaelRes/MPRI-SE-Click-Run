@@ -97,15 +97,23 @@ class Map(object):
             return
         self.data[loc_pixel[0] % self.length, loc_pixel[1]] = value
 
+    def test_move_object(self, obj: objects.GameObject) -> (bool, (int, int)):
+        """
+        Test if the objects can move according to his movement value.
+        @param obj: The object we want to try to move
+        @return: The bool indicating if the movement is possible and a tuple of the new position.
+        """
+        return self.move_test(obj.pos_x, obj.pos_y, obj.hitbox, obj.v_x, obj.v_y)
+
     def move_test(self, x0: int, y0: int, hitbox: [int], dx: int, dy: int) -> (bool, (int, int)):
         """
-        Tests if, according to a initial position and a hitbox the given movement is possible.
+        Test if, according to a initial position and a hitbox the given movement is possible.
         @param x0: The position on the x-axis of the initial position.
         @param y0: The position on the y-axis of the initial position.
         @param hitbox: The hitbox of the object moving.
         @param dx: The movement on the x-axis.
         @param dy: The movement on the y-axis.
-        @return: The boolean indicating if the movement was possible and a tuple of the new position
+        @return: The bool indicating if the movement is possible and a tuple of the new position.
         """
         # death by falling out of the screen
         if y0 + dy > self.width * self.dim_bloc:
