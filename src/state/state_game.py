@@ -34,7 +34,7 @@ class StateGame(GameState):
         if event.type == pg.KEYDOWN:
             # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
             if event.key == pg.K_SPACE:
-                if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y, self.player.hitbox):
+                if self.game_map.object_on_the_ground(self.player):
                     self.player.v_y = min(-18, self.player.v_y)
                     # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
                     self.player.action = Action.ASCEND
@@ -75,8 +75,7 @@ class StateGame(GameState):
         # Update depending on whether the player is on the ground or not
         # This part should go in the game object class eventually
 
-        if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y,
-                                       self.player.hitbox) and self.player.action != Action.ASCEND:
+        if self.game_map.object_on_the_ground(self.player) and self.player.action != Action.ASCEND:
             self.player.action = Action.RUNNING
             self.player.v_y = min(self.player.v_y, 0)
         else:
@@ -101,7 +100,6 @@ class StateGame(GameState):
         @param surface: The surface that will be displayed.
         """
         self.game_map.display(surface)
-        surface.blit(self.player.choose_sprite(),
-                     (self.player.pos_x, self.player.pos_y))
+        surface.blit(self.player.choose_sprite(), (self.player.pos_x, self.player.pos_y))
         score = self.font.render("Score : " + str(self.score), 1, (255, 0, 0))
         surface.blit (score, (20,20))
