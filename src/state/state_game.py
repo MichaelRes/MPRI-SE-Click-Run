@@ -34,7 +34,6 @@ class StateGame(GameState):
             # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
             if event.key == pg.K_SPACE:
                 if self.game_map.object_on_the_ground(self.player):
-                    # if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y, self.player.hitbox):
                     self.player.v_y = min(-18, self.player.v_y)
                     # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
                     self.player.action = Action.ASCEND
@@ -69,8 +68,7 @@ class StateGame(GameState):
         # Update depending on whether the player is on the ground or not
         # This part should go in the game object class eventually
 
-        if self.game_map.on_the_ground(self.player.pos_x, self.player.pos_y,
-                                       self.player.hitbox) and self.player.action != Action.ASCEND:
+        if self.game_map.object_on_the_ground(self.player) and self.player.action != Action.ASCEND:
             self.player.action = Action.RUNNING
             self.player.v_y = min(self.player.v_y, 0)
         else:
