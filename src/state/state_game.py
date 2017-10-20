@@ -11,7 +11,7 @@ class StateGame(GameState):
     """
     Main state for the game, is the master for the map and the player.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         GameState.__init__(self)
         self.player = Player(5, 0, 8, 0)
         self.game_map = Map()
@@ -21,7 +21,11 @@ class StateGame(GameState):
         self.max_speed = self.game_map.dim_bloc
         self.next_state = "MAIN_MENU"
 
-    def get_event(self, event):
+    def get_event(self, event: pg.event) -> None:
+        """
+        Do something according to the last event that happened.
+        @param event: the last event that occurred.
+        """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "PAUSE"
@@ -39,7 +43,10 @@ class StateGame(GameState):
                 if self.player.action == Action.ASCEND:
                     self.player.action = Action.JUMPING
 
-    def update(self):
+    def update(self) -> None:
+        """
+        Update the state.
+        """
         # Update of the pos
         x0 = self.player.pos_x
 
@@ -49,7 +56,7 @@ class StateGame(GameState):
                                                            self.player.v_x,
                                                            self.player.v_y)
 
-        # Because of the movement of the screen, we dont change the pos_x of the player : the screen will move later.
+        # Because of the movement of the screen, we do not change the pos_x of the player : the screen will move later.
         self.player.pos_y = y
 
         # Something to do in case the game is over
@@ -67,7 +74,7 @@ class StateGame(GameState):
             self.player.v_y = min(self.player.v_y, 0)
         else:
             if (self.player.action in [Action.JUMPING, Action.RUNNING] or
-                (self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 12)):
+            (self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 12)):
                 # Either is the player in jump state, or he stopped his ascension
                 self.player.action = Action.JUMPING
                 self.player.v_y = max(min(self.player.v_y + self.acceleration_y, self.max_speed), -self.max_speed)
@@ -81,7 +88,11 @@ class StateGame(GameState):
         # This part got to stay updated
         self.frame += 1
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface) -> None:
+        """
+        Draw everything to the screen
+        @param surface: The surface that will be displayed.
+        """
         self.game_map.display(surface)
         surface.blit(self.player.choose_sprite(),
                      (self.player.pos_x, self.player.pos_y))
