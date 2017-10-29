@@ -9,7 +9,7 @@ from state_credits import *
 from state_game_over import *
 from state_game import *
 from state_pause import *
-
+from state_add_score import *
 
 def main():
     pg.init()
@@ -22,6 +22,7 @@ def main():
         "GAME_OVER": GameOver(),
         "GAME": StateGame(),
         "PAUSE": Pause(),
+        "ADD_SCORE": AddScore(),
             }
     game = Game(screen, states, "MAIN_MENU")
     game.run()

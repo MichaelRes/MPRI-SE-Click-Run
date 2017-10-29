@@ -5,6 +5,7 @@ from state_engine import GameState
 sys.path.append("..")
 from objects import Action, Player
 from map import Map
+import score
 
 
 class StateGame(GameState):
@@ -69,7 +70,13 @@ class StateGame(GameState):
         # Something to do in case the game is over
         if is_the_game_over:
             print("Boum")
-            self.next_state = "GAME_OVER"
+            self.score = score.Score("", self.score)
+            p = score.ScoreManager().pos_as_score(self.score)
+            if p != -1:
+                self.persist = {"score": self.score, "pos": p}
+                self.next_state = "ADD_SCORE"
+            else:
+                self.next_state = "GAME_OVER"
             self.done = True
 
         # Update depending on whether the player is on the ground or not
