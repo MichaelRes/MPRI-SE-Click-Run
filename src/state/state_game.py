@@ -72,7 +72,7 @@ class StateGame(GameState):
             print("Boum")
             self.score = score.Score("", self.score)
             p = score.ScoreManager().pos_as_score(self.score)
-            if p != -1:
+            if p < 10:
                 self.persist = {"score": self.score, "pos": p}
                 self.next_state = "ADD_SCORE"
             else:

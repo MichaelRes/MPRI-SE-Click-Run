@@ -44,12 +44,13 @@ class ScoreManager(object):
                 f.write(str(score))
 
     def pos_as_score(self, score: Score) -> int:
-        for i, s in enumerate(self.instance.scores):
+        i = 0
+        for s in self.instance.scores:
             if s > score:
-                pass
+                i += 1
             else:
                 return i
-        return -1
+        return i
 
     def add_score(self, score: Score, pos: int) -> None:
         self.instance.scores.insert(pos, score)
