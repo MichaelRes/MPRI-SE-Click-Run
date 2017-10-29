@@ -1,6 +1,8 @@
 from state_engine import GameState
 import pygame as pg
-
+import sys
+sys.path.append("..")
+import score
 
 class BestScore(GameState):
     """
@@ -27,7 +29,12 @@ class BestScore(GameState):
         width, height = surface.get_size()
         surface.fill(pg.Color("black"))
         text_color = 255, 255, 255
-        text = self.font.render("METTRE LES BEST_SCORE ICI", 1, text_color)
-        width_text, height_text = text.get_size()
-        surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2))
+        for i, s in enumerate(score.ScoreManager().instance.scores):
+            text = self.font.render(str(i+1) + " " + s.pseudo + " " + str(s.score), 1, text_color)
+            width_text, _ = text.get_size()
+            surface.blit(text, ((width - width_text) / 2, (24 * (i + 1))))
+        pg.display.flip()
+        # text = self.font.render("METTRE LES BEST_SCORE ICI", 1, text_color)
+        # width_text, height_text = text.get_size()
+        # surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2))
         pg.display.flip()

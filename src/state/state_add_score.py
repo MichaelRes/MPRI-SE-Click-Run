@@ -4,6 +4,13 @@ import sys
 sys.path.append("..")
 import score
 
+
+key_dict = {
+    pg.K_a: "A",
+    pg.K_b: "B",
+    pg.K_c: "C",
+}
+
 class AddScore(GameState):
     """
     The state for the game over.
@@ -19,8 +26,20 @@ class AddScore(GameState):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
-                self.restart_next_state = False
                 self.done = True
+
+            elif event.key in key_dict.keys():
+                if len(self.best_score.pseudo) < 3:
+                    self.best_score.pseudo += key_dict[event.key]
+
+            elif event.key == pg.K_BACKSPACE:
+                self.best_score.pseudo = self.best_score.pseudo[:-1]
+
+            elif event.key == pg.K_RETURN:
+                if len(self.best_score.pseudo) == 3:
+                    score.ScoreManager().add_score(self.best_score, self.best_score_pos)
+                    self.next_state = "MAIN_MENU"
+                    self.done = True
 
     def startup(self, persistent: {}) -> None:
         """
@@ -44,8 +63,12 @@ class AddScore(GameState):
         width_text, height_text = text.get_size()
         surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2))
 
-        text = self.font.render("Nouveau meilleur score !!! -> DEMANDER LE PSEUDO DE LA PERSONNE", 1, text_color)
+        text = self.font.render("Nouveau meilleur score !!! -> QUEL EST VOTRE PSEUDO ???", 1, text_color)
         width_text, height_text = text.get_size()
         surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + 24))
+
+        text = self.font.render(self.best_score.pseudo + "_"*(3 - len(self.best_score.pseudo)), 1, text_color)
+        width_text, height_text = text.get_size()
+        surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + 48))
 
         pg.display.flip()

@@ -78,12 +78,3 @@ def test3():
     p = score.pos_as_score(score1)
     if p != -1:
         score.add_score(score1, p)
-
-test()
-test2()
-test3()
-
-
-
-
-
