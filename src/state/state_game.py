@@ -108,5 +108,5 @@ class StateGame(GameState):
         """
         self.game_map.display(surface)
         surface.blit(self.player.choose_sprite(), (self.player.pos_x, self.player.pos_y))
-        score = self.font.render("Score : " + str(self.score), 1, (255, 0, 0))
-        surface.blit (score, (20,20))
+        s = self.font.render("Score : " + str(self.score), 1, (255, 0, 0))
+        surface.blit(s, (20, 20))
