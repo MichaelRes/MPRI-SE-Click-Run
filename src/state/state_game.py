@@ -69,7 +69,6 @@ class StateGame(GameState):
 
         # Something to do in case the game is over
         if is_the_game_over:
-            print("Boum")
             self.score = score.Score("", self.score)
             p = score.ScoreManager().pos_as_score(self.score)
             if p < 10:
