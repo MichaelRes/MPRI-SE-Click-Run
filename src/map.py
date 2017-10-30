@@ -2,7 +2,7 @@ from enum import Enum
 import numpy as np
 import pygame as pg
 import objects
-
+from ressources import load_image
 
 class Material(Enum):
     """
@@ -43,6 +43,10 @@ class Map(object):
         self.background = [pg.Surface((self.length*self.dim_bloc, self.width*self.dim_bloc))]
         self.background[0] = self.background[0].convert()
         self.background[0].fill((200, 200, 200))
+
+        self.last_dx = 0
+
+        self.parallax_scrolling = ParallaxScrolling()
 
     def object_on_the_ground(self, obj: objects.GameObject) -> bool:
         """
@@ -168,6 +172,7 @@ class Map(object):
         while self.gen - self.pos // self.dim_bloc < 2 * self.display_length:
             self.gen_proc()
         self.pos = self.pos + dx
+        self.last_dx = dx
 
     def display(self, surface: pg.Surface):
         """
@@ -175,12 +180,43 @@ class Map(object):
         @param surface: The surface the map will be drawn on.
         """
         # We blit the backgrounds
-        surface.blit(self.background[0], (0, 0))
-        for i in range(len(self.background)-1):
-            pass
+        # surface.blit(self.background[0], (0, 0))
+        # for i in range(len(self.background)-1):
+        #    pass
+
+        self.parallax_scrolling.draw(surface, self.last_dx)
 
         # We blit self.data
         for i in range(self.width):
             for j in range(self.display_length + 1):
                 if self.data_read([j*self.dim_bloc, i*self.dim_bloc]) == Material.GROUND:
                     surface.blit(self.image[0], (j*self.dim_bloc - self.pos % self.dim_bloc, i*self.dim_bloc))
+
+
+class ParallaxScrollingLayer(object):
+    def __init__(self, surface: pg.Surface):
+        self.surface = pg.transform.scale(surface, (800, 640))
+        self.pos = 0
+
+    def draw(self, surface: pg.Surface, dx: int, per_mvm: float):
+        surface_width, surface_height = surface.get_size()
+        layer_width, layer_height = self.surface.get_size()
+        self.pos += int(dx * per_mvm) % layer_width
+        surface.blit(self.surface, (0, 0), (self.pos, 0, layer_width - self.pos, layer_height))
+        x = layer_width - self.pos
+        while (x + layer_width) < surface_width:
+            surface.blit(self.surface, (x, 0))
+            x += layer_width
+        surface.blit(self.surface, (x, 0), (0, 0, surface_width - x, layer_height))
+
+
+class ParallaxScrolling(object):
+    def __init__(self) -> None:
+        self.layer = [ParallaxScrollingLayer(load_image("layer0.png")), ParallaxScrollingLayer(load_image("layer1.png"))]
+        self.radio = 0.5
+
+    def draw(self, surface: pg.Surface, dx: int):
+        per_mvm = 1 / (2**(len(self.layer)))
+        for i in range(len(self.layer)):
+            self.layer[i].draw(surface, dx, per_mvm)
+            per_mvm *= 2
