@@ -13,7 +13,7 @@ key_dict = {
 
 class AddScore(GameState):
     """
-    The state for the game over.
+    The state to add a new best score.
     """
     def __init__(self) -> None:
         GameState.__init__(self)

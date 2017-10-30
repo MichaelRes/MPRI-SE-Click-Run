@@ -3,21 +3,42 @@ from functools import total_ordering
 
 @total_ordering
 class Score(object):
+    """
+    The class to represent a score.
+    """
     def __init__(self, pseudo: str, score: int) -> None:
         self.pseudo = pseudo
         self.score = score
 
     def __eq__(self, other: 'Score') -> bool:
+        """
+        Function to check if two score are equal.
+        @param other: the other score to compare with.
+        @return: True if they are equal, False otherwise.
+        """
         return self.score == other.score
 
     def __lt__(self, other: 'Score') -> bool:
+        """
+        Function to check if one score is lower than another.
+        @param other: the other score to compare with.
+        @return: True if he is lower, False otherwise.
+        """
         return self.score < other.score
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        Function to represent a score by a string.
+        @return: The string representing the score.
+        """
         return self.pseudo + " " + str(self.score) + "\n"
 
 
 class ScoreManager(object):
+    """
+    The class to represent the best score.
+    This class is a singleton.
+    """
     class __ScoreManager:
         def __init__(self) -> None:
             self.best_score_file = "best_score.data"
@@ -39,11 +60,20 @@ class ScoreManager(object):
             ScoreManager.instance = ScoreManager.__ScoreManager()
 
     def update_score_file(self) -> None:
+        """
+        Function to update the score file by adding the new best score.
+        """
         with open(self.instance.best_score_file, 'w') as f:
             for score in self.instance.scores:
                 f.write(str(score))
 
     def pos_as_score(self, score: Score) -> int:
+        """
+        Function to check what would be the position of the given score
+        in the best score.
+        @param score: The score the user want to check the position.
+        @return: The position if this score was to be inserted in the best score.
+        """
         i = 0
         for s in self.instance.scores:
             if s > score:
@@ -53,29 +83,12 @@ class ScoreManager(object):
         return i
 
     def add_score(self, score: Score, pos: int) -> None:
+        """
+        Function to add a score to the best scores.
+        @param score: The score to be inserted.
+        @param pos: The position where it belongs.
+        """
         self.instance.scores.insert(pos, score)
         if len(self.instance.scores) > 10:
             self.instance.scores.pop()
         self.update_score_file()
-
-
-def test():
-    score = ScoreManager()
-    score1 = Score("Baba", 100)
-    for i in range(10):
-        score.add_score(score1, 0)
-
-
-def test2():
-    score = ScoreManager()
-    score1 = Score("Tata", 150)
-    p = score.pos_as_score(score1)
-    score.add_score(score1, p)
-
-
-def test3():
-    score = ScoreManager()
-    score1 = Score("Tata", 15)
-    p = score.pos_as_score(score1)
-    if p != -1:
-        score.add_score(score1, p)
