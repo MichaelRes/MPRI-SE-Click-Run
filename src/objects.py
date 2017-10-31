@@ -45,8 +45,12 @@ class Player(GameObject):
         self.action = Action.JUMPING
         # This variable takes trace of last frame where the player jumped in order to stop the ascending phase
         self.last_jump = None
+        # The number of the sprite for running
+        self.running_sprite_number = 0
+        # The anterior sprite for running
+        self.anterior_running_sprite_number = 1
         # The sprite are stored in a dict
-        self.sprite = {"JUMP": load_image("red.png"), "RUN": load_image("green.png"), "ASCEND": load_image("black.png")}
+        self.sprite = {"JUMP": load_image("red.png"), "RUN0": load_image("green.png"), "RUN1": load_image("red.png"), "RUN2": load_image("black.png"), "ASCEND": load_image("black.png")}
 
     # TODO AJOUTER TYPE DE RETOUR
     def choose_sprite(self):
@@ -56,6 +60,22 @@ class Player(GameObject):
         if self.action in {Action.JUMPING}:
             return self.sprite["JUMP"]
         if self.action in {Action.RUNNING}:
-            return self.sprite["RUN"]
+            if self.running_sprite_number == 0:
+                self.running_sprite_number = 1
+                self.anterior_running_sprite_number = 0
+                return self.sprite["RUN0"]
+            if self.running_sprite_number == 2:
+                self.running_sprite_number = 1
+                self.anterior_running_sprite_number = 2
+                return self.sprite["RUN2"]
+            if self.running_sprite_number == 1:
+                if self.anterior_running_sprite_number == 0:
+                    self.running_sprite_number = 2
+                    self.anterior_running_sprite_number = 1
+                    return self.sprite["RUN1"]
+                if self.anterior_running_sprite_number == 2:
+                    self.running_sprite_number = 0
+                    self.anterior_running_sprite_number = 1
+                    return self.sprite["RUN1"]
         if self.action in {Action.ASCEND}:
             return self.sprite["ASCEND"]
