@@ -59,23 +59,14 @@ class Player(GameObject):
         """
         if self.action in {Action.JUMPING}:
             return self.sprite["JUMP"]
-        if self.action in {Action.RUNNING}:
-            if self.running_sprite_number == 0:
+        if self.action == Action.RUNNING:
+            tmp = self.running_sprite_number
+            if self.running_sprite_number == 2 or self.running_sprite_number == 0:
                 self.running_sprite_number = 1
-                self.anterior_running_sprite_number = 0
-                return self.sprite["RUN0"]
-            if self.running_sprite_number == 2:
-                self.running_sprite_number = 1
-                self.anterior_running_sprite_number = 2
-                return self.sprite["RUN2"]
-            if self.running_sprite_number == 1:
-                if self.anterior_running_sprite_number == 0:
-                    self.running_sprite_number = 2
-                    self.anterior_running_sprite_number = 1
-                    return self.sprite["RUN1"]
-                if self.anterior_running_sprite_number == 2:
-                    self.running_sprite_number = 0
-                    self.anterior_running_sprite_number = 1
-                    return self.sprite["RUN1"]
+            else:
+                tmp = self.running_sprite_number
+                self.running_sprite_number += self.running_sprite_number - self.anterior_running_sprite_number
+            self.anterior_running_sprite_number = tmp
+            return self.sprite["RUN%d" %self.running_sprite_number]
         if self.action in {Action.ASCEND}:
             return self.sprite["ASCEND"]
