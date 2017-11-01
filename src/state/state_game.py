@@ -12,7 +12,10 @@ class StateGame(GameState):
     """
     Main state for the game, is the master for the map and the player.
     """
-    def __init__(self) -> None:
+    def __init__(self):
+        """
+        @rtype: None
+        """
         GameState.__init__(self)
         self.player = Player(5, 0, 8, 0)
         self.game_map = Map()
@@ -23,10 +26,12 @@ class StateGame(GameState):
         self.next_state = "MAIN_MENU"
         self.score = score.Score("", 0)
 
-    def get_event(self, event: pg.event) -> None:
+    def get_event(self, event):
         """
         Do something according to the last event that happened.
         @param event: the last event that occurred.
+        @type event: pygame.event
+        @rtype: None
         """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
@@ -49,12 +54,14 @@ class StateGame(GameState):
     def update_score(self):
         """
         Updates the score.
+        @rtype: None
         """
         self.score = self.score + self.frame
 
-    def update(self) -> None:
+    def update(self):
         """
         Update the state.
+        @rtype: None
         """
         # Update of the pos
         x0 = self.player.pos_x
@@ -98,10 +105,12 @@ class StateGame(GameState):
         # This part got to stay updated
         self.frame += 1
 
-    def draw(self, surface: pg.Surface) -> None:
+    def draw(self, surface):
         """
         Draw everything to the screen
         @param surface: The surface that will be displayed.
+        @type surface: pygame.Surface
+        @rtype: None
         """
         self.game_map.display(surface)
         self.player.draw(surface)

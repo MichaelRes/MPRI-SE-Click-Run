@@ -7,12 +7,16 @@ class GameObject:
     """
     The class for the objects in the game.
     """
-    def __init__(self, x0: int, y0: int, vx0: int, vy0: int) -> None:
+    def __init__(self, x0, y0, vx0, vy0):
         """
         @param x0: The x-axis position of the object.
+        @type x0: int
         @param y0: The y-axis position of the object.
+        @type y0: int
         @param vx0: The speed of the object on the x-axis.
+        @type vx0: int
         @param vy0: The speed of the object on the y-axis.
+        @type vy0: int
         """
         self.pos_x = x0
         self.pos_y = y0
@@ -35,12 +39,17 @@ class Player(GameObject):
     """
     The class for the main character
     """
-    def __init__(self, x0: int, y0: int, vx0: int, vy0: int) -> None:
+    def __init__(self, x0, y0, vx0, vy0):
         """
         @param x0: The x-axis position of the object.
+        @type x0: int
         @param y0: The y-axis position of the object.
+        @type y0: int
         @param vx0: The speed of the object on the x-axis.
+        @type vx0: int
         @param vy0: The speed of the object on the y-axis.
+        @type vy0: int
+        @rtype: None
         """
         GameObject.__init__(self, x0, y0, vx0, vy0)
         self.action = Action.JUMPING
@@ -56,10 +65,11 @@ class Player(GameObject):
                        "RUN2": load_image("black.png"),
                        "ASCEND": load_image("black.png")}
 
-    def choose_sprite(self) -> pg.Surface:
+    def choose_sprite(self):
         """
         This function choose the good sprite and returns it.
         @return: The surface of the corresponding sprite.
+        @rtype: pygame.Surface
         """
         if self.action == Action.JUMPING:
             return self.sprite["JUMP"]
@@ -78,9 +88,11 @@ class Player(GameObject):
         elif self.action == Action.ASCEND:
             return self.sprite["ASCEND"]
 
-    def draw(self, surface: pg.Surface) -> None:
+    def draw(self, surface):
         """
         Display the player on the surface.
         @param surface: The surface to display the player on.
+        @type surface: pygame.Surface
+        @rtype: None
         """
         surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))

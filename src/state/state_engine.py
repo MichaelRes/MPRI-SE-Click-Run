@@ -7,12 +7,16 @@ class Game(object):
     which individual game state is active and keeping
     it updated.
     """
-    def __init__(self, screen: pg.Surface, states: {'GameState'}, start_state: 'GameState') -> None:
+    def __init__(self, screen, states, start_state):
         """
         Initialize the Game object.
         @param screen: the screen where the game will be displayed.
+        @type screen: pygame.Surface
         @param states: the possible states of the game.
+        @type states: dict{GameState}
         @param start_state: the state the game will start in.
+        @type start_state: GameState
+        @rtype: None
         """
         self.screen = screen
         self.clock = pg.time.Clock()
@@ -22,9 +26,10 @@ class Game(object):
         self.state = self.states[self.current_state]
         self.done = False
 
-    def event_loop(self) -> None:
+    def event_loop(self):
         """
         Events are passed for handling to the current state.
+        @rtype: None
         """
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -32,9 +37,10 @@ class Game(object):
             else:
                 self.state.get_event(event)
 
-    def flip_state(self) -> None:
+    def flip_state(self):
         """
         Switch to the next game state.
+        @rtype: None
         """
         next_state = self.state.next_state
         self.state.done = False
@@ -44,9 +50,10 @@ class Game(object):
         self.state = self.states[next_state]
         self.state.startup(persistent)
 
-    def update(self) -> None:
+    def update(self):
         """
         Check for state flip and update active state
+        @rtype: None
         """
         if self.state.quit:
             self.done = True
@@ -54,15 +61,17 @@ class Game(object):
             self.flip_state()
         self.state.update()
 
-    def draw(self) -> None:
+    def draw(self):
         """
         Pass display surface to active state for drawing.
+        @rtype: None
         """
         self.state.draw(self.screen)
 
-    def run(self) -> None:
+    def run(self):
         """
         This is the game loop.
+        @rtype: None
         """
         while not self.done:
             dt = self.clock.tick(self.fps)
@@ -76,7 +85,10 @@ class GameState(object):
     """
     Parent class for individual game states to inherit from.
     """
-    def __init__(self) -> None:
+    def __init__(self):
+        """
+        @rtype: None
+        """
         self.done = False
         self.quit = False
         self.next_state = None
@@ -85,29 +97,36 @@ class GameState(object):
         self.font = pg.font.Font(None, 24)
         self.restart_next_state = False
 
-    def startup(self, persistent: {}) -> None:
+    def startup(self):
         """
         Called when a state resumes being active.
         @param persistent: a dict passed from state to state
+        @type persistent: dict{}
+        @rtype: None
         """
         pass
 
-    def get_event(self, event: pg.event) -> None:
+    def get_event(self, event):
         """
         Give the last event to the state.
         @param event: a event that happened
+        @type event: pygame.event
+        @rtype: None
         """
         pass
 
-    def update(self) -> None:
+    def update(self):
         """
         Update the state. Called by the game object once per frame.
+        @rtype: None
         """
         pass
 
-    def draw(self, surface: pg.Surface) -> None:
+    def draw(self, surface):
         """
         Draw everything to the screen
         @param surface: The surface that will be displayed.
+        @type surface: pygame.Surface
+        @rtype: None
         """
         pass
