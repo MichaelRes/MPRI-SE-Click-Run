@@ -73,4 +73,8 @@ class Player(GameObject):
             return self.sprite["ASCEND"]
 
     def draw(self, surface: pg.Surface) -> None:
+        """
+        Display the player on the surface.
+        @param surface: The surface to display the player on.
+        """
         surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))
