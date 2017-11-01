@@ -71,7 +71,7 @@ class StateGame(GameState):
         # Something to do in case the game is over
         if is_the_game_over:
             p = score.ScoreManager().pos_as_score(self.score)
-            if p < 10:
+            if p < score.ScoreManager().max_number_of_score:
                 self.persist = {"score": self.score, "pos": p}
                 self.next_state = "ADD_SCORE"
             else:
@@ -85,7 +85,7 @@ class StateGame(GameState):
             self.player.action = Action.RUNNING
             self.player.v_y = min(self.player.v_y, 0)
         elif self.player.action in [Action.JUMPING, Action.RUNNING] or \
-        (self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 12):
+                (self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 12):
             # Either is the player in jump state, or he stopped his ascension
             self.player.action = Action.JUMPING
             self.player.v_y = max(min(self.player.v_y + self.acceleration_y, self.max_speed), -self.max_speed)
