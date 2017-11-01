@@ -41,10 +41,12 @@ class AddScore(GameState):
     def __init__(self) -> None:
         GameState.__init__(self)
 
-    def get_event(self, event: pg.event) -> None:
+    def get_event(self):
         """
         Do something according to the last event that happened.
         @param event: the last event that occurred.
+        @type event: pygame.event
+        @rtype: None
         """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
@@ -64,18 +66,22 @@ class AddScore(GameState):
                     self.next_state = "MAIN_MENU"
                     self.done = True
 
-    def startup(self, persistent: {}) -> None:
+    def startup(self, persistent):
         """
         Called when a state resumes being active.
         @param persistent: a dict passed from state to state
+        @type persistent: dict{}
+        @rtype: None
         """
         self.best_score = persistent["score"]
         self.best_score_pos = persistent["pos"]
 
-    def draw(self, surface: pg.Surface) -> None:
+    def draw(self, surface):
         """
         Draw everything to the screen.
         @param surface: The surface that will be displayed.
+        @type surface: pygame.Surface
+        @rtype: None
         """
         width, height = surface.get_size()
 

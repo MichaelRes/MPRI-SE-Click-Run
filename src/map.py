@@ -48,22 +48,28 @@ class Map(object):
 
         self.parallax_scrolling = ParallaxScrolling()
 
-    def object_on_the_ground(self, obj: objects.GameObject) -> bool:
+    def object_on_the_ground(self, obj):
         """
         Return a bool indicating if the given objects is on the ground.
         @param obj: The object the user want to check is on the ground.
+        @type obj: objects.GameObject.
         @return: True if the object is on the ground, False otherwise.
+        @rtype: bool
         """
         return self.on_the_ground(obj.pos_x, obj.pos_y, obj.hitbox)
 
-    def on_the_ground(self, x0: int, y0: int, hitbox: [int]) -> bool:
+    def on_the_ground(self, x0, y0, hitbox):
         """
         Returns a boolean indicating if the object given by pos and
         his hitbox is on the ground.
         @param x0: x-axis position of the object
+        @type x0: int
         @param y0: y-axis position of the object
+        @type y0:int
         @param hitbox: hitbox of the object
+        @param hitbox: [int]
         @return: True if the object is on the ground, False otherwise.
+        @rtype: bool
         """
         if (y0+hitbox[1]) % self.dim_bloc == self.dim_bloc - 1:
             for i in range((hitbox[0]) // self.dim_bloc + 2):
@@ -71,13 +77,16 @@ class Map(object):
                     return True
         return False
     
-    def point_on_the_ground(self, x: int, y: int) -> bool:
+    def point_on_the_ground(self, x, y):
         """
         This function return a boolean indication whether the given
         point is on the ground or not.
         @param x: The position on the x-axis of the point.
+        @type x: int
         @param y: The position on the y-axis of the point.
+        @type y: int
         @return: True if the point is on the ground, False otherwise.
+        @rtype: bool
         """
         if y % self.dim_bloc == self.dim_bloc - 1:
             return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
@@ -101,23 +110,31 @@ class Map(object):
             return
         self.data[loc_pixel[0] % self.length, loc_pixel[1]] = value
 
-    def test_move_object(self, obj: objects.GameObject) -> (bool, (int, int)):
+    def test_move_object(self, obj):
         """
         Test if the objects can move according to his movement value.
         @param obj: The object we want to try to move
+        @type obj: objects.GameObject
         @return: The bool indicating if the movement is possible and a tuple of the new position.
+        @rtype: (bool, (int, int))
         """
         return self.move_test(obj.pos_x, obj.pos_y, obj.hitbox, obj.v_x, obj.v_y)
 
-    def move_test(self, x0: int, y0: int, hitbox: [int], dx: int, dy: int) -> (bool, (int, int)):
+    def move_test(self, x0, y0, hitbox, dx, dy):
         """
         Test if, according to a initial position and a hitbox the given movement is possible.
         @param x0: The position on the x-axis of the initial position.
+        @type x0: int
         @param y0: The position on the y-axis of the initial position.
+        @type y0: int
         @param hitbox: The hitbox of the object moving.
+        @type hitbox: [int]
         @param dx: The movement on the x-axis.
+        @type dx: int
         @param dy: The movement on the y-axis.
+        @type dy: int
         @return: The bool indicating if the movement is possible and a tuple of the new position.
+        @rtype: (bool, (int, int))
         """
         # death by falling out of the screen
         if y0 + dy > self.width * self.dim_bloc:
@@ -164,10 +181,11 @@ class Map(object):
                 self.data[(self.gen + i) % self.length, self.width - 2] = Material.GROUND
         self.gen += self.display_length
 
-    def update(self, dx: int):
+    def update(self, dx):
         """
         Updates the position of the map between two frames according to the speed dx.
         @param dx: The speed over the x-axis.
+        @type dx: int
         """
         while self.gen - self.pos // self.dim_bloc < 2 * self.display_length:
             self.gen_proc()
@@ -205,12 +223,16 @@ class ParallaxScrolling(object):
             self.surface = pg.transform.scale(surface, (800, 640))
             self.pos = 0
 
-        def draw(self, surface: pg.Surface, dx: int, per_mvm: float) -> None:
+        def draw(self, surface, dx, per_mvm):
             """
             Draw a single layer on the surface.
             @param surface: The surface the layer will be displayed on.
+            @type surface: pygame.Surface
             @param dx: The last movement on the x-axis.
+            @type dx: int
             @param per_mvm: The percentage of the movement this layer will take.
+            @type per_mvm: float
+            @rtype: None
             """
             surface_width, surface_height = surface.get_size()
             layer_width, layer_height = self.surface.get_size()
@@ -223,13 +245,19 @@ class ParallaxScrolling(object):
             surface.blit(self.surface, (x, 0), (0, 0, surface_width - x, layer_height))
 
     def __init__(self) -> None:
+        """
+        @rtype: None
+        """
         self.layer = [self.ParallaxScrollingLayer(load_image("layer0.png")), self.ParallaxScrollingLayer(load_image("layer1.png"))]
         self.radio = 2
 
-    def draw(self, surface: pg.Surface, dx: int) -> None:
+    def draw(self, surface, dx):
         """
         @param surface: The surface the parallax scrolling will be displayed on.
+        @type surface: pygame.Surface
         @param dx: The last movement on the x-axis.
+        @type dx: int
+        @rtype: None
         """
         per_mvm = 1 / (self.radio**(len(self.layer)))
         for i in range(len(self.layer)):

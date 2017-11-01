@@ -6,16 +6,21 @@ class Pause(GameState):
     """
     The class for the pause state.
     """
-    def __init__(self) -> None:
+    def __init__(self):
+        """
+        @rtype: None
+        """
         GameState.__init__(self)
         self.available_state = ["GAME", "MAIN_MENU"]
         self.current_select = 0
         self.next_state = None
 
-    def get_event(self, event: pg.event) -> None:
+    def get_event(self, event):
         """
         Do something according to the last event that happened.
         @param event: the last event that occurred.
+        @type event: pygame.event
+        @rtype: None
         """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
@@ -26,10 +31,12 @@ class Pause(GameState):
                 self.next_state = self.available_state[self.current_select]
                 self.done = True
 
-    def draw(self, surface: pg.Surface) -> None:
+    def draw(self, surface):
         """
         Draw everything to the screen.
         @param surface: The surface that will be displayed.
+        @type surface: pygame.Surface
+        @rtype: None
         """
         width, height = surface.get_size()
 
