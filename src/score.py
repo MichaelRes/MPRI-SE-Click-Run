@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from functools import total_ordering
 import pygame as pg
 
@@ -6,7 +7,14 @@ class Score(object):
     """
     The class to represent a score.
     """
-    def __init__(self, pseudo: str, score: int) -> None:
+    def __init__(self, pseudo, score):
+        """
+        @param pseudo: pseudo of the scorer.
+        @type pseudo: str
+        @param score: the score.
+        @type score: int
+        @rtype: None
+        """
         self.pseudo = pseudo
         self.score = score
 
@@ -49,6 +57,7 @@ class Score(object):
 
     def draw(self, surface, font):
         """
+        Function to draw the score
         @param surface: The surface the score will be displayed.
         @type surface: pygame.Surface
         @param font: The font the score will be render on.
@@ -89,7 +98,10 @@ class ScoreManager(object):
     instance = None
     max_number_of_score = 10
 
-    def __init__(self) -> None:
+    def __init__(self):
+        """
+        @rtype: None
+        """
         if not ScoreManager.instance:
             ScoreManager.instance = ScoreManager.__ScoreManager()
 
@@ -102,7 +114,7 @@ class ScoreManager(object):
             for score in self.instance.scores:
                 f.write(str(score))
 
-    def pos_as_score(self):
+    def pos_as_score(self, score):
         """
         Function to check what would be the position of the given score
         in the best score.
