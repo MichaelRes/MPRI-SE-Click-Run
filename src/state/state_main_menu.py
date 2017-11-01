@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import pygame as pg
 from state_engine import GameState

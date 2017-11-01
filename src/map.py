@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from enum import Enum
 import numpy as np
 import pygame as pg
@@ -192,10 +193,12 @@ class Map(object):
         self.pos = self.pos + dx
         self.last_dx = dx
 
-    def display(self, surface: pg.Surface):
+    def display(self, surface):
         """
         Draws the map on the surface
         @param surface: The surface the map will be drawn on.
+        @type surface: pygame.Surface
+        @rtype: None
         """
         # We blit the backgrounds
         # surface.blit(self.background[0], (0, 0))
@@ -219,7 +222,12 @@ class ParallaxScrolling(object):
         """
         Class for the parallax scrolling of a single layer.
         """
-        def __init__(self, surface: pg.Surface) -> None:
+        def __init__(self, surface):
+            """
+            @param surface: the sprite of the layer.
+            @type surface: pygame.Surface
+            @rtype: None
+            """
             self.surface = pg.transform.scale(surface, (800, 640))
             self.pos = 0
 
@@ -244,7 +252,7 @@ class ParallaxScrolling(object):
                 x += layer_width
             surface.blit(self.surface, (x, 0), (0, 0, surface_width - x, layer_height))
 
-    def __init__(self) -> None:
+    def __init__(self):
         """
         @rtype: None
         """

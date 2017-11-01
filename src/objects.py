@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from enum import Enum
 from ressources import load_image
 import pygame as pg
@@ -27,8 +28,7 @@ class GameObject:
 
 class Action(Enum):
     """
-    The class which represent the different state in which the player
-     can be.
+    The class which represent the different state in which the player can be.
     """
     RUNNING = 1
     JUMPING = 2

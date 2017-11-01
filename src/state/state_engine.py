@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pygame as pg
 
 
@@ -97,7 +98,7 @@ class GameState(object):
         self.font = pg.font.Font(None, 24)
         self.restart_next_state = False
 
-    def startup(self):
+    def startup(self, persistent):
         """
         Called when a state resumes being active.
         @param persistent: a dict passed from state to state

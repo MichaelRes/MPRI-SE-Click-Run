@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from state_engine import GameState
 import pygame as pg
 import sys
@@ -38,7 +39,10 @@ class AddScore(GameState):
     """
     The state to add a new best score.
     """
-    def __init__(self) -> None:
+    def __init__(self):
+        """
+        @rtype: None
+        """
         GameState.__init__(self)
 
     def get_event(self):
