@@ -21,7 +21,7 @@ class StateGame(GameState):
         self.frame = 0  # Number of frame since begininng
         self.max_speed = self.game_map.dim_bloc
         self.next_state = "MAIN_MENU"
-        self.score = 0
+        self.score = score.Score("", 0)
 
     def get_event(self, event: pg.event) -> None:
         """
@@ -57,7 +57,7 @@ class StateGame(GameState):
         """
         # Update of the pos
         x0 = self.player.pos_x
-        self.update_score()
+        self.score.update(self.frame)
         is_the_game_over, (x, y) = self.game_map.move_test(self.player.pos_x,
                                                            self.player.pos_y,
                                                            self.player.hitbox,
@@ -69,7 +69,6 @@ class StateGame(GameState):
 
         # Something to do in case the game is over
         if is_the_game_over:
-            self.score = score.Score("", self.score)
             p = score.ScoreManager().pos_as_score(self.score)
             if p < 10:
                 self.persist = {"score": self.score, "pos": p}
@@ -107,5 +106,4 @@ class StateGame(GameState):
         """
         self.game_map.display(surface)
         self.player.draw(surface)
-        s = self.font.render("Score : " + str(self.score), 1, (255, 0, 0))
-        surface.blit(s, (20, 20))
+        self.score.draw(surface, self.font)

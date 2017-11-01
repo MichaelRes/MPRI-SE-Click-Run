@@ -1,5 +1,5 @@
 from functools import total_ordering
-
+import pygame as pg
 
 @total_ordering
 class Score(object):
@@ -9,6 +9,13 @@ class Score(object):
     def __init__(self, pseudo: str, score: int) -> None:
         self.pseudo = pseudo
         self.score = score
+
+    def update(self, frame: int) -> None:
+        """
+        Update the score given the new actual frame.
+        @param frame: The current frame.
+        """
+        self.score += frame
 
     def __eq__(self, other: 'Score') -> bool:
         """
@@ -32,6 +39,14 @@ class Score(object):
         @return: The string representing the score.
         """
         return self.pseudo + " " + str(self.score) + "\n"
+
+    def draw(self, surface: pg.Surface, font: pg.font.Font) -> None:
+        """
+        @param surface: The surface the score will be displayed.
+        @param font: The font the score will be render on.
+        """
+        s = font.render("Score : " + str(self.score), 1, (255, 0, 0))
+        surface.blit(s, (20, 20))
 
 
 class ScoreManager(object):
