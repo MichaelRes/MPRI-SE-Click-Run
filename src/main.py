@@ -30,3 +30,5 @@ def main():
     pg.quit()
     sys.exit()
 
+main()
+
