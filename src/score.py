@@ -60,6 +60,10 @@ class ScoreManager(object):
             self.scores = self.load_score_file()
 
         def load_score_file(self) -> [Score]:
+            """
+            Function to load the score file.
+            @return: The table of score.
+            """
             try:
                 with open(self.best_score_file, "r") as f:
                     scores = [score.strip().split(" ") for score in f]
