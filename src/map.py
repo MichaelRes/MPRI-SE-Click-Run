@@ -193,30 +193,45 @@ class Map(object):
                     surface.blit(self.image[0], (j*self.dim_bloc - self.pos % self.dim_bloc, i*self.dim_bloc))
 
 
-class ParallaxScrollingLayer(object):
-    def __init__(self, surface: pg.Surface):
-        self.surface = pg.transform.scale(surface, (800, 640))
-        self.pos = 0
-
-    def draw(self, surface: pg.Surface, dx: int, per_mvm: float):
-        surface_width, surface_height = surface.get_size()
-        layer_width, layer_height = self.surface.get_size()
-        self.pos += int(dx * per_mvm) % layer_width
-        surface.blit(self.surface, (0, 0), (self.pos, 0, layer_width - self.pos, layer_height))
-        x = layer_width - self.pos
-        while (x + layer_width) < surface_width:
-            surface.blit(self.surface, (x, 0))
-            x += layer_width
-        surface.blit(self.surface, (x, 0), (0, 0, surface_width - x, layer_height))
-
-
 class ParallaxScrolling(object):
-    def __init__(self) -> None:
-        self.layer = [ParallaxScrollingLayer(load_image("layer0.png")), ParallaxScrollingLayer(load_image("layer1.png"))]
-        self.radio = 0.5
+    """
+    Class for the parallax scrolling
+    """
+    class ParallaxScrollingLayer(object):
+        """
+        Class for the parallax scrolling of a single layer.
+        """
+        def __init__(self, surface: pg.Surface) -> None:
+            self.surface = pg.transform.scale(surface, (800, 640))
+            self.pos = 0
 
-    def draw(self, surface: pg.Surface, dx: int):
-        per_mvm = 1 / (2**(len(self.layer)))
+        def draw(self, surface: pg.Surface, dx: int, per_mvm: float) -> None:
+            """
+            Draw a single layer on the surface.
+            @param surface: The surface the layer will be displayed on.
+            @param dx: The last movement on the x-axis.
+            @param per_mvm: The percentage of the movement this layer will take.
+            """
+            surface_width, surface_height = surface.get_size()
+            layer_width, layer_height = self.surface.get_size()
+            self.pos += int(dx * per_mvm) % layer_width
+            surface.blit(self.surface, (0, 0), (self.pos, 0, layer_width - self.pos, layer_height))
+            x = layer_width - self.pos
+            while (x + layer_width) < surface_width:
+                surface.blit(self.surface, (x, 0))
+                x += layer_width
+            surface.blit(self.surface, (x, 0), (0, 0, surface_width - x, layer_height))
+
+    def __init__(self) -> None:
+        self.layer = [self.ParallaxScrollingLayer(load_image("layer0.png")), self.ParallaxScrollingLayer(load_image("layer1.png"))]
+        self.radio = 2
+
+    def draw(self, surface: pg.Surface, dx: int) -> None:
+        """
+        @param surface: The surface the parallax scrolling will be displayed on.
+        @param dx: The last movement on the x-axis.
+        """
+        per_mvm = 1 / (self.radio**(len(self.layer)))
         for i in range(len(self.layer)):
             self.layer[i].draw(surface, dx, per_mvm)
-            per_mvm *= 2
+            per_mvm *= self.radio
