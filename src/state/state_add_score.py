@@ -45,7 +45,7 @@ class AddScore(GameState):
         """
         GameState.__init__(self)
 
-    def get_event(self):
+    def get_event(self, event):
         """
         Do something according to the last event that happened.
         @param event: the last event that occurred.

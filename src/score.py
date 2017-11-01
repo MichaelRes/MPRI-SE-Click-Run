@@ -57,12 +57,12 @@ class Score(object):
 
     def draw(self, surface, font):
         """
-        Function to draw the score
+        Function to draw the score.
         @param surface: The surface the score will be displayed.
         @type surface: pygame.Surface
         @param font: The font the score will be render on.
         @type font: pygame.font.Font
-        @type: None
+        @rtype: None
         """
         s = font.render("Score : " + str(self.score), 1, (255, 0, 0))
         surface.blit(s, (20, 20))
