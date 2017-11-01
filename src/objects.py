@@ -1,12 +1,13 @@
 from enum import Enum
 from ressources import load_image
+import pygame as pg
 
 
 class GameObject:
     """
     The class for the objects in the game.
     """
-    def __init__(self, x0: int, y0: int, vx0: int, vy0: int):
+    def __init__(self, x0: int, y0: int, vx0: int, vy0: int) -> None:
         """
         @param x0: The x-axis position of the object.
         @param y0: The y-axis position of the object.
@@ -34,7 +35,7 @@ class Player(GameObject):
     """
     The class for the main character
     """
-    def __init__(self, x0: int, y0: int, vx0: int, vy0: int):
+    def __init__(self, x0: int, y0: int, vx0: int, vy0: int) -> None:
         """
         @param x0: The x-axis position of the object.
         @param y0: The y-axis position of the object.
@@ -52,10 +53,10 @@ class Player(GameObject):
         # The sprite are stored in a dict
         self.sprite = {"JUMP": load_image("red.png"), "RUN0": load_image("green.png"), "RUN1": load_image("red.png"), "RUN2": load_image("black.png"), "ASCEND": load_image("black.png")}
 
-    # TODO AJOUTER TYPE DE RETOUR
-    def choose_sprite(self):
+    def choose_sprite(self) -> pg.Surface:
         """
-        This function choose the good sprite and returns it
+        This function choose the good sprite and returns it.
+        @return: The surface of the corresponding sprite.
         """
         if self.action in {Action.JUMPING}:
             return self.sprite["JUMP"]
@@ -70,3 +71,6 @@ class Player(GameObject):
             return self.sprite["RUN%d" %self.running_sprite_number]
         if self.action in {Action.ASCEND}:
             return self.sprite["ASCEND"]
+
+    def draw(self, surface: pg.Surface) -> None:
+        surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))

@@ -106,6 +106,6 @@ class StateGame(GameState):
         @param surface: The surface that will be displayed.
         """
         self.game_map.display(surface)
-        surface.blit(self.player.choose_sprite(), (self.player.pos_x, self.player.pos_y))
+        self.player.draw(surface)
         s = self.font.render("Score : " + str(self.score), 1, (255, 0, 0))
         surface.blit(s, (20, 20))
