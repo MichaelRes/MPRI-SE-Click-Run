@@ -58,18 +58,21 @@ class Player(GameObject):
         This function choose the good sprite and returns it.
         @return: The surface of the corresponding sprite.
         """
-        if self.action in {Action.JUMPING}:
+        if self.action == Action.JUMPING:
             return self.sprite["JUMP"]
-        if self.action == Action.RUNNING:
+        elif self.action == Action.RUNNING:
+            # TODO les deux lignes suivantes sont à mettre en paramètre où à rucupérer suivant le nombre de sprite de
+            # run
+            max_running_sprite = 2
+            min_running_sprite = 0
             tmp = self.running_sprite_number
-            if self.running_sprite_number == 2 or self.running_sprite_number == 0:
-                self.running_sprite_number = 1
+            if self.running_sprite_number == max_running_sprite or self.running_sprite_number == min_running_sprite:
+                self.running_sprite_number = self.anterior_running_sprite_number
             else:
-                tmp = self.running_sprite_number
                 self.running_sprite_number += self.running_sprite_number - self.anterior_running_sprite_number
             self.anterior_running_sprite_number = tmp
             return self.sprite["RUN%d" %self.running_sprite_number]
-        if self.action in {Action.ASCEND}:
+        elif self.action == Action.ASCEND:
             return self.sprite["ASCEND"]
 
     def draw(self, surface: pg.Surface) -> None:
