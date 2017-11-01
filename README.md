@@ -42,6 +42,12 @@ pip3 install pygame
 ```
 
 ## Documentation
+Make sure you can execute the file gen_doc.sh and execute it. The doc is in the
+docs repository.
+```
+chmod +x gen_doc.sh
+./gen_doc.sh
+```
 
 ## Tests
 
