@@ -73,6 +73,7 @@ class ScoreManager(object):
                 return []
 
     instance = None
+    max_number_of_score = 10
 
     def __init__(self) -> None:
         if not ScoreManager.instance:
