@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import state_engine
 import pygame as pg
-import sys
-sys.path.append("..")
 import score
 
 
@@ -34,6 +32,7 @@ key_dict = {
     pg.K_y: "Y",
     pg.K_z: "Z",
 }
+
 
 class AddScore(state_engine.GameState):
     """
