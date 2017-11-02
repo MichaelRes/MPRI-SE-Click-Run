@@ -1,10 +1,10 @@
 import pygame as pg
 
 
-def load_image(name, dim = None):
+def load_image(name, dim=None):
     try:
         image = pg.image.load("../ressources/" + name)
-        if dim != None:
+        if dim is not None:
             image = pg.transform.scale(image, dim)
     except pg.error:
         print("Ressource manquante : ", name)
