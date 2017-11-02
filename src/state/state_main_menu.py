@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import sys
 import pygame as pg
 from . import state_engine
 from map import Map
