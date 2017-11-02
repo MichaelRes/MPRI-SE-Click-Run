@@ -53,6 +53,7 @@ class Player(GameObject):
         @rtype: None
         """
         GameObject.__init__(self, x0, y0, vx0, vy0)
+        self.player = "mario"
         self.action = Action.JUMPING
         # This variable takes trace of last frame where the player jumped in order to stop the ascending phase
         self.last_jump = None
@@ -60,11 +61,11 @@ class Player(GameObject):
         self.anterior_running_sprite_number = 1  # The anterior sprite for running
         # TODO -> lecture automatique des sprite à dic
         # The sprite are stored in a dict
-        self.sprite = {"JUMP": load_image("player/toad/jump.png", self.hitbox),
-                       "RUN0": load_image("player/toad/run0.png", self.hitbox),
-                       "RUN1": load_image("player/toad/run1.png", self.hitbox),
-                       "RUN2": load_image("player/toad/run2.png", self.hitbox),
-                       "ASCEND": load_image("player/toad/ascend.png", self.hitbox)}
+        self.sprite = {"JUMP": load_image("player/%s/jump.png" % self.player, self.hitbox),
+                       "RUN0": load_image("player/%s/run0.png" % self.player, self.hitbox),
+                       "RUN1": load_image("player/%s/run1.png" % self.player, self.hitbox),
+                       "RUN2": load_image("player/%s/run2.png" % self.player, self.hitbox),
+                       "ASCEND": load_image("player/%s/ascend.png" % self.player, self.hitbox)}
         self.time_of_a_sprite = 5
         self.current_time = -1
 
