@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
 from ressources import load_image
-import pygame as pg
 
 
 class GameObject:
     """
     The class for the objects in the game.
     """
+
     def __init__(self, x0, y0, vx0, vy0):
         """
         @param x0: The x-axis position of the object.
@@ -39,6 +39,7 @@ class Player(GameObject):
     """
     The class for the main character
     """
+
     def __init__(self, x0, y0, vx0, vy0):
         """
         @param x0: The x-axis position of the object.
@@ -78,7 +79,7 @@ class Player(GameObject):
         elif self.action == Action.RUNNING:
             self.current_time = (self.current_time + 1) % self.time_of_a_sprite
             if self.current_time != 0:
-                return self.sprite["RUN%d" %self.running_sprite_number]
+                return self.sprite["RUN%d" % self.running_sprite_number]
             max_running_sprite = 2
             min_running_sprite = 0
             tmp = self.running_sprite_number
@@ -87,7 +88,7 @@ class Player(GameObject):
             else:
                 self.running_sprite_number += self.running_sprite_number - self.anterior_running_sprite_number
             self.anterior_running_sprite_number = tmp
-            return self.sprite["RUN%d" %self.running_sprite_number]
+            return self.sprite["RUN%d" % self.running_sprite_number]
         elif self.action == Action.ASCEND:
             return self.sprite["ASCEND"]
 
@@ -100,5 +101,4 @@ class Player(GameObject):
         """
         s = self.choose_sprite()
         surface.blit(s, (self.pos_x, self.pos_y))
-        #surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))
-
+        # surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))
