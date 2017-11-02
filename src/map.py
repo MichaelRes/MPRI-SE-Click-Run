@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from enum import Enum
+from objects import *
 import numpy as np
+from enum import Enum
 import pygame as pg
-import objects
 from ressources import load_image
+
 
 class Material(Enum):
     """
@@ -23,32 +24,21 @@ class Map(object):
         Initialize the Map object.
         """
         self.dim_bloc = 80
-        self.size_bloc = (self.dim_bloc, self.dim_bloc)
 
-        self.width = 720 // self.dim_bloc
-        self.length = 2400 // self.dim_bloc
-        self.display_length = 1200 // self.dim_bloc
+        self.height = 720 // self.dim_bloc
+        self.width = 2400 // self.dim_bloc
+        self.display_width = 1200 // self.dim_bloc
         # An important note : both of pos and gen aint on the same scale, self.gen is a number of bloc when self.pos is
         # a matter of px. Those should not be compared without a self.dim_bloc factor
         self.pos = 0
         self.gen = 0
         
-        self.data = np.full((self.length, self.width), Material.EMPTY, dtype=Material)
+        self.data = np.full((self.width, self.height), Material.EMPTY, dtype=Material)
 
-        # Choices of the sprite for the map
-        self.image = [pg.Surface(self.size_bloc),
-                      pg.Surface(self.size_bloc)]
-        for i in range(2):
-            self.image[i] = self.image[i].convert()
-            self.image[i].fill((10+140*i, 150-140*i, 10+140*i))
-        self.image[0] = load_image('ground_sprite.png')
-        self.background = [pg.Surface((self.length*self.dim_bloc, self.width*self.dim_bloc))]
-        self.background[0] = self.background[0].convert()
-        self.background[0].fill((200, 200, 200))
+        self.ground_sprite = load_image('ground_sprite.png')
+        self.parallax_scrolling = ParallaxScrolling()
 
         self.last_dx = 0
-
-        self.parallax_scrolling = ParallaxScrolling()
 
     def object_on_the_ground(self, obj):
         """
@@ -102,7 +92,7 @@ class Map(object):
         """
         if loc_pixel[1] < 0:
             return Material.EMPTY
-        return self.data[((loc_pixel[0]+self.pos)//self.dim_bloc) % self.length, loc_pixel[1]//self.dim_bloc]
+        return self.data[((loc_pixel[0]+self.pos)//self.dim_bloc) % self.width, loc_pixel[1]//self.dim_bloc]
 
     def data_write(self, loc_pixel, value):
         """
@@ -110,7 +100,7 @@ class Map(object):
         """
         if loc_pixel[1] < 0:
             return
-        self.data[loc_pixel[0] % self.length, loc_pixel[1]] = value
+        self.data[loc_pixel[0] % self.width, loc_pixel[1]] = value
 
     def test_move_object(self, obj):
         """
@@ -139,7 +129,7 @@ class Map(object):
         @rtype: (bool, (int, int))
         """
         # death by falling out of the screen
-        if y0 + dy > self.width * self.dim_bloc:
+        if y0 + dy > self.height * self.dim_bloc:
             return True, (x0, y0)
 
         x = x0
@@ -177,11 +167,11 @@ class Map(object):
         """
         Launches a procedural generation for the map.
         """
-        for i in range(self.display_length):
-            self.data[(self.gen + i) % self.length, self.width - 1] = Material.GROUND
-            if (self.gen + i) % self.length > self.length // 2:
-                self.data[(self.gen + i) % self.length, self.width - 2] = Material.GROUND
-        self.gen += self.display_length
+        for i in range(self.display_width):
+            self.data[(self.gen + i) % self.width, self.height - 1] = Material.GROUND
+            if (self.gen + i) % self.width > self.width // 2:
+                self.data[(self.gen + i) % self.width, self.height - 2] = Material.GROUND
+        self.gen += self.display_width
 
     def update(self, dx):
         """
@@ -189,7 +179,7 @@ class Map(object):
         @param dx: The speed over the x-axis.
         @type dx: int
         """
-        while self.gen - self.pos // self.dim_bloc < 2 * self.display_length:
+        while self.gen - self.pos // self.dim_bloc < 2 * self.display_width:
             self.gen_proc()
         self.pos = self.pos + dx
         self.last_dx = dx
@@ -209,10 +199,10 @@ class Map(object):
         self.parallax_scrolling.draw(surface, self.last_dx)
 
         # We blit self.data
-        for i in range(self.width):
-            for j in range(self.display_length + 1):
+        for i in range(self.height):
+            for j in range(self.display_width + 1):
                 if self.data_read([j*self.dim_bloc, i*self.dim_bloc]) == Material.GROUND:
-                    surface.blit(self.image[0], (j*self.dim_bloc - self.pos % self.dim_bloc, i*self.dim_bloc))
+                    surface.blit(self.ground_sprite, (j*self.dim_bloc - self.pos % self.dim_bloc, i*self.dim_bloc))
 
 
 class ParallaxScrolling(object):
@@ -229,7 +219,7 @@ class ParallaxScrolling(object):
             @type surface: pygame.Surface
             @rtype: None
             """
-            self.surface = pg.transform.scale(surface, (800, 640))
+            self.surface = pg.transform.scale(surface, (900, 720))
             self.pos = 0
 
         def draw(self, surface, dx, per_mvm):
