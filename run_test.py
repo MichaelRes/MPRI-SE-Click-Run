@@ -10,7 +10,7 @@ def main():
                 f.append(join(dirpath, e))
                 f_name = f_name + " " + join(dirpath, e)
     print(f_name)
-    system("py.test-3 %s" %f_name)
+    system("pytest %s" %f_name)
     #for e in f:
     #    list_f = ""
     #    system("py.test-3 %s" %e)
