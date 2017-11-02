@@ -35,7 +35,7 @@ class Map(object):
         
         self.data = np.full((self.width, self.height), Material.EMPTY, dtype=Material)
 
-        self.ground_sprite = load_image('ground_sprite.png')
+        self.ground_sprite = load_image('ground_sprite.png',(self.dim_bloc,self.dim_bloc))
         self.parallax_scrolling = ParallaxScrolling()
 
         self.last_dx = 0
