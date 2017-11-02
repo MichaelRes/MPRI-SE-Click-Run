@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from state_engine import GameState
+from . import state_engine
 import pygame as pg
 import sys
 sys.path.append("..")
 import score
 
-class BestScore(GameState):
+class BestScore(state_engine.GameState):
     """
     The class for the best score state.
     """
@@ -13,7 +13,7 @@ class BestScore(GameState):
         """
         @rtype: None
         """
-        GameState.__init__(self)
+        state_engine.GameState.__init__(self)
 
     def get_event(self, event):
         """

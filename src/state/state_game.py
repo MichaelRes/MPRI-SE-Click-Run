@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pygame as pg
 import sys
-from state_engine import GameState
+from . import state_engine
 
 sys.path.append("..")
 from objects import Action, Player
@@ -9,7 +9,7 @@ from map import Map
 import score
 
 
-class StateGame(GameState):
+class StateGame(state_engine.GameState):
     """
     Main state for the game, is the master for the map and the player.
     """
@@ -17,7 +17,7 @@ class StateGame(GameState):
         """
         @rtype: None
         """
-        GameState.__init__(self)
+        state_engine.GameState.__init__(self)
         self.player = Player(5, 0, 8, 0)
         self.game_map = Map()
         self.acceleration_x = 0  # As said, x variables aint of any use at the moment

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from state_engine import GameState
+from . import state_engine
 import pygame as pg
 
 
-class Credits(GameState):
+class Credits(state_engine.GameState):
     """
     The classe for the credits state.
     """
     def __init__(self):
-        GameState.__init__(self)
+        state_engine.GameState.__init__(self)
 
     def get_event(self, event):
         """
