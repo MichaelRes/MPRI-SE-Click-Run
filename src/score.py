@@ -142,6 +142,6 @@ class ScoreManager(object):
         @rtype: None
         """
         self.instance.scores.insert(pos, score)
-        if len(self.instance.scores) > 10:
+        if len(self.instance.scores) > self.max_number_of_score:
             self.instance.scores.pop()
         self.update_score_file()
