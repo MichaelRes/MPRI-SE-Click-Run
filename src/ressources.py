@@ -1,4 +1,5 @@
 import pygame as pg
+import pickle
 
 
 def load_image(name, dim=None):
@@ -16,3 +17,12 @@ def load_image(name, dim=None):
     else:
         image = image.convert_alpha()
     return image
+
+
+def load_options():
+    try:
+        return pickle.load(open("options_file.data", "rb"))
+    except FileNotFoundError:
+        return {"CHARACTER": "mario",
+         }
+

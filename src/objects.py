@@ -40,7 +40,7 @@ class Player(GameObject):
     The class for the main character
     """
 
-    def __init__(self, x0, y0, vx0, vy0):
+    def __init__(self, x0, y0, vx0, vy0, sprite_name):
         """
         @param x0: The x-axis position of the object.
         @type x0: int
@@ -53,7 +53,7 @@ class Player(GameObject):
         @rtype: None
         """
         GameObject.__init__(self, x0, y0, vx0, vy0)
-        self.player = "mario"
+        self.player = sprite_name
         self.action = Action.JUMPING
         # This variable takes trace of last frame where the player jumped in order to stop the ascending phase
         self.last_jump = None

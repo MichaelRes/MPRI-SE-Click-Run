@@ -4,6 +4,7 @@ from . import state_engine
 from objects import Action, Player
 from map import Map
 import score
+from ressources import load_options
 
 
 class StateGame(state_engine.GameState):
@@ -15,7 +16,8 @@ class StateGame(state_engine.GameState):
         @rtype: None
         """
         state_engine.GameState.__init__(self)
-        self.player = Player(5, 0, 8, 0)
+        self.current_opts = load_options()
+        self.player = Player(5, 0, 8, 0, self.current_opts["CHARACTER"])
         self.game_map = Map()
         self.acceleration_x = 0  # As said, x variables aint of any use at the moment
         self.acceleration_y = 1
