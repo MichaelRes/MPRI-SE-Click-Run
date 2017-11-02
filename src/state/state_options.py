@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import state_engine
 import pygame as pg
+import pickle
 
 
 class Options(state_engine.GameState):
@@ -12,6 +13,20 @@ class Options(state_engine.GameState):
         @rtype: None
         """
         state_engine.GameState.__init__(self)
+        self.current_select = 0
+        self.all_opts = {"CHARACTER": ["mario", "toad"],
+                         }
+        self.current_opts = {"CHARACTER": 0,
+                             }
+        self.available_opts = list(self.all_opts)
+        self.available_opts.sort()
+
+    def write_opts(self):
+        dict_opts = {}
+        for k in self.all_opts:
+            dict_opts[k] = self.all_opts[k][self.current_opts[k]]
+            with open("options_file.data", "wb") as f:
+                pickle.dump(dict_opts, f, pickle.HIGHEST_PROTOCOL)
 
     def get_event(self, event):
         """
@@ -23,7 +38,20 @@ class Options(state_engine.GameState):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
+                self.write_opts()
                 self.done = True
+            elif event.key == pg.K_UP:
+                self.current_select = (self.current_select - 1) % len(self.available_opts)
+            elif event.key == pg.K_DOWN:
+                self.current_select = (self.current_select + 1) % len(self.available_opts)
+            elif event.key == pg.K_RIGHT:
+                self.current_opts[self.available_opts[self.current_select]] = \
+                    (self.current_opts[self.available_opts[self.current_select]] + 1) % \
+                    len(self.all_opts[self.available_opts[self.current_select]])
+            elif event.key == pg.K_LEFT:
+                self.current_opts[self.available_opts[self.current_select]] = \
+                    (self.current_opts[self.available_opts[self.current_select]] - 1) % \
+                    len(self.all_opts[self.available_opts[self.current_select]])
 
     def draw(self, surface):
         """
@@ -35,9 +63,13 @@ class Options(state_engine.GameState):
         width, height = surface.get_size()
 
         surface.fill(pg.Color("black"))
-        text_color = 255, 255, 255
 
-        text = self.font.render("METTRE LES OPTIONS ICI", 1, text_color)
-        width_text, height_text = text.get_size()
-        surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2))
-        pg.display.flip()
+        for i, k in enumerate(self.available_opts):
+            if i == self.current_select:
+                text_color = (255, 0, 0)
+            else:
+                text_color = 255, 255, 255
+            text = self.font.render(k + " " + self.all_opts[k][self.current_opts[k]], 1, text_color)
+            width_text, height_text = text.get_size()
+            surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + i*24))
+            pg.display.flip()
