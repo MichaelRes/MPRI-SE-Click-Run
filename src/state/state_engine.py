@@ -75,7 +75,7 @@ class Game(object):
         @rtype: None
         """
         while not self.done:
-            dt = self.clock.tick(self.fps)
+            self.clock.tick(self.fps)
             self.event_loop()
             self.update()
             self.draw()
