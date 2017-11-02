@@ -16,4 +16,4 @@ def test_load_score_file():
     for i in range(len(s)):
         assert sm.instance.scores[i].pseudo == s[i].pseudo
         assert sm.instance.scores[i].score == s[i].score
-    #os.remove(sm.instance.best_score_file)
+    os.remove(sm.instance.best_score_file)
