@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 import pygame as pg
-import sys
 from . import state_engine
-
-sys.path.append("..")
 from objects import Action, Player
 from map import Map
 import score
