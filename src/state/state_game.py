@@ -25,6 +25,7 @@ class StateGame(state_engine.GameState):
         self.max_speed = self.game_map.dim_bloc
         self.next_state = "MAIN_MENU"
         self.score = score.Score("", 0)
+        self.difficulty = 1
 
     def get_event(self, event):
         """
@@ -69,8 +70,8 @@ class StateGame(state_engine.GameState):
         is_the_game_over, (x, y) = self.game_map.move_test(self.player.pos_x,
                                                            self.player.pos_y,
                                                            self.player.hitbox,
-                                                           self.player.v_x,
-                                                           self.player.v_y)
+                                                           int (self.player.v_x * self.difficulty),
+                                                           int (self.player.v_y * self.difficulty))
 
         # Because of the movement of the screen, we do not change the pos_x of the player : the screen will move later.
         self.player.pos_y = y
@@ -95,9 +96,9 @@ class StateGame(state_engine.GameState):
                 (self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 12):
             # Either is the player in jump state, or he stopped his ascension
             self.player.action = Action.JUMPING
-            self.player.v_y = max(min(self.player.v_y + self.acceleration_y, self.max_speed), -self.max_speed)
+            self.player.v_y = max(min(self.player.v_y + self.difficulty*self.acceleration_y, self.max_speed), -self.max_speed)
         elif self.player.action == Action.ASCEND:  # In that case, the player continues his ascension
-            self.player.v_y = max(min(self.player.v_y + self.acceleration_y//2, self.max_speed), -self.max_speed)
+            self.player.v_y = max(min(self.player.v_y + self.difficulty*self.acceleration_y//2, self.max_speed), -self.max_speed)
 
         # Update of the game_map
         self.game_map.update(x - x0)
