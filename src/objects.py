@@ -59,11 +59,13 @@ class Player(GameObject):
         self.anterior_running_sprite_number = 1  # The anterior sprite for running
         # TODO -> lecture automatique des sprite à dic
         # The sprite are stored in a dict
-        self.sprite = {"JUMP": load_image("red.png"),
-                       "RUN0": load_image("green.png"),
-                       "RUN1": load_image("red.png"),
-                       "RUN2": load_image("black.png"),
-                       "ASCEND": load_image("black.png")}
+        self.sprite = {"JUMP": load_image("jump.png"),
+                       "RUN0": load_image("run0.png"),
+                       "RUN1": load_image("run1.png"),
+                       "RUN2": load_image("run2.png"),
+                       "ASCEND": load_image("ascend.png")}
+        self.time_of_a_sprite = 5
+        self.current_time = -1
 
     def choose_sprite(self):
         """
@@ -74,8 +76,9 @@ class Player(GameObject):
         if self.action == Action.JUMPING:
             return self.sprite["JUMP"]
         elif self.action == Action.RUNNING:
-            # TODO les deux lignes suivantes sont à mettre en paramètre où à rucupérer suivant le nombre de sprite de
-            # run
+            self.current_time = (self.current_time + 1) % self.time_of_a_sprite
+            if self.current_time != 0:
+                return self.sprite["RUN%d" %self.running_sprite_number]
             max_running_sprite = 2
             min_running_sprite = 0
             tmp = self.running_sprite_number
@@ -95,4 +98,7 @@ class Player(GameObject):
         @type surface: pygame.Surface
         @rtype: None
         """
-        surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))
+        s = self.choose_sprite()
+        surface.blit(s, (self.pos_x, self.pos_y))
+        #surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))
+

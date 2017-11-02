@@ -41,6 +41,7 @@ class Map(object):
         for i in range(2):
             self.image[i] = self.image[i].convert()
             self.image[i].fill((10+140*i, 150-140*i, 10+140*i))
+        self.image[0] = load_image('ground_sprite.png')
         self.background = [pg.Surface((self.length*self.dim_bloc, self.width*self.dim_bloc))]
         self.background[0] = self.background[0].convert()
         self.background[0].fill((200, 200, 200))
@@ -203,7 +204,7 @@ class Map(object):
         # We blit the backgrounds
         # surface.blit(self.background[0], (0, 0))
         # for i in range(len(self.background)-1):
-        #    pass
+        #    pas
 
         self.parallax_scrolling.draw(surface, self.last_dx)
 
