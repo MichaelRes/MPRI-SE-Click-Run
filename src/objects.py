@@ -99,6 +99,4 @@ class Player(GameObject):
         @type surface: pygame.Surface
         @rtype: None
         """
-        s = self.choose_sprite()
-        surface.blit(s, (self.pos_x, self.pos_y))
-        # surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))
+        surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))
