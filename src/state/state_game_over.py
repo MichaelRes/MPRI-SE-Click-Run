@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from state_engine import GameState
+from . import state_engine
 import pygame as pg
 
 
-class GameOver(GameState):
+class GameOver(state_engine.GameState):
     """
     The state for the game over.
     """
@@ -11,7 +11,7 @@ class GameOver(GameState):
         """
         @rtype: None
         """
-        GameState.__init__(self)
+        state_engine.GameState.__init__(self)
 
     def get_event(self, event):
         """

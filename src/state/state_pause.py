@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from state_engine import GameState
+from . import state_engine
 import pygame as pg
 
 
-class Pause(GameState):
+class Pause(state_engine.GameState):
     """
     The class for the pause state.
     """
@@ -11,7 +11,7 @@ class Pause(GameState):
         """
         @rtype: None
         """
-        GameState.__init__(self)
+        state_engine.GameState.__init__(self)
         self.available_state = ["GAME", "MAIN_MENU"]
         self.current_select = 0
         self.next_state = None

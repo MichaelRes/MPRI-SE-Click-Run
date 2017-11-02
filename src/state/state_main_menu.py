@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import sys
 import pygame as pg
-from state_engine import GameState
+from . import state_engine
 from map import Map
-sys.path.append("..")
 
 
-class MainMenu(GameState):
+class MainMenu(state_engine.GameState):
     """
     The state for the main menu.
     """
@@ -14,7 +13,7 @@ class MainMenu(GameState):
         """
         @rtype: None
         """
-        GameState.__init__(self)
+        state_engine.GameState.__init__(self)
         self.available_state = ["GAME", "BEST_SCORE", "OPTIONS", "CREDITS"]
         self.current_select = 0
         self.next_state = None

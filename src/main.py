@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 import sys
 import pygame as pg
-sys.path.append('state')
-from state_engine import *
-from state_main_menu import *
-from state_best_score import *
-from state_options import *
-from state_credits import *
-from state_game_over import *
-from state_game import *
-from state_pause import *
-from state_add_score import *
+#sys.path.append('state')
+from state.state_engine import *
+from state.state_main_menu import *
+from state.state_best_score import *
+from state.state_options import *
+from state.state_credits import *
+from state.state_game_over import *
+from state.state_game import *
+from state.state_pause import *
+from state.state_add_score import *
 
 def main():
     pg.init()
