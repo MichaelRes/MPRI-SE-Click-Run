@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from functools import total_ordering
-import pygame as pg
+
 
 @total_ordering
 class Score(object):
