@@ -173,17 +173,14 @@ class Map(object):
         while self.gen - old_pos < self.display_width:
             if self.display_width - (self.gen - old_pos) >= 6:
                 if rd.random() < 0.2:
-                    print("hole")
                     possible_paterns = ["HOLE"]
                     rd.shuffle(possible_paterns)
                     obs = possible_paterns[0]
                     if obs == "HOLE":
                         self.gen_hole()
                 else:
-                    print("one1")
                     self.gen_one()
             else:
-                print("one2")
                 self.gen_one()
 
     def gen_one(self):
