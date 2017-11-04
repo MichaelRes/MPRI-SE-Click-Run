@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from objects import *
 import numpy as np
+import random as rd
 from enum import Enum
 import pygame as pg
 from ressources import load_image
@@ -26,13 +27,14 @@ class Map(object):
         self.dim_bloc = 80
 
         self.height = 720 // self.dim_bloc
-        self.width = 2400 // self.dim_bloc
+        self.width = 4800 // self.dim_bloc
         self.display_width = 1200 // self.dim_bloc
         # An important note : both of pos and gen aint on the same scale, self.gen is a number of bloc when self.pos is
         # a matter of px. Those should not be compared without a self.dim_bloc factor
         self.pos = 0
         self.gen = 0
-        
+        self.gen_level = 1
+
         self.data = np.full((self.width, self.height), Material.EMPTY, dtype=Material)
 
         self.ground_sprite = load_image('ground_sprite.png',(self.dim_bloc,self.dim_bloc))
@@ -68,7 +70,7 @@ class Map(object):
                 if self.point_on_the_ground(min(x0 + hitbox[0], x0 + i*self.dim_bloc), y0 + hitbox[1]):
                     return True
         return False
-    
+
     def point_on_the_ground(self, x, y):
         """
         This function return a boolean indication whether the given
@@ -82,7 +84,7 @@ class Map(object):
         """
         if y % self.dim_bloc == self.dim_bloc - 1:
             return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
-            
+
         # This case should not occur.
         return False
 
@@ -140,7 +142,7 @@ class Map(object):
             return False, (x0+dx, y0+dy)
 
         # Else, we try to find where to stop
-        
+
         for i in range(np.abs(dx) + np.abs(dy) + 1):
             x = int(x0 + (i / (np.abs(dx) + np.abs(dy))) * dx)
             y = int(y0 + (i / (np.abs(dx) + np.abs(dy))) * dy)
@@ -153,9 +155,9 @@ class Map(object):
                     return True, (x0, y0)
             if dy >= 0 and self.on_the_ground(x, y, hitbox):
                 break
-            
+
         # We hit the floor, we go right
-        
+
         for i in range(x0+dx-x):
             x += 1
             for b in range(hitbox[1]):
@@ -167,11 +169,56 @@ class Map(object):
         """
         Launches a procedural generation for the map.
         """
-        for i in range(self.display_width):
-            self.data[(self.gen + i) % self.width, self.height - 1] = Material.GROUND
-            if (self.gen + i) % self.width > self.width // 2:
-                self.data[(self.gen + i) % self.width, self.height - 2] = Material.GROUND
-        self.gen += self.display_width
+        old_pos = self.gen
+        while self.gen - old_pos < self.display_width:
+            if self.display_width - (self.gen - old_pos) >= 6:
+                if rd.random() < 0.2:
+                    print("hole")
+                    possible_paterns = ["HOLE"]
+                    rd.shuffle(possible_paterns)
+                    obs = possible_paterns[0]
+                    if obs == "HOLE":
+                        self.gen_hole()
+                else:
+                    print("one1")
+                    self.gen_one()
+            else:
+                print("one2")
+                self.gen_one()
+
+    def gen_one(self):
+        """
+        Generetes one horizontal bloc.
+        """
+        for j in range(self.height):
+            self.data[self.gen % self.width, j] = Material.EMPTY
+        possible_levels = [min(self.gen_level+1, 3), self.gen_level, self.gen_level, self.gen_level, max(1, self.gen_level-1)]
+        rd.shuffle(possible_levels)
+        new_level = possible_levels[0]
+        for j in range(self.height - new_level, self.height):
+            self.data[self.gen % self.width, j] = Material.GROUND
+        self.gen_level = new_level
+        self.gen +=1
+
+    def gen_hole(self):
+        """
+        Generates a hole.
+        Can be renerated at every level.
+        """
+        for i in range(6):
+            for j in range(self.height):
+                self.data[(self.gen + i) % self.width, j] = Material.EMPTY
+        for i in range(2):
+            for j in range((self.height - self.gen_level), self.height):
+                self.data[self.gen % self.width, j] = Material.GROUND
+            self.gen +=1
+        for i in range(3):
+            for j in range(self.height):
+                self.data[self.gen % self.width, j] = Material.EMPTY
+            self.gen +=1
+        for j in range((self.height - self.gen_level), self.height):
+            self.data[self.gen % self.width, j] = Material.GROUND
+        self.gen +=1
 
     def update(self, dx):
         """
@@ -179,7 +226,7 @@ class Map(object):
         @param dx: The speed over the x-axis.
         @type dx: int
         """
-        while self.gen - self.pos // self.dim_bloc < 2 * self.display_width:
+        while self.gen - (self.pos // self.dim_bloc) < 2 * self.display_width:
             self.gen_proc()
         self.pos = self.pos + dx
         self.last_dx = dx
