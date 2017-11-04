@@ -92,8 +92,9 @@ class Map(object):
         """
         This Function allows to access to self.data with the modulo
         """
-        if loc_pixel[1] < 0:
+        if loc_pixel[1] < 0 or loc_pixel[1] >= self.height*self.dim_bloc:
             return Material.EMPTY
+
         return self.data[((loc_pixel[0]+self.pos)//self.dim_bloc) % self.width, loc_pixel[1]//self.dim_bloc]
 
     def data_write(self, loc_pixel, value):
@@ -131,7 +132,7 @@ class Map(object):
         @rtype: (bool, (int, int))
         """
         # death by falling out of the screen
-        if y0 + dy > self.height * self.dim_bloc:
+        if y0 + dy + hitbox[1] >= self.height * self.dim_bloc:
             return True, (x0, y0)
 
         x = x0
@@ -236,9 +237,6 @@ class Map(object):
         @rtype: None
         """
         # We blit the backgrounds
-        # surface.blit(self.background[0], (0, 0))
-        # for i in range(len(self.background)-1):
-        #    pas
 
         self.parallax_scrolling.draw(surface, self.last_dx)
 

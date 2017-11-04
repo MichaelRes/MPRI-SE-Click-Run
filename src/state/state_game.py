@@ -17,7 +17,7 @@ class StateGame(state_engine.GameState):
         """
         state_engine.GameState.__init__(self)
         self.current_opts = load_options()
-        self.player = Player(5, 0, 8, 0, self.current_opts["CHARACTER"])
+        self.player = Player(50, 0, 8, 0, self.current_opts["CHARACTER"])
         self.game_map = Map()
         self.acceleration_x = 0  # As said, x variables is not of any use at the moment
         self.acceleration_y = 1
