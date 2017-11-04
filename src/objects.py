@@ -68,6 +68,7 @@ class Player(GameObject):
                        "ASCEND": load_image("player/%s/ascend.png" % self.player, self.hitbox)}
         self.time_of_a_sprite = 5
         self.current_time = -1
+        self.double_jump_available = False
 
     def choose_sprite(self):
         """

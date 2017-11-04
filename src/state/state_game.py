@@ -19,7 +19,7 @@ class StateGame(state_engine.GameState):
         self.current_opts = load_options()
         self.player = Player(5, 0, 8, 0, self.current_opts["CHARACTER"])
         self.game_map = Map()
-        self.acceleration_x = 0  # As said, x variables aint of any use at the moment
+        self.acceleration_x = 0  # As said, x variables is not of any use at the moment
         self.acceleration_y = 1
         self.frame = 0  # Number of frame since beginning
         self.max_speed = self.game_map.dim_bloc
@@ -43,10 +43,15 @@ class StateGame(state_engine.GameState):
             if event.key == pg.K_SPACE:
                 if self.game_map.object_on_the_ground(self.player):
                     # TODO: pourquoi le -18 ici ? Le justifier et / ou le mettre en constante globale.
+                    # Il est ien comme ça ce petit -18.
                     self.player.v_y = min(-18, self.player.v_y)
                     # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
                     self.player.action = Action.ASCEND
                     self.player.last_jump = self.frame
+                elif self.player.action == Action.JUMPING and self.player.double_jump_available:
+                    self.player.double_jump_available = False
+                    self.player.v_y = -18
+                    self.player.action = Action.JUMPING
         if event.type == pg.KEYUP:
             if event.key == pg.K_SPACE:
                 if self.player.action == Action.ASCEND:
@@ -92,6 +97,7 @@ class StateGame(state_engine.GameState):
         if self.game_map.object_on_the_ground(self.player) and self.player.action != Action.ASCEND:
             self.player.action = Action.RUNNING
             self.player.v_y = min(self.player.v_y, 0)
+            self.player.double_jump_available = True
         elif self.player.action in [Action.JUMPING, Action.RUNNING] or \
                 (self.player.action == Action.ASCEND and self.frame - self.player.last_jump > 12):
             # Either is the player in jump state, or he stopped his ascension
