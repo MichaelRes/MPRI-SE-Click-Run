@@ -1,6 +1,6 @@
 # MPRI-SE-Click-Run
 
-Do you want to test your skills in an old school 2D run and jump game ?
+Do you want to test your skills in an old school 2D runner ?
 Well you're at the right place !
 
 ## Running
