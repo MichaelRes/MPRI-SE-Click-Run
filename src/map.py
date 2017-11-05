@@ -37,6 +37,10 @@ class Map(object):
 
         self.data = np.full((self.width, self.height), Material.EMPTY, dtype=Material)
 
+        for i in range(self.display_width):
+            self.data[i, self.height-1] = Material.GROUND
+            self.gen += 1
+
         self.ground_sprite = load_image('ground_sprite.png',(self.dim_bloc,self.dim_bloc))
         self.parallax_scrolling = ParallaxScrolling()
 
