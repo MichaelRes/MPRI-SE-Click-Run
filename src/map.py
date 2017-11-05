@@ -178,11 +178,13 @@ class Map(object):
         while self.gen - old_pos < self.display_width:
             if self.display_width - (self.gen - old_pos) >= 6:
                 if rd.random() < 0.2:
-                    possible_paterns = ["HOLE"]
+                    possible_paterns = ["HOLE", "DOUBLE_STEP"]
                     rd.shuffle(possible_paterns)
                     obs = possible_paterns[0]
                     if obs == "HOLE":
                         self.gen_hole()
+                    if obs == "DOUBLE_STEP":
+                        self.gen_double_step()
                 else:
                     self.gen_one()
             else:
@@ -190,7 +192,8 @@ class Map(object):
 
     def gen_one(self):
         """
-        Generetes one horizontal bloc.
+        Generetes a new column.
+        can be generated at every level.
         """
         for j in range(self.height):
             self.data[self.gen % self.width, j] = Material.EMPTY
@@ -221,6 +224,28 @@ class Map(object):
         for j in range((self.height - self.gen_level), self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
         self.gen +=1
+
+    def gen_double_step(self):
+        """
+        Generates a double step.
+        Can be generated at every level.
+        """
+        for i in range(6):
+            for j in range(self.height):
+                self.data[(self.gen + i) % self.width, j] = Material.EMPTY
+        for j in range((self.height - self.gen_level), self.height):
+            self.data[self.gen % self.width, j] = Material.GROUND
+        self.gen +=1
+        for i in range(2):
+            for j in range((self.height - self.gen_level)-2, self.height):
+                self.data[self.gen % self.width, j] = Material.GROUND
+            self.gen +=1
+        for i in range(2):
+            for j in range((self.height - self.gen_level)-4, self.height):
+                self.data[self.gen % self.width, j] = Material.GROUND
+            self.gen +=1
+        for j in range((self.height - self.gen_level), self.height):
+            self.data[self.gen % self.width, j] = Material.GROUND
 
     def update(self, dx):
         """
