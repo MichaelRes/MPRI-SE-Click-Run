@@ -177,14 +177,16 @@ class Map(object):
         old_pos = self.gen
         while self.gen - old_pos < self.display_width:
             if self.display_width - (self.gen - old_pos) >= 6:
-                if rd.random() < 0.2:
-                    possible_paterns = ["HOLE", "DOUBLE_STEP"]
+                if rd.random() < 0.1:
+                    possible_paterns = ["HOLE", "DOUBLE_STEP", "PLATFORM"]
                     rd.shuffle(possible_paterns)
                     obs = possible_paterns[0]
                     if obs == "HOLE":
                         self.gen_hole()
                     if obs == "DOUBLE_STEP":
                         self.gen_double_step()
+                    if obs == "PLATFORM":
+                        self.gen_platform()
                 else:
                     self.gen_one()
             else:
@@ -246,6 +248,20 @@ class Map(object):
             self.gen +=1
         for j in range((self.height - self.gen_level), self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
+
+    def gen_platform(self):
+        """
+        Generates a platform.
+        Can be generated at every level.
+        """
+        for i in range(6):
+            for j in range(self.height):
+                self.data[(self.gen + i) % self.width, j] = Material.EMPTY
+        self.gen += 2
+        for i in range(2):
+            self.data[self.gen % self.width, (self.height-self.gen_level-2)] = Material.GROUND
+            self.gen += 1
+        self.gen += 2
 
     def update(self, dx):
         """
