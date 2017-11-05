@@ -108,6 +108,7 @@ class StateGame(state_engine.GameState):
 
         # Update of the game_map
         self.game_map.update(x - x0)
+        self.persist["MAP"] = self.game_map
 
         # This part got to stay updated
         self.frame += 1

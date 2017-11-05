@@ -2,6 +2,7 @@
 from . import state_engine
 import pygame as pg
 import pickle
+from map import Map
 
 
 class Options(state_engine.GameState):
@@ -20,6 +21,7 @@ class Options(state_engine.GameState):
                              }
         self.available_opts = list(self.all_opts)
         self.available_opts.sort()
+        self.options_map = Map()
 
     def write_opts(self):
         dict_opts = {}
@@ -53,6 +55,19 @@ class Options(state_engine.GameState):
                     (self.current_opts[self.available_opts[self.current_select]] - 1) % \
                     len(self.all_opts[self.available_opts[self.current_select]])
 
+    def update(self):
+        """
+        Update the state.
+        @rtype: None
+        """
+        if "MAP" in self.persist:
+            self.options_map = self.persist["MAP"]
+            self.options_map.update(5)
+            self.persist["MAP"] = self.options_map
+        else:
+            self.options_map.update(5)
+            self.persist["MAP"] = self.options_map
+
     def draw(self, surface):
         """
         Draw everything to the screen.
@@ -62,7 +77,7 @@ class Options(state_engine.GameState):
         """
         width, height = surface.get_size()
 
-        surface.fill(pg.Color("black"))
+        self.options_map.display(surface)
 
         for i, k in enumerate(self.available_opts):
             if i == self.current_select:

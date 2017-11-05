@@ -48,5 +48,5 @@ class Pause(state_engine.GameState):
                 text_color = 255, 255, 255
             text = self.font.render(name_state, 1, text_color)
             width_text, _ = text.get_size()
-            surface.blit(text, ((width - width_text)/2, i*100))
+            surface.blit(text, ((width - width_text)/2, i*100 + 100))
         pg.display.flip()

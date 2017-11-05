@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import state_engine
 import pygame as pg
+from map import Map
 
 
 class Credits(state_engine.GameState):
@@ -9,6 +10,7 @@ class Credits(state_engine.GameState):
     """
     def __init__(self):
         state_engine.GameState.__init__(self)
+        self.credits_map = Map()
 
     def get_event(self, event):
         """
@@ -22,6 +24,19 @@ class Credits(state_engine.GameState):
                 self.next_state = "MAIN_MENU"
                 self.done = True
 
+    def update(self):
+        """
+        Update the state.
+        @rtype: None
+        """
+        if "MAP" in self.persist:
+            self.credits_map = self.persist["MAP"]
+            self.credits_map.update(5)
+            self.persist["MAP"] = self.credits_map
+        else:
+            self.credits_map.update(5)
+            self.persist["MAP"] = self.credits_map
+
     def draw(self, surface):
         """
         Draw everything to the screen.
@@ -31,10 +46,15 @@ class Credits(state_engine.GameState):
         """
         width, height = surface.get_size()
 
-        surface.fill(pg.Color("black"))
+        self.credits_map.display(surface)
         text_color = 255, 255, 255
 
-        text = self.font.render("METTRE LES CREDITS ICI", 1, text_color)
-        width_text, height_text = text.get_size()
-        surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2))
+        lines = ["Software Egineering - ENS Cachan - MPRI", "Project : Click & Run", "Dang-Nhu Hector - Marotte Joseph - Lalanne Clément"]
+
+        for i, line in enumerate(lines):
+            text_color = 255, 255, 255
+            text = self.font.render(line, 1, text_color)
+            width_text, _ = text.get_size()
+            surface.blit(text, ((width - width_text) / 2, i*100 + 100))
+
         pg.display.flip()
