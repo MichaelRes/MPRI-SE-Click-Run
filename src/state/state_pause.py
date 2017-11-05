@@ -45,7 +45,7 @@ class Pause(state_engine.GameState):
             if i == self.current_select:
                 text_color = 255, 0, 0
             else:
-                text_color = 255, 255, 255
+                text_color = 0, 0, 0
             text = self.font.render(name_state, 1, text_color)
             width_text, _ = text.get_size()
             surface.blit(text, ((width - width_text)/2, i*100 + 100))

@@ -47,12 +47,12 @@ class Credits(state_engine.GameState):
         width, height = surface.get_size()
 
         self.credits_map.display(surface)
-        text_color = 255, 255, 255
+        text_color = 0, 0, 0
 
         lines = ["Software Egineering - ENS Cachan - MPRI", "Project : Click & Run", "Dang-Nhu Hector - Marotte Joseph - Lalanne Clément"]
 
         for i, line in enumerate(lines):
-            text_color = 255, 255, 255
+            text_color = 0, 0, 0
             text = self.font.render(line, 1, text_color)
             width_text, _ = text.get_size()
             surface.blit(text, ((width - width_text) / 2, i*100 + 100))
