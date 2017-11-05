@@ -40,7 +40,13 @@ class MainMenu(state_engine.GameState):
         Update the state.
         @rtype: None
         """
-        self.main_menu_map.update(5)
+        if "MAP" in self.persist:
+            self.main_menu_map = self.persist["MAP"]
+            self.main_menu_map.update(5)
+            self.persist["MAP"] = self.main_menu_map
+        else:
+            self.main_menu_map.update(5)
+            self.persist["MAP"] = self.main_menu_map
 
     def draw(self, surface):
         """
@@ -58,5 +64,5 @@ class MainMenu(state_engine.GameState):
                 text_color = 255, 255, 255
             text = self.font.render(name_state, 1, text_color)
             width_text, _ = text.get_size()
-            surface.blit(text, ((width - width_text) / 2, i*100))
+            surface.blit(text, ((width - width_text) / 2, i*100 + 100))
         pg.display.flip()

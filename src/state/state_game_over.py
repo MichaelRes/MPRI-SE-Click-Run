@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import state_engine
 import pygame as pg
+from map import Map
 
 
 class GameOver(state_engine.GameState):
@@ -12,6 +13,7 @@ class GameOver(state_engine.GameState):
         @rtype: None
         """
         state_engine.GameState.__init__(self)
+        self.game_over_map = Map()
 
     def get_event(self, event):
         """
@@ -31,6 +33,19 @@ class GameOver(state_engine.GameState):
                 self.restart_next_state = True
                 self.done = True
 
+    def update(self):
+        """
+        Update the state.
+        @rtype: None
+        """
+        if "MAP" in self.persist:
+            self.game_over_map = self.persist["MAP"]
+            self.game_over_map.update(5)
+            self.persist["MAP"] = self.game_over_map
+        else:
+            self.game_over_map.update(5)
+            self.persist["MAP"] = self.game_over_map
+
     def draw(self, surface):
         """
         Draw everything to the screen.
@@ -40,7 +55,7 @@ class GameOver(state_engine.GameState):
         """
         width, height = surface.get_size()
 
-        surface.fill(pg.Color("black"))
+        self.game_over_map.display(surface)
         text_color = 255, 255, 255
 
         text = self.font.render("GAME_OVER", 1, text_color)

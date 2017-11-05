@@ -2,6 +2,7 @@
 from . import state_engine
 import pygame as pg
 import score
+from map import Map
 
 
 key_dict = {
@@ -44,6 +45,8 @@ class AddScore(state_engine.GameState):
         """
         state_engine.GameState.__init__(self)
 
+        self.add_score_map = Map()
+
     def get_event(self, event):
         """
         Do something according to the last event that happened.
@@ -69,6 +72,19 @@ class AddScore(state_engine.GameState):
                     self.next_state = "MAIN_MENU"
                     self.done = True
 
+    def update(self):
+        """
+        Update the state.
+        @rtype: None
+        """
+        if "MAP" in self.persist:
+            self.add_score_map = self.persist["MAP"]
+            self.add_score_map.update(5)
+            self.persist["MAP"] = self.add_score_map
+        else:
+            self.add_score_map.update(5)
+            self.persist["MAP"] = self.add_score_map
+
     def startup(self, persistent):
         """
         Called when a state resumes being active.
@@ -88,7 +104,7 @@ class AddScore(state_engine.GameState):
         """
         width, height = surface.get_size()
 
-        surface.fill(pg.Color("black"))
+        self.add_score_map.display(surface)
         text_color = 255, 255, 255
 
         text = self.font.render("GAME_OVER", 1, text_color)
