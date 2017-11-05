@@ -52,7 +52,7 @@ class BestScore(state_engine.GameState):
         """
         width, height = surface.get_size()
         self.best_score_map.display(surface)
-        text_color = 255, 255, 255
+        text_color = 0, 0, 0
         for i, s in enumerate(score.ScoreManager().instance.scores):
             text = self.font.render(str(i+1) + " " + s.pseudo + " " + str(s.score), 1, text_color)
             width_text, _ = text.get_size()

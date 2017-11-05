@@ -105,7 +105,7 @@ class AddScore(state_engine.GameState):
         width, height = surface.get_size()
 
         self.add_score_map.display(surface)
-        text_color = 255, 255, 255
+        text_color = 0, 0, 0
 
         text = self.font.render("GAME_OVER", 1, text_color)
         width_text, height_text = text.get_size()

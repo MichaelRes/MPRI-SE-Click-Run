@@ -83,7 +83,7 @@ class Options(state_engine.GameState):
             if i == self.current_select:
                 text_color = (255, 0, 0)
             else:
-                text_color = 255, 255, 255
+                text_color = 0, 0, 0
             text = self.font.render(k + " " + self.all_opts[k][self.current_opts[k]], 1, text_color)
             width_text, height_text = text.get_size()
             surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + i*24))
