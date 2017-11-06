@@ -91,7 +91,6 @@ class ScoreManager(object):
                 with open(self.best_score_file, "r") as f:
                     scores = [score.strip().split(" ") for score in f]
                     scores = [Score(e[0], int(e[1])) for e in scores]
-                    print(scores)
                     return scores
             except FileNotFoundError:
                 return []
