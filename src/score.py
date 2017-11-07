@@ -25,7 +25,7 @@ class Score(object):
         @type frame: int
         @rtype: None
         """
-        self.score += frame
+        self.score += 1
 
     def __eq__(self, other):
         """
