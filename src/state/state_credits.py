@@ -22,6 +22,7 @@ class Credits(state_engine.GameState):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
+                self.persist["MAP"] = self.credits_map
                 self.done = True
 
     def update(self):
@@ -29,13 +30,18 @@ class Credits(state_engine.GameState):
         Update the state.
         @rtype: None
         """
+        self.credits_map.update(5)
+
+    def startup(self, persistent):
+        """
+        Called when a state resumes being active.
+        @param persistent: a dict passed from state to state
+        @type persistent: dict{}
+        @rtype: None
+        """
+        self.persist = persistent
         if "MAP" in self.persist:
             self.credits_map = self.persist["MAP"]
-            self.credits_map.update(5)
-            self.persist["MAP"] = self.credits_map
-        else:
-            self.credits_map.update(5)
-            self.persist["MAP"] = self.credits_map
 
     def draw(self, surface):
         """

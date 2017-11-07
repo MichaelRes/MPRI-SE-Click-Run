@@ -37,6 +37,7 @@ class StateGame(state_engine.GameState):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "PAUSE"
+                self.persist["MAP"] = self.game_map
                 self.done = True
         if event.type == pg.KEYDOWN:
             # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
@@ -86,8 +87,10 @@ class StateGame(state_engine.GameState):
             p = score.ScoreManager().pos_as_score(self.score)
             if p < score.ScoreManager().max_number_of_score:
                 self.persist = {"score": self.score, "pos": p}
+                self.persist["MAP"] = self.game_map
                 self.next_state = "ADD_SCORE"
             else:
+                self.persist["MAP"] = self.game_map
                 self.next_state = "GAME_OVER"
             self.done = True
 
@@ -112,6 +115,15 @@ class StateGame(state_engine.GameState):
 
         # This part got to stay updated
         self.frame += 1
+
+    def startup(self, persistent):
+        """
+        Called when a state resumes being active.
+        @param persistent: a dict passed from state to state
+        @type persistent: dict{}
+        @rtype: None
+        """
+        self.persist = persistent
 
     def draw(self, surface):
         """

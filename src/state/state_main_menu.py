@@ -33,6 +33,7 @@ class MainMenu(state_engine.GameState):
                 self.current_select = (self.current_select + 1) % len(self.available_state)
             elif event.key == pg.K_RETURN:
                 self.next_state = self.available_state[self.current_select]
+                self.persist["MAP"] = self.main_menu_map
                 self.done = True
 
     def update(self):
@@ -40,13 +41,18 @@ class MainMenu(state_engine.GameState):
         Update the state.
         @rtype: None
         """
+        self.main_menu_map.update(5)
+
+    def startup(self, persistent):
+        """
+        Called when a state resumes being active.
+        @param persistent: a dict passed from state to state
+        @type persistent: dict{}
+        @rtype: None
+        """
+        self.persist = persistent
         if "MAP" in self.persist:
             self.main_menu_map = self.persist["MAP"]
-            self.main_menu_map.update(5)
-            self.persist["MAP"] = self.main_menu_map
-        else:
-            self.main_menu_map.update(5)
-            self.persist["MAP"] = self.main_menu_map
 
     def draw(self, surface):
         """
