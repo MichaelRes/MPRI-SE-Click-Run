@@ -24,5 +24,5 @@ def load_options():
         return pickle.load(open("options_file.data", "rb"))
     except FileNotFoundError:
         return {"CHARACTER": "mario",
+                "DIFFICULTY": "normal",
          }
-
