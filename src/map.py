@@ -5,6 +5,7 @@ import random as rd
 from enum import Enum
 import pygame as pg
 from ressources import load_image
+from ressources import load_options
 
 
 class Material(Enum):
@@ -34,6 +35,9 @@ class Map(object):
         self.pos = 0
         self.gen = 0
         self.gen_level = 1
+
+        self.current_opts = load_options()
+        self.difficulty = self.current_opts["DIFFICULTY"]
 
         self.data = np.full((self.width, self.height), Material.EMPTY, dtype=Material)
 
@@ -174,11 +178,19 @@ class Map(object):
         """
         Launches a procedural generation for the map.
         """
+        possible_paterns = []
+        if self.difficulty == "easy":
+            possible_paterns = ["HOLE"]
+        elif self.difficulty == "normal":
+            possible_paterns = ["HOLE", "PLATFORM"]
+        elif self.difficulty == "difficult":
+            possible_paterns = ["HOLE", "DOUBLE_STEP", "PLATFORM"]
+        elif self.difficulty == "expert":
+            possible_paterns = ["HOLE", "DOUBLE_STEP", "DOUBLE_STEP", "DOUBLE_STEP", "PLATFORM"]
         old_pos = self.gen
         while self.gen - old_pos < self.display_width:
             if self.display_width - (self.gen - old_pos) >= 6:
                 if rd.random() < 0.1:
-                    possible_paterns = ["HOLE", "DOUBLE_STEP", "PLATFORM"]
                     rd.shuffle(possible_paterns)
                     obs = possible_paterns[0]
                     if obs == "HOLE":
