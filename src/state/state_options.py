@@ -16,8 +16,10 @@ class Options(state_engine.GameState):
         state_engine.GameState.__init__(self)
         self.current_select = 0
         self.all_opts = {"CHARACTER": ["mario", "toad"],
+                         "DIFFICULTY": ["easy", "normal", "difficult", "expert"],
                          }
         self.current_opts = {"CHARACTER": 0,
+                             "DIFFICULTY":1,
                              }
         self.available_opts = list(self.all_opts)
         self.available_opts.sort()
@@ -92,5 +94,5 @@ class Options(state_engine.GameState):
                 text_color = 0, 0, 0
             text = self.font.render(k + " " + self.all_opts[k][self.current_opts[k]], 1, text_color)
             width_text, height_text = text.get_size()
-            surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + i*24))
+            surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + (2*i)*24))
             pg.display.flip()
