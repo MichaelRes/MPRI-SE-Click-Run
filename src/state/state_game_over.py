@@ -25,11 +25,13 @@ class GameOver(state_engine.GameState):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
+                self.persist["MAP"] = self.game_over_map
                 self.restart_next_state = False
                 self.done = True
 
             elif event.key == pg.K_RETURN:
                 self.next_state = "GAME"
+                self.persist["MAP"] = self.game_over_map
                 self.restart_next_state = True
                 self.done = True
 
@@ -38,13 +40,18 @@ class GameOver(state_engine.GameState):
         Update the state.
         @rtype: None
         """
+        self.game_over_map.update(5)
+
+    def startup(self, persistent):
+        """
+        Called when a state resumes being active.
+        @param persistent: a dict passed from state to state
+        @type persistent: dict{}
+        @rtype: None
+        """
+        self.persist = persistent
         if "MAP" in self.persist:
             self.game_over_map = self.persist["MAP"]
-            self.game_over_map.update(5)
-            self.persist["MAP"] = self.game_over_map
-        else:
-            self.game_over_map.update(5)
-            self.persist["MAP"] = self.game_over_map
 
     def draw(self, surface):
         """

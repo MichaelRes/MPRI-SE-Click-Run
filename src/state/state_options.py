@@ -41,6 +41,7 @@ class Options(state_engine.GameState):
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
                 self.write_opts()
+                self.persist["MAP"] = self.options_map
                 self.done = True
             elif event.key == pg.K_UP:
                 self.current_select = (self.current_select - 1) % len(self.available_opts)
@@ -60,13 +61,18 @@ class Options(state_engine.GameState):
         Update the state.
         @rtype: None
         """
+        self.options_map.update(5)
+
+    def startup(self, persistent):
+        """
+        Called when a state resumes being active.
+        @param persistent: a dict passed from state to state
+        @type persistent: dict{}
+        @rtype: None
+        """
+        self.persist = persistent
         if "MAP" in self.persist:
             self.options_map = self.persist["MAP"]
-            self.options_map.update(5)
-            self.persist["MAP"] = self.options_map
-        else:
-            self.options_map.update(5)
-            self.persist["MAP"] = self.options_map
 
     def draw(self, surface):
         """

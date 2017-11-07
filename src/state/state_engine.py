@@ -105,7 +105,7 @@ class GameState(object):
         @type persistent: dict{}
         @rtype: None
         """
-        self.persist = persistent
+        pass
 
     def get_event(self, event):
         """

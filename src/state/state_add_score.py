@@ -44,7 +44,6 @@ class AddScore(state_engine.GameState):
         @rtype: None
         """
         state_engine.GameState.__init__(self)
-
         self.add_score_map = Map()
 
     def get_event(self, event):
@@ -57,6 +56,7 @@ class AddScore(state_engine.GameState):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
+                self.persist["MAP"] = self.add_score_map
                 self.done = True
 
             elif event.key in key_dict.keys():
@@ -70,6 +70,7 @@ class AddScore(state_engine.GameState):
                 if len(self.best_score.pseudo) == 3:
                     score.ScoreManager().add_score(self.best_score, self.best_score_pos)
                     self.next_state = "MAIN_MENU"
+                    self.persist["MAP"] = self.add_score_map
                     self.done = True
 
     def update(self):
@@ -77,13 +78,7 @@ class AddScore(state_engine.GameState):
         Update the state.
         @rtype: None
         """
-        if "MAP" in self.persist:
-            self.add_score_map = self.persist["MAP"]
-            self.add_score_map.update(5)
-            self.persist["MAP"] = self.add_score_map
-        else:
-            self.add_score_map.update(5)
-            self.persist["MAP"] = self.add_score_map
+        self.add_score_map.update(5)
 
     def startup(self, persistent):
         """
@@ -92,6 +87,9 @@ class AddScore(state_engine.GameState):
         @type persistent: dict{}
         @rtype: None
         """
+        self.persist = persistent
+        if "MAP" in self.persist:
+            self.add_score_map = self.persist["MAP"]
         self.best_score = persistent["score"]
         self.best_score_pos = persistent["pos"]
 
