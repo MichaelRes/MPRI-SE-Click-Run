@@ -51,7 +51,7 @@ chmod +x gen_doc.sh
 
 ## Tests
 ```
-python3 run_test.py
+pytest tests
 ```
 
 Authors : Dang-Nhu Hector, Marotte Joseph, Lalanne Clément.
