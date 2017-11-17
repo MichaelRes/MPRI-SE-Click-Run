@@ -16,9 +16,10 @@ class StateGame(state_engine.GameState):
         """
         state_engine.GameState.__init__(self)
         self.current_opts = load_options()
-        self.player = Player(50, 0, 8, 0, self.current_opts["CHARACTER"], jump_key = pg.K_SPACE)
-        self.player2 = Player(150, 0, 8, 0, "mario", pg.K_SPACE)
-        self.player2.is_dead = True
+        self.players = []
+        for i in range(int(self.current_opts["NUMBER_OF_PLAYER"])):
+            new_player = Player(50 + i*100, 0, 8, 0, self.current_opts["CHARACTER"], pg.K_SPACE)
+            self.players.append(new_player)
 
         self.game_map = Map()
         self.acceleration_x = 0  # As said, x variables is not of any use at the moment
@@ -41,8 +42,8 @@ class StateGame(state_engine.GameState):
                 self.next_state = "PAUSE"
                 self.persist["MAP"] = self.game_map
                 self.done = True
-        self.player.get_event(event, self.game_map)
-        self.player2.get_event(event, self.game_map)
+        for player in self.players:
+            player.get_event(event, self.game_map)
 
     def update_score(self):
         """
@@ -56,28 +57,24 @@ class StateGame(state_engine.GameState):
         Update the state.
         @rtype: None
         """
-        # Update of the pos
-        x0 = self.player.pos_x
         self.score.update(self.frame)
 
         # Something to do in case the game is over
-        if self.player.is_dead and self.player2.is_dead:
+        if all([player.is_dead for player in self.players]):
             p = score.ScoreManager().pos_as_score(self.score)
             if p < score.ScoreManager().max_number_of_score:
-                self.persist = {"score": self.score, "pos": p}
-                self.persist["MAP"] = self.game_map
+                self.persist = {"score": self.score, "pos": p, "MAP": self.game_map}
                 self.next_state = "ADD_SCORE"
             else:
-                self.persist["MAP"] = self.game_map
+                self.persist = {"MAP": self.game_map}
                 self.next_state = "GAME_OVER"
             self.done = True
 
-        self.player.update(self.game_map, self.difficulty, self.acceleration_y, self.max_speed)
-        self.player2.update(self.game_map, self.difficulty, self.acceleration_y, self.max_speed)
+        for player in self.players:
+            player.update(self.game_map, self.difficulty, self.acceleration_y, self.max_speed)
 
         # Update of the game_map
-        self.game_map.update(int(self.player.v_x * self.difficulty))
-        self.persist["MAP"] = self.game_map
+        self.game_map.update(int(self.players[0].v_x * self.difficulty))
 
         # This part got to stay updated
         self.frame += 1
@@ -99,8 +96,6 @@ class StateGame(state_engine.GameState):
         @rtype: None
         """
         self.game_map.display(surface)
-        #if not(self.player.is_dead):
-        self.player.draw(surface)
-        #if not(self.player2.is_dead):
-        self.player2.draw(surface)
+        for player in self.players:
+            player.draw(surface)
         self.score.draw(surface, self.font)
