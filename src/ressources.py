@@ -25,4 +25,5 @@ def load_options():
     except FileNotFoundError:
         return {"CHARACTER": "mario",
                 "DIFFICULTY": "normal",
+                "NUMBER_OF_PLAYER": 1
          }
