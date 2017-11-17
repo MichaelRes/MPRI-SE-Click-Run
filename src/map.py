@@ -49,6 +49,9 @@ class Map(object):
 
         self.last_dx = 0
 
+    def __str__(self):
+        return str(self.last_dx)
+
     def object_on_the_ground(self, obj):
         """
         Return a bool indicating if the given objects is on the ground.
