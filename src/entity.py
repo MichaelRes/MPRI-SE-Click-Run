@@ -2,20 +2,20 @@ from enum import Enum
 from ressources import load_image
 
 
-class GameObject:
+class Entity:
     """
-    The class for the objects in the game.
+    The class for the entity in the game.
     """
 
     def __init__(self, x0, y0, vx0, vy0, hitbox):
         """
-        @param x0: The x-axis position of the object.
+        @param x0: The x-axis position of the entity.
         @type x0: int
-        @param y0: The y-axis position of the object.
+        @param y0: The y-axis position of the entity.
         @type y0: int
-        @param vx0: The speed of the object on the x-axis.
+        @param vx0: The speed of the entity on the x-axis.
         @type vx0: int
-        @param vy0: The speed of the object on the y-axis.
+        @param vy0: The speed of the entity on the y-axis.
         @type vy0: int
         """
         self.pos_x = x0
@@ -34,7 +34,7 @@ class Action(Enum):
     ASCEND = 3
 
 
-class Player(GameObject):
+class Player(Entity):
     """
     The class for the main character
     """
@@ -51,7 +51,7 @@ class Player(GameObject):
         @type vy0: int
         @rtype: None
         """
-        GameObject.__init__(self, x0, y0, vx0, vy0, (50, 50))
+        Entity.__init__(self, x0, y0, vx0, vy0, (50, 50))
         self.player = sprite_name
         self.action = Action.JUMPING
         # This variable takes trace of last frame where the player jumped in order to stop the ascending phase

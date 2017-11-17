@@ -1,4 +1,4 @@
-from objects import *
+from entity import *
 import numpy as np
 import random as rd
 from enum import Enum
