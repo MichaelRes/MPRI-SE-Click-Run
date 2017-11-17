@@ -7,6 +7,23 @@ class Entity:
     The class for the entity in the game.
     """
 
+    def __init__(self, x0, y0, hitbox):
+        """
+        @param x0: The x-axis position of the entity.
+        @type x0: int
+        @param y0: The y-axis position of the entity.
+        @type y0: int
+        """
+        self.pos_x = x0
+        self.pos_y = y0
+        self.hitbox = hitbox
+
+
+class MovingEntity(Entity):
+    """
+    The class for a moving entity in the game
+    """
+
     def __init__(self, x0, y0, vx0, vy0, hitbox):
         """
         @param x0: The x-axis position of the entity.
@@ -18,11 +35,9 @@ class Entity:
         @param vy0: The speed of the entity on the y-axis.
         @type vy0: int
         """
-        self.pos_x = x0
-        self.pos_y = y0
+        Entity.__init__(self, x0, y0, hitbox)
         self.v_x = vx0
         self.v_y = vy0
-        self.hitbox = hitbox
 
 
 class Action(Enum):
@@ -34,7 +49,7 @@ class Action(Enum):
     ASCEND = 3
 
 
-class Player(Entity):
+class Player(MovingEntity):
     """
     The class for the main character
     """
@@ -51,7 +66,7 @@ class Player(Entity):
         @type vy0: int
         @rtype: None
         """
-        Entity.__init__(self, x0, y0, vx0, vy0, (50, 50))
+        MovingEntity.__init__(self, x0, y0, vx0, vy0, (50, 50))
         self.player = sprite_name
         self.action = Action.JUMPING
         # This variable takes trace of last frame where the player jumped in order to stop the ascending phase
