@@ -7,7 +7,7 @@ class GameObject:
     The class for the objects in the game.
     """
 
-    def __init__(self, x0, y0, vx0, vy0):
+    def __init__(self, x0, y0, vx0, vy0, hitbox):
         """
         @param x0: The x-axis position of the object.
         @type x0: int
@@ -22,7 +22,7 @@ class GameObject:
         self.pos_y = y0
         self.v_x = vx0
         self.v_y = vy0
-        self.hitbox = (50, 50)
+        self.hitbox = hitbox
 
 
 class Action(Enum):
@@ -51,7 +51,7 @@ class Player(GameObject):
         @type vy0: int
         @rtype: None
         """
-        GameObject.__init__(self, x0, y0, vx0, vy0)
+        GameObject.__init__(self, x0, y0, vx0, vy0, (50, 50))
         self.player = sprite_name
         self.action = Action.JUMPING
         # This variable takes trace of last frame where the player jumped in order to stop the ascending phase
