@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pygame as pg
 from . import state_engine
 from objects import Action, Player

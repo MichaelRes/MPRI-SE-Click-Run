@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from objects import *
 import numpy as np
 import random as rd
