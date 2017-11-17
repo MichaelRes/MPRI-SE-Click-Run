@@ -1,6 +1,6 @@
 import pygame as pg
 from . import state_engine
-from objects import Action, Player
+from entity import Action, Player
 from map import Map
 import score
 from ressources import load_options
