@@ -351,7 +351,9 @@ class ParallaxScrolling(object):
         """
         @rtype: None
         """
-        self.layer = [self.ParallaxScrollingLayer(load_image("layer0.png", (900, 720))), self.ParallaxScrollingLayer(load_image("layer1.png", (900, 720)))]
+        self.current_opts = load_options()
+        self.layer = [self.current_opts["LAYER0"], self.current_opts["LAYER1"]]
+        self.layer = [self.ParallaxScrollingLayer(load_image(e, (900, 720))) for e in self.layer]
         self.radio = 2
 
     def draw(self, surface, dx):
