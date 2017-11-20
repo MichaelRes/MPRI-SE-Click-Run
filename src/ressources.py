@@ -25,5 +25,7 @@ def load_options():
     except FileNotFoundError:
         return {"CHARACTER": "mario",
                 "DIFFICULTY": "normal",
-                "NUMBER_OF_PLAYER": 1
+                "NUMBER_OF_PLAYER": 1,
+                "LAYER0": "layer0/0.png",
+                "LAYER1": "layer1/1.png",
          }
