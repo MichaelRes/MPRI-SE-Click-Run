@@ -15,7 +15,6 @@ class MainMenu(state_engine.GameState):
         self.available_state = ["GAME", "BEST_SCORE", "OPTIONS", "CREDITS"]
         self.current_select = 0
         self.next_state = None
-        self.restart_next_state = True
         self.main_menu_map = Map()
 
     def get_event(self, event):
@@ -31,6 +30,10 @@ class MainMenu(state_engine.GameState):
             elif event.key == pg.K_DOWN:
                 self.current_select = (self.current_select + 1) % len(self.available_state)
             elif event.key == pg.K_RETURN:
+                if self.current_select == 0:
+                    self.restart_next_state = True
+                else:
+                    self.restart_next_state = False
                 self.next_state = self.available_state[self.current_select]
                 self.persist["MAP"] = self.main_menu_map
                 self.done = True
