@@ -2,6 +2,7 @@ from . import state_engine
 import pygame as pg
 import pickle
 from map import Map
+from ressources import load_options
 
 
 class Options(state_engine.GameState):
@@ -18,10 +19,9 @@ class Options(state_engine.GameState):
                          "DIFFICULTY": ["easy", "normal", "difficult", "expert"],
                          "NUMBER_OF_PLAYER": [1, 2],
                          }
-        self.current_opts = {"CHARACTER": 0,
-                             "DIFFICULTY": 1,
-                             "NUMBER_OF_PLAYER": 0,
-                             }
+        self.current_opts = load_options()
+        for elem in self.current_opts.keys():
+            self.current_opts[elem] = self.all_opts[elem].index(self.current_opts[elem])
         self.available_opts = list(self.all_opts)
         self.available_opts.sort()
         self.options_map = Map()
