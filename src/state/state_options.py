@@ -98,4 +98,3 @@ class Options(state_engine.GameState):
             text = self.font.render(k + " " + str(self.all_opts[k][self.current_opts[k]]), 1, text_color)
             width_text, height_text = text.get_size()
             surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + (2*i)*24))
-            pg.display.flip()

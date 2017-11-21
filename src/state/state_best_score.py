@@ -62,4 +62,3 @@ class BestScore(state_engine.GameState):
             text = self.font.render(str(i+1) + " " + s.pseudo + " " + str(s.score), 1, text_color)
             width_text, _ = text.get_size()
             surface.blit(text, ((width - width_text) / 2, (24 * (i + 1)) + 100))
-        pg.display.flip()
