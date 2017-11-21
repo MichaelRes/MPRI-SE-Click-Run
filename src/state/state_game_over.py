@@ -75,5 +75,3 @@ class GameOver(state_engine.GameState):
         text = self.font.render("Press escape if you want to go back to the main menu\n", 1, text_color)
         width_text, height_text = text.get_size()
         surface.blit(text, ((width - width_text) / 2, (height - height_text) / 2 + 48))
-
-        pg.display.flip()

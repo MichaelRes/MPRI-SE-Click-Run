@@ -73,4 +73,3 @@ class MainMenu(state_engine.GameState):
             text = self.font.render(name_state, 1, text_color)
             width_text, _ = text.get_size()
             surface.blit(text, ((width - width_text) / 2, i*100 + 100))
-        pg.display.flip()

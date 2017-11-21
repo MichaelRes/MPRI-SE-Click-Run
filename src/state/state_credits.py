@@ -62,4 +62,3 @@ class Credits(state_engine.GameState):
             width_text, _ = text.get_size()
             surface.blit(text, ((width - width_text) / 2, i*100 + 100))
 
-        pg.display.flip()
