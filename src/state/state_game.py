@@ -5,6 +5,9 @@ from map import Map
 import score
 from ressources import load_options
 
+CONFIG_JUMP_KEY = [pg.K_SPACE, pg.K_RSHIFT, pg.K_LSHIFT]
+CONST_DEFAULT_JUMP_KEY = 0
+
 
 class StateGame(state_engine.GameState):
     """
@@ -18,7 +21,10 @@ class StateGame(state_engine.GameState):
         self.current_opts = load_options()
         self.players = []
         for i in range(int(self.current_opts["NUMBER_OF_PLAYER"])):
-            new_player = Player(50 + i*100, 0, 8, 0, self.current_opts["CHARACTER"], pg.K_SPACE)
+            if i < len(CONFIG_JUMP_KEY):
+                new_player = Player(50 + i*100, 0, 8, 0, self.current_opts["CHARACTER"], CONFIG_JUMP_KEY[i])
+            else:
+                new_player = Player(50 + i*100, 0, 8, 0, self.current_opts["CHARACTER"], CONFIG_JUMP_KEY[CONST_DEFAULT_JUMP_KEY])
             self.players.append(new_player)
 
         self.game_map = Map()
@@ -28,7 +34,7 @@ class StateGame(state_engine.GameState):
         self.max_speed = self.game_map.dim_bloc
         self.next_state = "MAIN_MENU"
         self.score = score.Score("", 0)
-        self.difficulty = 1
+        self.difficulty = 1 
 
     def get_event(self, event):
         """
