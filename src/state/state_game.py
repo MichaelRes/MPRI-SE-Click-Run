@@ -51,13 +51,6 @@ class StateGame(state_engine.GameState):
         for player in self.players:
             player.get_event(event, self.game_map)
 
-    def update_score(self):
-        """
-        Updates the score.
-        @rtype: None
-        """
-        self.score = self.score + self.frame
-
     def update(self):
         """
         Update the state.
@@ -84,6 +77,8 @@ class StateGame(state_engine.GameState):
 
         # This part got to stay updated
         self.frame += 1
+        
+        self.difficulty = 1 + self.score.score/2000
 
     def startup(self, persistent):
         """
