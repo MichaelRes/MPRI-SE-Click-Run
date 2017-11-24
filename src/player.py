@@ -78,7 +78,7 @@ class Player(MovingEntity):
             self.action = Action.JUMPING
             self.v_y = max(min(self.v_y + difficulty*acceleration_y, max_speed), -max_speed)
         elif self.action == Action.ASCEND:  # In that case, the player continues his ascension
-            self.v_y = max(min(self.v_y + difficulty*acceleration_y//2, max_speed), -max_speed)
+            self.v_y = max(min(self.v_y + difficulty*acceleration_y/2, max_speed), -max_speed)
 
     def get_event(self, event, game_map):
         if self.is_dead:
