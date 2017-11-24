@@ -78,7 +78,7 @@ class Game(object):
             self.event_loop()
             self.update()
             self.draw()
-            pg.display.flip()
+
             pg.display.update()
 
 

@@ -3,6 +3,10 @@ from enum import Enum
 from ressources import load_image
 import pygame as pg
 
+CONST_JUMP = 18
+CONST_DOUBLE_JUMP = 18
+CONST_ASCEND_TIME = 12
+
 
 class Action(Enum):
     """
@@ -69,7 +73,7 @@ class Player(MovingEntity):
             self.v_y = min(self.v_y, 0)
             self.double_jump_available = True
         elif self.action in [Action.JUMPING, Action.RUNNING] or \
-                (self.action == Action.ASCEND and self.frame_since_last_jump > 12):
+                (self.action == Action.ASCEND and self.frame_since_last_jump > CONST_ASCEND_TIME):
             # Either is the player in jump state, or he stopped his ascension
             self.action = Action.JUMPING
             self.v_y = max(min(self.v_y + difficulty*acceleration_y, max_speed), -max_speed)
@@ -84,14 +88,13 @@ class Player(MovingEntity):
             # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
             if event.key == self.jump_key:
                 if game_map.object_on_the_ground(self):
-                    # TODO: pourquoi le -18 ici ? Le justifier et / ou le mettre en constante globale.
-                    self.v_y = min(-18, self.v_y)
+                    self.v_y = min(-CONST_JUMP, self.v_y)
                     # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
                     self.action = Action.ASCEND
                     self.frame_since_last_jump = 0
                 elif self.action == Action.JUMPING and self.double_jump_available:
                     self.double_jump_available = False
-                    self.v_y = -18
+                    self.v_y = - CONST_DOUBLE_JUMP
                     self.action = Action.JUMPING
         if event.type == pg.KEYUP:
             if event.key == self.jump_key:
