@@ -13,8 +13,13 @@ class Replay:
         If path isn't None, the replay should load the corresponding file.
         Otherwise, the instance goes write mode on a new file
         """
-        pass
-
+        if self.path != None:
+            self.load(path)
+            self.mode = ReplayMode.READ
+        else:
+            self.history = []
+            self.mode = ReplayMode.WRITE
+            
     def set_opts(self, options):
         """
         This should set the variable : difficulty and number of players in order to save them to the replay
@@ -43,14 +48,14 @@ class Replay:
         """
         return if this instance has been initialised
         """
-        pass
+        return self.history == []
 
     def read(self,frame):
         """
         Return what happens at a given frame
         Should happen only in read mode and in sequential order
         """
-        return self.history == []
+        pass
     
     def write(self, event, frame):
         """
