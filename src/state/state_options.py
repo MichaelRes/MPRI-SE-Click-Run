@@ -32,8 +32,8 @@ class Options(state_engine.GameState):
         dict_opts = {}
         for k in self.all_opts:
             dict_opts[k] = self.all_opts[k][self.current_opts[k]]
-            with open("options_file.data", "wb") as f:
-                pickle.dump(dict_opts, f, pickle.HIGHEST_PROTOCOL)
+        with open("options_file.data", "wb") as f:
+            pickle.dump(dict_opts, f, pickle.HIGHEST_PROTOCOL)
 
     def get_event(self, event):
         """
