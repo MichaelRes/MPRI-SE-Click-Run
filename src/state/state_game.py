@@ -1,9 +1,12 @@
 import pygame as pg
 from . import state_engine
 from player import Action, Player
+import pickle
 from map import Map
+import replay as rp
 import score
 from ressources import load_options
+
 
 CONFIG_JUMP_KEY = [pg.K_SPACE, pg.K_RSHIFT, pg.K_LSHIFT]
 CONST_DEFAULT_JUMP_KEY = 0
@@ -13,12 +16,26 @@ class StateGame(state_engine.GameState):
     """
     Main state for the game, is the master for the map and the player.
     """
-    def __init__(self):
+    def __init__(self, replay = rp.Replay()):
         """
+        @param replay: optionnal replay
+        @type replay: replay
         @rtype: None
         """
         state_engine.GameState.__init__(self)
-        self.current_opts = load_options()
+
+        self.replay = replay
+        
+        if replay.is_empty():
+            self.current_opts = load_options()
+            self.replay_mode = False
+            self.replay.set_opts(self.current_opts)
+        else: 
+            self.replay.mode = True
+            self.current_opts = self.replay.get_opts()
+            with open("options_file.data", "wb") as f:
+                pickle.dump(self.replay.get_opts(), f, pickle.HIGHEST_PROTOCOL)
+        
         self.players = []
         for i in range(int(self.current_opts["NUMBER_OF_PLAYER"])):
             if i < len(CONFIG_JUMP_KEY):
@@ -34,7 +51,10 @@ class StateGame(state_engine.GameState):
         self.max_speed = self.game_map.dim_bloc
         self.next_state = "MAIN_MENU"
         self.score = score.Score("", 0)
-        self.difficulty = 1 
+        self.difficulty = 1
+
+                
+            
 
     def get_event(self, event):
         """
@@ -48,14 +68,24 @@ class StateGame(state_engine.GameState):
                 self.next_state = "PAUSE"
                 self.persist["MAP"] = self.game_map
                 self.done = True
-        for player in self.players:
-            player.get_event(event, self.game_map)
+        if not self.replay_mode:
+            self.replay.write(event,self.frame)
+            for player in self.players:
+                player.get_event(event, self.game_map)
 
     def update(self):
         """
         Update the state.
         @rtype: None
         """
+
+        #Loading the events from the replay
+        if self.replay_mode:
+            for event in self.replay.read(self.frame):
+                for player in self.players:
+                    player.get_event(event, self.game_map)
+
+        #Score Update
         self.score.update(self.frame)
 
         # Something to do in case the game is over
