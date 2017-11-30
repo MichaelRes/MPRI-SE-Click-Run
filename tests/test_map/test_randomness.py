@@ -21,4 +21,3 @@ def test_new_map():
         print(frequency)
     pg.quit()
 
-test_new_map()
