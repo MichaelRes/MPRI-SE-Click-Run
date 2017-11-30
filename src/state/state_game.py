@@ -16,21 +16,21 @@ class StateGame(state_engine.GameState):
     """
     Main state for the game, is the master for the map and the player.
     """
-    def __init__(self, replay = rp.Replay()):
+    def __init__(self, replay = None):
         """
         @param replay: optionnal replay
-        @type replay: replay
         @rtype: None
         """
         state_engine.GameState.__init__(self)
 
-        self.replay = replay
         
-        if replay.is_empty():
+        if replay == None:
+            self.replay = rp.Replay()
             self.current_opts = load_options()
             self.replay_mode = False
             self.replay.set_opts(self.current_opts)
-        else: 
+        else:
+            self.replay = replay
             self.replay.mode = True
             self.current_opts = self.replay.get_opts()
             with open("options_file.data", "wb") as f:
