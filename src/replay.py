@@ -15,7 +15,7 @@ class Replay:
         If path isn't None, the replay should load the corresponding file.
         Otherwise, the instance goes write mode on a new file
         """
-        if self.path != None:
+        if path != None:
             self.mode = ReplayMode.READ
             self.load(path)
             self.position = 0
