@@ -8,12 +8,12 @@ class ReplayMode(Enum):
 
 class Replay:
     """
-    A class for replay.
+    A class for the record used for the replay.
     """
     def __init__(self, path= None):
         """
         If path isn't None, the replay should load the corresponding file.
-        Otherwise, the instance goes write mode on a new file
+        Otherwise, the instance goes write mode and can be later written on the discs.
         """
         if path != None:
             self.mode = ReplayMode.READ
@@ -57,8 +57,6 @@ class Replay:
             pickle.dump([self.options,self.history], f, pickle.HIGHEST_PROTOCOL)
         
         
-
-            
     def is_empty(self):
         """
         return if this instance has been initialised
@@ -77,15 +75,15 @@ class Replay:
             if self.history[self.position][0] == frame:
                 return self.history[self.position][1]
             if self.history[self.position][0] < frame:
-                i+=1
+                self.position += 1
         
-    
     def write(self, events, frame):
         """
-        Write to the end of the file what's happening.
+        Write to the end of the file what's happening
         Should happen only in write mode
         """
         assert self.mode == ReplayMode.WRITE, "Wrong Mode for Replay class"
+        assert self.history == [] or self.history[-1][0] > frame, "Write should happen in increasing frame number"
         if self.history != [] and self.history[-1][0] == frame:
             self.history[-1][1] += events
         else:
