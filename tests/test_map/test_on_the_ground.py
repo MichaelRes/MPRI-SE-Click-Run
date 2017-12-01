@@ -6,7 +6,12 @@ from map import *
 
 
 def test_on_the_ground():
+    """
+    This function try some on_the_ground test.
+    """
+    
     pg.init()
+
     screen = pg.display.set_mode((1200, 720))
     new_map = Map()
     assert (not new_map.on_the_ground(0,0,(new_map.dim_bloc, new_map.dim_bloc)))
