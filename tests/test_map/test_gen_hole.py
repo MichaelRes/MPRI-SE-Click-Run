@@ -5,6 +5,9 @@ sys.path.insert(0, myPath + '/../../src')
 from map import *
 
 def test_new_map():
+    """
+    This function try to generate the hole pattern
+    """
     pg.init()
     screen = pg.display.set_mode((1200, 720))
     new_map = Map()
