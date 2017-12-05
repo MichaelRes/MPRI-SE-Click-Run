@@ -77,14 +77,14 @@ class Replay:
             if self.history[self.position][0] < frame:
                 self.position += 1
         
-    def write(self, events, frame):
+    def write(self, event, frame):
         """
         Write to the end of the file what's happening
         Should happen only in write mode
         """
         assert self.mode == ReplayMode.WRITE, "Wrong Mode for Replay class"
-        assert self.history == [] or self.history[-1][0] > frame, "Write should happen in increasing frame number"
+        assert self.history == [] or self.history[-1][0] <= frame, "Write should happen in increasing frame number"
         if self.history != [] and self.history[-1][0] == frame:
             self.history[-1][1] += events
         else:
-            self.history.append([frame, events])
+            self.history.append([frame, [events]])
