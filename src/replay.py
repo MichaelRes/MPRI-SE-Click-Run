@@ -85,6 +85,6 @@ class Replay:
         assert self.mode == ReplayMode.WRITE, "Wrong Mode for Replay class"
         assert self.history == [] or self.history[-1][0] <= frame, "Write should happen in increasing frame number"
         if self.history != [] and self.history[-1][0] == frame:
-            self.history[-1][1] += events
+            self.history[-1][1] += [event]
         else:
-            self.history.append([frame, [events]])
+            self.history.append([frame, [event]])
