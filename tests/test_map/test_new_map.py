@@ -8,7 +8,5 @@ def test_new_map():
     """
     This function gives an instance for the map class without going further
     """
-    pg.init()
-    screen = pg.display.set_mode((1200, 720))
     new_map = Map()
-    pg.quit()
+
