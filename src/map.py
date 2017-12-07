@@ -47,8 +47,7 @@ class Map(object):
             self.data[i, self.height-1] = Material.GROUND
             self.gen += 1
 
-        self.ground_sprite = load_image('ground_sprite.png',(self.dim_bloc,self.dim_bloc))
-        self.parallax_scrolling = ParallaxScrolling()
+        self.display_init = False
 
         self.last_dx = 0
 
@@ -315,6 +314,10 @@ class Map(object):
         @rtype: None
         """
         # We blit the backgrounds
+        if self.display_init == False:
+            self.ground_sprite = load_image('ground_sprite.png',(self.dim_bloc,self.dim_bloc))
+            self.parallax_scrolling = ParallaxScrolling()
+            self.display_init = True
 
         self.parallax_scrolling.draw(surface, self.last_dx)
 
