@@ -13,7 +13,7 @@ def main():
         "CREDITS": state_credits.Credits(),
         "GAME_OVER": state_game_over.GameOver(),
         "GAME": state_game_play.StateGamePlay(),
-        "GAME_REPlAY": state_game_replay.StateGameReplay(),
+        "GAME_REPLAY": state_game_replay.StateGameReplay(),
         "PAUSE": state_pause.Pause(),
         "ADD_SCORE": state_add_score.AddScore(),
             }

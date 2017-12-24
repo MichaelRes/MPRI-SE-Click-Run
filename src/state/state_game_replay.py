@@ -28,7 +28,7 @@ class StateGameReplay(state_game.StateGame):
         @rtype: None
         """
         self.replay = rp.Replay(path="test_save")
-        state_game.StateGame.__init__(self, self.replay.get_opts(), self.replay.seed)
+        state_game.StateGame.__init__(self, self.replay.get_opts(), ["GAME_REPLAY", "MAIN_MENU"], self.replay.seed)
 
     def get_event(self, event):
         """
@@ -50,10 +50,6 @@ class StateGameReplay(state_game.StateGame):
             event = FakeEvent(key)
             for player in self.players:
                 player.get_event(event, self.game_map)
-        """if self.replay.read(self.frame):
-            for player in self.players:
-                player.get_event(FakeEvent, self.game_map)"""
-
         state_game.StateGame.update(self)
 
         # Something to do in case the game is over

@@ -27,7 +27,7 @@ class StateGamePlay(state_game.StateGame):
         # generate a random seed
         seed = random.randrange(maxsize)
 
-        state_game.StateGame.__init__(self, load_options(), seed)
+        state_game.StateGame.__init__(self, load_options(), ["GAME", "MAIN_MENU"], seed)
 
         self.replay = rp.Replay(seed=seed)
         self.replay.set_opts(self.current_opts)
