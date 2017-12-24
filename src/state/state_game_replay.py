@@ -11,7 +11,10 @@ CONST_DEFAULT_JUMP_KEY = 0
 
 class FakeEvent:
     type = pg.KEYDOWN
-    key = pg.K_SPACE
+
+    def __init__(self, key):
+        self.key = key
+    # key = pg.K_SPACE
 
 
 class StateGameReplay(state_game.StateGame):
@@ -42,9 +45,14 @@ class StateGameReplay(state_game.StateGame):
         @rtype: None
         """
         # Loading the events from the replay
-        if self.replay.read(self.frame):
+        key = self.replay.read(self.frame)
+        if key:
+            event = FakeEvent(key)
             for player in self.players:
-                player.get_event(FakeEvent, self.game_map)
+                player.get_event(event, self.game_map)
+        """if self.replay.read(self.frame):
+            for player in self.players:
+                player.get_event(FakeEvent, self.game_map)"""
 
         state_game.StateGame.update(self)
 

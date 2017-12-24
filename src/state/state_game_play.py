@@ -41,8 +41,7 @@ class StateGamePlay(state_game.StateGame):
         """
         state_game.StateGame.get_event(self, event)
         if event.type == pg.KEYDOWN:
-            if event.key == CONFIG_JUMP_KEY[0]:
-                self.replay.write(self.frame)
+            self.replay.write(self.frame, event.key)
         for player in self.players:
             player.get_event(event, self.game_map)
 

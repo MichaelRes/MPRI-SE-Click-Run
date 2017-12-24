@@ -70,18 +70,16 @@ class Replay:
         try:
             while True:
                 if self.position >= 1 + len(self.history) or self.history[self.position][0] > frame:
-                    return False
-                    # return []
+                    return None
                 if self.history[self.position][0] == frame:
-                    return True
-                    # return self.history[self.position][1]
+                    return self.history[self.position][1]
                 if self.history[self.position][0] < frame:
                     self.position += 1
         except IndexError:
             return False
 
-    def write(self, frame):
-        self.history.append([frame])
+    def write(self, frame, key):
+        self.history.append([frame, key])
         
     """def write(self, event, frame):
         
