@@ -12,7 +12,7 @@ class MainMenu(state_engine.GameState):
         @rtype: None
         """
         state_engine.GameState.__init__(self)
-        self.available_state = ["GAME", "BEST_SCORE", "OPTIONS", "CREDITS"]
+        self.available_state = ["GAME", "GAME_REPLAY", "BEST_SCORE", "OPTIONS", "CREDITS"]
         self.current_select = 0
         self.next_state = None
         self.main_menu_map = Map()
@@ -30,7 +30,7 @@ class MainMenu(state_engine.GameState):
             elif event.key == pg.K_DOWN:
                 self.current_select = (self.current_select + 1) % len(self.available_state)
             elif event.key == pg.K_RETURN:
-                if self.current_select == 0:
+                if self.available_state[self.current_select] in ["GAME", "GAME_REPLAY"]:
                     self.restart_next_state = True
                 else:
                     self.restart_next_state = False

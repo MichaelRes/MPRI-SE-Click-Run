@@ -13,13 +13,13 @@ class StateGame(state_engine.GameState):
     Main state for the game, is the master for the map and the player.
     """
 
-    def __init__(self, options, seed=None):
+    def __init__(self, options, after_pause, seed=None):
         """
         @rtype: None
         """
         state_engine.GameState.__init__(self)
-
         self.current_opts = options
+        self.after_pause = after_pause
 
         self.players = []
         for i in range(int(self.current_opts["NUMBER_OF_PLAYER"])):
@@ -51,6 +51,7 @@ class StateGame(state_engine.GameState):
             if event.key == pg.K_ESCAPE:
                 self.next_state = "PAUSE"
                 self.persist["MAP"] = self.game_map
+                self.persist["NEXT_STATE"] = self.after_pause
                 self.done = True
 
     def update(self):

@@ -11,9 +11,11 @@ class Pause(state_engine.GameState):
         @rtype: None
         """
         state_engine.GameState.__init__(self)
-        self.available_state = ["GAME", "MAIN_MENU"]
         self.current_select = 0
         self.next_state = None
+
+    def startup(self, persistent):
+        self.available_state = persistent["NEXT_STATE"]
 
     def get_event(self, event):
         """
