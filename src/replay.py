@@ -67,16 +67,13 @@ class Replay:
         Should happen only in read mode and in sequential order
         """
         assert self.mode == ReplayMode.READ, "Wrong Mode for Replay class"
-        try:
-            while True:
-                if self.position >= 1 + len(self.history) or self.history[self.position][0] > frame:
-                    return None
-                if self.history[self.position][0] == frame:
-                    return self.history[self.position][1]
-                if self.history[self.position][0] < frame:
-                    self.position += 1
-        except IndexError:
-            return False
+        while True:
+            if self.position >= len(self.history) or self.history[self.position][0] > frame:
+                return None
+            if self.history[self.position][0] == frame:
+                return self.history[self.position][1]
+            if self.history[self.position][0] < frame:
+                self.position += 1
 
     def write(self, frame, key):
         self.history.append([frame, key])
