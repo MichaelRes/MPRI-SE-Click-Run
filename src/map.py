@@ -51,12 +51,8 @@ class Map(object):
 
         self.last_dx = 0
 
-        if seed == None :
-            self.seed_init = rd.randint(1,CONST_LEHMER_N-1)
-        else:
-            self.seed_init = max(int(seed) % CONST_LEHMER_N, 1)
-
-        self.seed = self.seed_init
+        if seed is not None:
+            rd.seed(seed)
 
     def __str__(self):
         return str(self.last_dx)
@@ -201,8 +197,8 @@ class Map(object):
         old_pos = self.gen
         while self.gen - old_pos < self.display_width:
             if self.display_width - (self.gen - old_pos) >= 6:
-                if self.randint(10) == 1:
-                    obs = possible_paterns[self.randint(len(possible_paterns))-1]
+                if rd.randint(0, 10) == 1:
+                    obs = possible_paterns[rd.randint(0, len(possible_paterns)-1)]
                     if obs == "HOLE":
                         self.gen_hole()
                     if obs == "DOUBLE_STEP":
@@ -222,7 +218,7 @@ class Map(object):
         for j in range(self.height):
             self.data[self.gen % self.width, j] = Material.EMPTY
         possible_levels = [min(self.gen_level+1, 3), self.gen_level, self.gen_level, self.gen_level, max(1, self.gen_level-1)]
-        new_level = possible_levels[self.randint(len(possible_levels))-1]
+        new_level = possible_levels[rd.randint(0, len(possible_levels)-1)]
         for j in range(self.height - new_level, self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
         self.gen_level = new_level
@@ -258,7 +254,7 @@ class Map(object):
                 self.data[(self.gen + i) % self.width, j] = Material.EMPTY
         for j in range((self.height - self.gen_level), self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
-        self.gen +=1
+        self.gen += 1
         for i in range(2):
             for j in range((self.height - self.gen_level)-2, self.height):
                 self.data[self.gen % self.width, j] = Material.GROUND
@@ -294,17 +290,6 @@ class Map(object):
             self.gen_proc()
         self.pos = self.pos + dx
         self.last_dx = dx
-
-    def randint(self, maxn):
-        """
-        Give some random integer between 1 and maxn including the bounds and update the state of the random seed
-        @param maxn: Upper bound of the randint function
-        @type maxn: int
-        """
-        self.seed *= CONST_LEHMER_G
-        self.seed %= CONST_LEHMER_N
-        return self.seed % maxn
-        
 
     def display(self, surface):
         """
