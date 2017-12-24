@@ -1,6 +1,7 @@
 from enum import Enum
 import pickle
 
+
 class ReplayMode(Enum):
     WRITE = 1
     READ = 2
@@ -10,12 +11,12 @@ class Replay:
     """
     A class for the record used for the replay.
     """
-    def __init__(self, path= None):
+    def __init__(self, path=None):
         """
         If path isn't None, the replay should load the corresponding file.
         Otherwise, the instance goes write mode and can be later written on the discs.
         """
-        if path != None:
+        if path is not None:
             self.mode = ReplayMode.READ
             self.load(path)
             self.position = 0
@@ -42,11 +43,8 @@ class Replay:
         Should load from some file
         """
         assert self.mode == ReplayMode.READ, "Wrong Mode for Replay class"
-        f=open(path, "rb")
-        a=pickle.load(f, pickle.HIGHEST_PROTOCOL)
-        self.options = a[0]
-        self.history = a[1]
-
+        with open(path, "rb") as f:
+            self.options, self.history = pickle.load(f, pickle.HIGHEST_PROTOCOL)
     
     def save(self,path):
         """
@@ -54,22 +52,21 @@ class Replay:
         """
         assert self.mode == ReplayMode.WRITE, "Wrong Mode for Replay class"
         with open(path, "wb") as f:
-            pickle.dump([self.options,self.history], f, pickle.HIGHEST_PROTOCOL)
-        
-        
+            pickle.dump((self.options,self.history), f, pickle.HIGHEST_PROTOCOL)
+
     def is_empty(self):
         """
         return if this instance has been initialised
         """
         return self.history == []
 
-    def read(self,frame):
+    def read(self, frame):
         """
         Return what happens at a given frame
         Should happen only in read mode and in sequential order
         """
         assert self.mode == ReplayMode.READ, "Wrong Mode for Replay class"
-        while 1:
+        while True:
             if self.position >= 1 + len(self.history) or self.history[self.position][0] > frame:
                 return []
             if self.history[self.position][0] == frame:
