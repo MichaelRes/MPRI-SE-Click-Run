@@ -11,7 +11,7 @@ class Replay:
     """
     A class for the record used for the replay.
     """
-    def __init__(self, path=None):
+    def __init__(self, seed=None, path=None):
         """
         If path isn't None, the replay should load the corresponding file.
         Otherwise, the instance goes write mode and can be later written on the discs.
@@ -21,6 +21,7 @@ class Replay:
             self.load(path)
             self.position = 0
         else:
+            self.seed = seed
             self.mode = ReplayMode.WRITE
             self.history = []
             
@@ -44,15 +45,15 @@ class Replay:
         """
         assert self.mode == ReplayMode.READ, "Wrong Mode for Replay class"
         with open(path, "rb") as f:
-            self.options, self.history = pickle.load(f, pickle.HIGHEST_PROTOCOL)
+            self.options, self.seed, self.history = pickle.load(f)
     
-    def save(self,path):
+    def save(self, path):
         """
         write the replay in order to load it later
         """
         assert self.mode == ReplayMode.WRITE, "Wrong Mode for Replay class"
         with open(path, "wb") as f:
-            pickle.dump((self.options,self.history), f, pickle.HIGHEST_PROTOCOL)
+            pickle.dump((self.options, self.seed, self.history), f, pickle.HIGHEST_PROTOCOL)
 
     def is_empty(self):
         """
@@ -66,22 +67,30 @@ class Replay:
         Should happen only in read mode and in sequential order
         """
         assert self.mode == ReplayMode.READ, "Wrong Mode for Replay class"
-        while True:
-            if self.position >= 1 + len(self.history) or self.history[self.position][0] > frame:
-                return []
-            if self.history[self.position][0] == frame:
-                return self.history[self.position][1]
-            if self.history[self.position][0] < frame:
-                self.position += 1
+        try:
+            while True:
+                if self.position >= 1 + len(self.history) or self.history[self.position][0] > frame:
+                    return False
+                    # return []
+                if self.history[self.position][0] == frame:
+                    return True
+                    # return self.history[self.position][1]
+                if self.history[self.position][0] < frame:
+                    self.position += 1
+        except IndexError:
+            return False
+
+    def write(self, frame):
+        self.history.append([frame])
         
-    def write(self, event, frame):
-        """
+    """def write(self, event, frame):
+        
         Write to the end of the file what's happening
         Should happen only in write mode
-        """
+        
         assert self.mode == ReplayMode.WRITE, "Wrong Mode for Replay class"
         assert self.history == [] or self.history[-1][0] <= frame, "Write should happen in increasing frame number"
         if self.history != [] and self.history[-1][0] == frame:
             self.history[-1][1] += [event]
         else:
-            self.history.append([frame, [event]])
+            self.history.append([frame, [event]])"""
