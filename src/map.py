@@ -23,7 +23,7 @@ class Map(object):
     """
     A class to handle the map
     """
-    def __init__(self, seed = None):
+    def __init__(self, seed=None):
         """
         Initialize the Map object.
         """

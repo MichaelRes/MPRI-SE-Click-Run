@@ -3,7 +3,8 @@ __all__ = ["state_add_score",
            "state_credits",
            "state_engine",
            "state_game_over",
-           "state_game",
+           "state_game_play",
            "state_main_menu",
            "state_options",
-           "state_pause"]
+           "state_pause",
+           "state_game_replay",]
