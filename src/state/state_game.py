@@ -16,15 +16,14 @@ class StateGame(state_engine.GameState):
     """
     Main state for the game, is the master for the map and the player.
     """
-    def __init__(self, replay = None):
+    def __init__(self, replay=None):
         """
-        @param replay: optionnal replay
+        @param replay: None or replay
         @rtype: None
         """
         state_engine.GameState.__init__(self)
 
-        
-        if replay == None:
+        if replay is None:
             self.replay = rp.Replay()
             self.current_opts = load_options()
             self.replay_mode = False
@@ -53,9 +52,6 @@ class StateGame(state_engine.GameState):
         self.score = score.Score("", 0)
         self.difficulty = 1
 
-                
-            
-
     def get_event(self, event):
         """
         Do something according to the last event that happened.
@@ -69,7 +65,7 @@ class StateGame(state_engine.GameState):
                 self.persist["MAP"] = self.game_map
                 self.done = True
         if not self.replay_mode:
-            self.replay.write(event,self.frame)
+            self.replay.write(event, self.frame)
             for player in self.players:
                 player.get_event(event, self.game_map)
 
