@@ -10,6 +10,7 @@ from math import ceil
 CONST_LEHMER_N = 2**31-1
 CONST_LEHMER_G = 7**5
 
+
 class Material(Enum):
     """
     Class for the different material of the map
@@ -23,7 +24,7 @@ class Map(object):
     """
     A class to handle the map
     """
-    def __init__(self, seed=None):
+    def __init__(self, seed = None):
         """
         Initialize the Map object.
         """
@@ -51,8 +52,12 @@ class Map(object):
 
         self.last_dx = 0
 
-        if seed is not None:
-            rd.seed(seed)
+        if seed is None:
+            self.seed_init = rd.randint(1,CONST_LEHMER_N-1)
+        else:
+            self.seed_init = max(int(seed) % CONST_LEHMER_N, 1)
+
+        self.seed = self.seed_init
 
     def __str__(self):
         return str(self.last_dx)
@@ -197,8 +202,8 @@ class Map(object):
         old_pos = self.gen
         while self.gen - old_pos < self.display_width:
             if self.display_width - (self.gen - old_pos) >= 6:
-                if rd.randint(0, 10) == 1:
-                    obs = possible_paterns[rd.randint(0, len(possible_paterns)-1)]
+                if self.randint(10) == 1:
+                    obs = possible_paterns[self.randint(len(possible_paterns))-1]
                     if obs == "HOLE":
                         self.gen_hole()
                     if obs == "DOUBLE_STEP":
@@ -212,13 +217,13 @@ class Map(object):
 
     def gen_one(self):
         """
-        Generetes a new column.
+        Generates a new column.
         can be generated at every level.
         """
         for j in range(self.height):
             self.data[self.gen % self.width, j] = Material.EMPTY
         possible_levels = [min(self.gen_level+1, 3), self.gen_level, self.gen_level, self.gen_level, max(1, self.gen_level-1)]
-        new_level = possible_levels[rd.randint(0, len(possible_levels)-1)]
+        new_level = possible_levels[self.randint(len(possible_levels))-1]
         for j in range(self.height - new_level, self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
         self.gen_level = new_level
@@ -227,7 +232,7 @@ class Map(object):
     def gen_hole(self):
         """
         Generates a hole.
-        Can be renerated at every level.
+        Can be generated at every level.
         """
         for i in range(6):
             for j in range(self.height):
@@ -254,7 +259,7 @@ class Map(object):
                 self.data[(self.gen + i) % self.width, j] = Material.EMPTY
         for j in range((self.height - self.gen_level), self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
-        self.gen += 1
+        self.gen +=1
         for i in range(2):
             for j in range((self.height - self.gen_level)-2, self.height):
                 self.data[self.gen % self.width, j] = Material.GROUND
@@ -291,6 +296,17 @@ class Map(object):
         self.pos = self.pos + dx
         self.last_dx = dx
 
+    def randint(self, maxn):
+        """
+        Give some random integer between 1 and maxn including the bounds and update the state of the random seed
+        @param maxn: Upper bound of the randint function
+        @type maxn: int
+        """
+        self.seed *= CONST_LEHMER_G
+        self.seed %= CONST_LEHMER_N
+        return self.seed % maxn
+        
+
     def display(self, surface):
         """
         Draws the map on the surface
@@ -299,7 +315,7 @@ class Map(object):
         @rtype: None
         """
         # We blit the backgrounds
-        if self.display_init == False:
+        if not self.display_init:
             self.ground_sprite = load_image('ground_sprite.png',(self.dim_bloc,self.dim_bloc))
             self.parallax_scrolling = ParallaxScrolling()
             self.display_init = True
