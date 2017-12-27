@@ -72,6 +72,13 @@ class Map(object):
         """
         return self.on_the_ground(obj.pos_x, obj.pos_y, obj.hitbox)
 
+    def put_on_the_ground(self, obj):
+        # TODO optimiser avec dichotomie
+        for y in range(0, 720):
+            obj.pos_y = y
+            if self.object_on_the_ground(obj):
+                return
+
     def on_the_ground(self, x0, y0, hitbox):
         """
         Returns a boolean indicating if the object given by pos and
