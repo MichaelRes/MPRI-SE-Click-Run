@@ -9,6 +9,8 @@ class Entity:
         @type x0: int
         @param y0: The y-axis position of the entity.
         @type y0: int
+        @param hitbox: the hitbox of the entity
+        @type hitbox: int, int
         """
         self.pos_x = x0
         self.pos_y = y0
