@@ -1,4 +1,3 @@
-from entity import *
 import numpy as np
 import random as rd
 from enum import Enum
@@ -6,8 +5,9 @@ import pygame as pg
 from ressources import load_image
 from ressources import load_options
 from math import ceil
+from sys import maxsize
 
-CONST_LEHMER_N = 2**31-1
+CONST_LEHMER_N = maxsize
 CONST_LEHMER_G = 7**5
 
 
@@ -24,7 +24,7 @@ class Map(object):
     """
     A class to handle the map
     """
-    def __init__(self, seed = None):
+    def __init__(self, seed=None):
         """
         Initialize the Map object.
         """
@@ -53,7 +53,7 @@ class Map(object):
         self.last_dx = 0
 
         if seed is None:
-            self.seed_init = rd.randint(1,CONST_LEHMER_N-1)
+            self.seed_init = rd.randint(1, CONST_LEHMER_N-1)
         else:
             self.seed_init = max(int(seed) % CONST_LEHMER_N, 1)
 
@@ -103,8 +103,8 @@ class Map(object):
         @rtype: bool
         """
         if y % self.dim_bloc == self.dim_bloc - 1:
-            return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
-        return False # This case should not occur
+            return self.data_read([x, y + self.dim_bloc + 1]) == Material.GROUND
+        return False  # This case should not occur
 
     def data_read(self, loc_pixel):
         """
@@ -223,7 +223,7 @@ class Map(object):
         for j in range(self.height - new_level, self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
         self.gen_level = new_level
-        self.gen +=1
+        self.gen += 1
 
     def gen_hole(self):
         """
@@ -236,14 +236,14 @@ class Map(object):
         for i in range(2):
             for j in range((self.height - self.gen_level), self.height):
                 self.data[self.gen % self.width, j] = Material.GROUND
-            self.gen +=1
+            self.gen += 1
         for i in range(3):
             for j in range(self.height):
                 self.data[self.gen % self.width, j] = Material.EMPTY
-            self.gen +=1
+            self.gen += 1
         for j in range((self.height - self.gen_level), self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
-        self.gen +=1
+        self.gen += 1
 
     def gen_double_step(self):
         """
@@ -255,15 +255,15 @@ class Map(object):
                 self.data[(self.gen + i) % self.width, j] = Material.EMPTY
         for j in range((self.height - self.gen_level), self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
-        self.gen +=1
+        self.gen += 1
         for i in range(2):
             for j in range((self.height - self.gen_level)-2, self.height):
                 self.data[self.gen % self.width, j] = Material.GROUND
-            self.gen +=1
+            self.gen += 1
         for i in range(2):
             for j in range((self.height - self.gen_level)-4, self.height):
                 self.data[self.gen % self.width, j] = Material.GROUND
-            self.gen +=1
+            self.gen += 1
         for j in range((self.height - self.gen_level), self.height):
             self.data[self.gen % self.width, j] = Material.GROUND
 
@@ -292,16 +292,15 @@ class Map(object):
         self.pos = self.pos + dx
         self.last_dx = dx
 
-    def randint(self, maxn):
+    def randint(self, max_int):
         """
         Give some random integer between 1 and maxn including the bounds and update the state of the random seed
-        @param maxn: Upper bound of the randint function
-        @type maxn: int
+        @param max_int: Upper bound of the randint function
+        @type max_int: int
         """
         self.seed *= CONST_LEHMER_G
         self.seed %= CONST_LEHMER_N
-        return self.seed % maxn
-        
+        return self.seed % max_int
 
     def display(self, surface):
         """
@@ -312,7 +311,7 @@ class Map(object):
         """
         # We blit the backgrounds
         if not self.display_init:
-            self.ground_sprite = load_image('ground_sprite.png',(self.dim_bloc,self.dim_bloc))
+            self.ground_sprite = load_image('ground_sprite.png', (self.dim_bloc, self.dim_bloc))
             self.parallax_scrolling = ParallaxScrolling()
             self.display_init = True
 
@@ -323,7 +322,6 @@ class Map(object):
             for j in range(self.display_width + 1):
                 if self.data_read([j*self.dim_bloc, i*self.dim_bloc]) == Material.GROUND:
                     surface.blit(self.ground_sprite, (j*self.dim_bloc - self.pos % self.dim_bloc, i*self.dim_bloc))
-    
 
 
 class ParallaxScrolling(object):
