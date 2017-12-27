@@ -187,7 +187,9 @@ class Map(object):
         Launches a procedural generation for the map.
         """
         possible_patterns = []
-        if self.difficulty == "easy":
+        if self.difficulty == "none":
+            possible_patterns = ["NONE"]
+        elif self.difficulty == "easy":
             possible_patterns = ["HOLE"]
         elif self.difficulty == "normal":
             possible_patterns = ["HOLE", "PLATFORM"]
@@ -200,6 +202,13 @@ class Map(object):
             if self.display_width - (self.gen - old_pos) >= 6:
                 if self.randint(10) == 1:
                     obs = possible_patterns[self.randint(len(possible_patterns))-1]
+                    if obs == "NONE":
+                        self.gen_none()
+                        self.gen_none()
+                        self.gen_none()
+                        self.gen_none()
+                        self.gen_none()
+                        self.gen_none()
                     if obs == "HOLE":
                         self.gen_hole()
                     if obs == "DOUBLE_STEP":
@@ -207,9 +216,28 @@ class Map(object):
                     if obs == "PLATFORM":
                         self.gen_platform()
                 else:
-                    self.gen_one()
+                    if self.difficulty == "none":
+                        self.gen_none()
+                    else:
+                        self.gen_one()
             else:
-                self.gen_one()
+                if self.difficulty == "none":
+                    self.gen_none()
+                else:
+                    self.gen_one()
+
+    def gen_none(self):
+        """
+        Generates a new column.
+        can be generated at level 1.
+        """
+        for j in range(self.height):
+            self.data[self.gen % self.width, j] = Material.EMPTY
+        new_level = 1
+        for j in range(self.height - new_level, self.height):
+            self.data[self.gen % self.width, j] = Material.GROUND
+        self.gen_level = new_level
+        self.gen += 1
 
     def gen_one(self):
         """
