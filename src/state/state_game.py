@@ -3,6 +3,7 @@ from . import state_engine
 from player import Action, Player
 from map import Map
 import score
+import item
 
 CONFIG_JUMP_KEY = [pg.K_SPACE, pg.K_RSHIFT, pg.K_LSHIFT]
 CONST_DEFAULT_JUMP_KEY = 0
@@ -40,6 +41,8 @@ class StateGame(state_engine.GameState):
         self.score = score.Score("", 0)
         self.difficulty = 1
 
+        self.items = item.ItemManager()
+
     def get_event(self, event):
         """
         Do something according to the last event that happened.
@@ -69,6 +72,8 @@ class StateGame(state_engine.GameState):
         # Update of the game_map
         self.game_map.update(int(self.players[0].v_x * self.difficulty))
 
+        self.items.update(int(self.players[0].v_x * self.difficulty), self.players[0])
+
         # This part got to stay updated
         self.frame += 1
 
@@ -93,4 +98,5 @@ class StateGame(state_engine.GameState):
         self.game_map.display(surface)
         for player in self.players:
             player.draw(surface)
+        self.items.display(surface, 0, 1200)
         self.score.draw(surface, self.font)
