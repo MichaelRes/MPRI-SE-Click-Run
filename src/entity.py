@@ -32,6 +32,8 @@ class MovingEntity(Entity):
         @type vx0: int
         @param vy0: The speed of the entity on the y-axis.
         @type vy0: int
+        @param hitbox: the hitbox of the entity
+        @type hitbox: int, int
         """
         Entity.__init__(self, x0, y0, hitbox)
         self.v_x = vx0
