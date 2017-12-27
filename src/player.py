@@ -43,11 +43,6 @@ class Player(MovingEntity):
         # TODO -> lecture automatique des sprite à dic
         # The sprite are stored in a dict
         self.sprite = self.load_sprite(sprite_name)
-        """self.sprite = {"JUMP": load_image("player/%s/big/jump.png" % sprite_name, self.hitbox),
-                       "RUN0": load_image("player/%s/big/run0.png" % sprite_name, self.hitbox),
-                       "RUN1": load_image("player/%s/big/run1.png" % sprite_name, self.hitbox),
-                       "RUN2": load_image("player/%s/big/run2.png" % sprite_name, self.hitbox),
-                       "ASCEND": load_image("player/%s/big/ascend.png" % sprite_name, self.hitbox)}"""
         self.time_of_a_sprite = 5
         self.current_time = -1
         self.double_jump_available = False
