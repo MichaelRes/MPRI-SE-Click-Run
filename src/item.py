@@ -12,14 +12,14 @@ class ItemManager:
         self.items = []
         """self.add(SizeUpItem(400, 589, (50, 50)))
         self.add(SizeUpItem(500, 589, (50, 50)))
-        self.add(SizeUpItem(600, 589, (50, 50)))
-        self.add(SizeUpItem(1300, 589, (50, 50)))"""
+        self.add(SizeUpItem(600, 200, (50, 50)))
+        self.add(SizeUpItem(1300, 200, (50, 50)))"""
 
     def add(self, item):
         bisect.insort(self.items, item)
 
-    def update(self, dx, player):
-        self.items = [item.update(dx) for item in self.items if not item.collide(player)]
+    def update(self, dx, player, map):
+        self.items = [item.update(dx, map) for item in self.items if not item.collide(player)]
 
     def display(self, surface, low_x, high_x):
         # TODO Améliorer un peu la vitesse de ce code
@@ -60,7 +60,9 @@ class Item(Entity):
     def effect(self, player):
         raise NotImplementedError
 
-    def update(self, dx):
+    def update(self, dx, game_map):
+        if game_map.display_width * game_map.dim_bloc - dx < self.pos_x < game_map.display_width * game_map.dim_bloc:
+            game_map.put_on_the_ground(self)
         self.pos_x -= dx
         return self
 

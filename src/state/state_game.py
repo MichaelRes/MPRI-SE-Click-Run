@@ -72,7 +72,7 @@ class StateGame(state_engine.GameState):
         # Update of the game_map
         self.game_map.update(int(self.players[0].v_x * self.difficulty))
 
-        self.items.update(int(self.players[0].v_x * self.difficulty), self.players[0])
+        self.items.update(int(self.players[0].v_x * self.difficulty), self.players[0], self.game_map)
 
         # This part got to stay updated
         self.frame += 1
