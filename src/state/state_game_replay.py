@@ -1,6 +1,7 @@
 import pygame as pg
 from . import state_engine
 from . import state_game
+import os
 import replay as rp
 import score
 from ressources import load_options
@@ -14,7 +15,6 @@ class FakeEvent:
 
     def __init__(self, key):
         self.key = key
-    # key = pg.K_SPACE
 
 
 class StateGameReplay(state_game.StateGame):
@@ -27,8 +27,9 @@ class StateGameReplay(state_game.StateGame):
         @param replay: None or replay
         @rtype: None
         """
-        self.replay = rp.Replay(path="test_save")
-        state_game.StateGame.__init__(self, self.replay.get_opts(), ["GAME_REPLAY", "MAIN_MENU"], self.replay.seed)
+        if os.path.isfile("test_save"):
+            self.replay = rp.Replay(path="test_save")
+            state_game.StateGame.__init__(self, self.replay.get_opts(), ["GAME_REPLAY", "MAIN_MENU"], self.replay.seed)
 
     def get_event(self, event):
         """
