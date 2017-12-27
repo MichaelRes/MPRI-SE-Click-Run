@@ -16,7 +16,7 @@ class Options(state_engine.GameState):
         state_engine.GameState.__init__(self)
         self.current_select = 0
         self.all_opts = {"CHARACTER": ["mario", "luigi", "toad", "peach"],
-                         "DIFFICULTY": ["easy", "normal", "difficult", "expert"],
+                         "DIFFICULTY": ["none", "easy", "normal", "difficult", "expert"],
                          "NUMBER_OF_PLAYER": [1, 2],
                          "LAYER0": ["layer0/0.png", "layer0/1.png"],
                          "LAYER1": ["layer1/0.png", "layer1/1.png"]
