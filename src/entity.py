@@ -16,6 +16,10 @@ class Entity:
         self.pos_y = y0
         self.hitbox = hitbox
 
+    def collide(self, other):
+        return self.pos_x + self.hitbox[0] >= other.pos_x and self.pos_x <= other.pos_x + other.hitbox[0] and \
+            self.pos_y + self.hitbox[1] >= other.pos_y and self.pos_y <= other.pos_y + other.hitbox[1]
+
 
 class MovingEntity(Entity):
     """

@@ -1,6 +1,7 @@
 from entity import MovingEntity
 from enum import Enum
 from ressources import load_image
+from item import SizeItem
 import pygame as pg
 
 CONST_JUMP = 18
@@ -54,6 +55,9 @@ class Player(MovingEntity):
         self.anterior_running_sprite_number = 1  # The anterior sprite for running
         self.is_dead = False
 
+        self.nb_frame = 0
+        self.old_hit_box = []
+
     def load_sprite(self, sprite_name):
         return {"JUMP": load_image("player/%s/big/jump.png" % sprite_name, self.hitbox),
                 "RUN0": load_image("player/%s/big/run0.png" % sprite_name, self.hitbox),
@@ -63,9 +67,9 @@ class Player(MovingEntity):
 
     def switch_hit_box(self, hit_box):
         self.old_hit_box = [self.hitbox] + self.old_hit_box
-        self.hit_box = hit_box
+        self.hitbox = hit_box
         for sprite in self.sprite:
-            self.sprite[sprite] = pg.transform.scale(self.sprite[sprite], self.hit_box)
+            self.sprite[sprite] = pg.transform.scale(self.sprite[sprite], self.hitbox)
 
     def update(self, game_map, difficulty, acceleration_y, max_speed):
         if self.is_dead:
@@ -76,8 +80,8 @@ class Player(MovingEntity):
         is_the_game_over, (x, y) = game_map.move_test(self.pos_x,
                                                       self.pos_y,
                                                       self.hitbox,
-                                                      int (self.v_x * difficulty),
-                                                      int (self.v_y * difficulty))
+                                                      int(self.v_x * difficulty),
+                                                      int(self.v_y * difficulty))
         self.pos_y = y
 
         self.is_dead = is_the_game_over
