@@ -41,17 +41,31 @@ class Player(MovingEntity):
         self.frame_since_last_jump = 0
         # TODO -> lecture automatique des sprite à dic
         # The sprite are stored in a dict
-        self.sprite = {"JUMP": load_image("player/%s/big/jump.png" % sprite_name, self.hitbox),
+        self.sprite = self.load_sprite(sprite_name)
+        """self.sprite = {"JUMP": load_image("player/%s/big/jump.png" % sprite_name, self.hitbox),
                        "RUN0": load_image("player/%s/big/run0.png" % sprite_name, self.hitbox),
                        "RUN1": load_image("player/%s/big/run1.png" % sprite_name, self.hitbox),
                        "RUN2": load_image("player/%s/big/run2.png" % sprite_name, self.hitbox),
-                       "ASCEND": load_image("player/%s/big/ascend.png" % sprite_name, self.hitbox)}
+                       "ASCEND": load_image("player/%s/big/ascend.png" % sprite_name, self.hitbox)}"""
         self.time_of_a_sprite = 5
         self.current_time = -1
         self.double_jump_available = False
         self.running_sprite_number = 0  # The number of the sprite for running
         self.anterior_running_sprite_number = 1  # The anterior sprite for running
         self.is_dead = False
+
+    def load_sprite(self, sprite_name):
+        return {"JUMP": load_image("player/%s/big/jump.png" % sprite_name, self.hitbox),
+                "RUN0": load_image("player/%s/big/run0.png" % sprite_name, self.hitbox),
+                "RUN1": load_image("player/%s/big/run1.png" % sprite_name, self.hitbox),
+                "RUN2": load_image("player/%s/big/run2.png" % sprite_name, self.hitbox),
+                "ASCEND": load_image("player/%s/big/ascend.png" % sprite_name, self.hitbox)}
+
+    def switch_hit_box(self, hit_box):
+        self.old_hit_box = [self.hitbox] + self.old_hit_box
+        self.hit_box = hit_box
+        for sprite in self.sprite:
+            self.sprite[sprite] = pg.transform.scale(self.sprite[sprite], self.hit_box)
 
     def update(self, game_map, difficulty, acceleration_y, max_speed):
         if self.is_dead:
