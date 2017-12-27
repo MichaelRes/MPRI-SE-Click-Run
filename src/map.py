@@ -104,9 +104,7 @@ class Map(object):
         """
         if y % self.dim_bloc == self.dim_bloc - 1:
             return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
-
-        # This case should not occur.
-        return False
+        return False # This case should not occur
 
     def data_read(self, loc_pixel):
         """
@@ -163,7 +161,6 @@ class Map(object):
             return False, (x0+dx, y0+dy)
 
         # Else, we try to find where to stop
-
         for i in range(np.abs(dx) + np.abs(dy) + 1):
             x = int(x0 + (i / (np.abs(dx) + np.abs(dy))) * dx)
             y = int(y0 + (i / (np.abs(dx) + np.abs(dy))) * dy)
@@ -178,7 +175,6 @@ class Map(object):
                 break
 
         # We hit the floor, we go right
-
         for i in range(x0+dx-x):
             x += 1
             for b in range(hitbox[1]):
@@ -190,20 +186,20 @@ class Map(object):
         """
         Launches a procedural generation for the map.
         """
-        possible_paterns = []
+        possible_patterns = []
         if self.difficulty == "easy":
-            possible_paterns = ["HOLE"]
+            possible_patterns = ["HOLE"]
         elif self.difficulty == "normal":
-            possible_paterns = ["HOLE", "PLATFORM"]
+            possible_patterns = ["HOLE", "PLATFORM"]
         elif self.difficulty == "difficult":
-            possible_paterns = ["HOLE", "DOUBLE_STEP", "PLATFORM"]
+            possible_patterns = ["HOLE", "DOUBLE_STEP", "PLATFORM"]
         elif self.difficulty == "expert":
-            possible_paterns = ["HOLE", "DOUBLE_STEP", "DOUBLE_STEP", "DOUBLE_STEP", "PLATFORM"]
+            possible_patterns = ["HOLE", "DOUBLE_STEP", "DOUBLE_STEP", "DOUBLE_STEP", "PLATFORM"]
         old_pos = self.gen
         while self.gen - old_pos < self.display_width:
             if self.display_width - (self.gen - old_pos) >= 6:
                 if self.randint(10) == 1:
-                    obs = possible_paterns[self.randint(len(possible_paterns))-1]
+                    obs = possible_patterns[self.randint(len(possible_patterns))-1]
                     if obs == "HOLE":
                         self.gen_hole()
                     if obs == "DOUBLE_STEP":
