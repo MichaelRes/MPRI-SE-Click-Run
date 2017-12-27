@@ -1,5 +1,5 @@
 from entity import Entity
 
-class Object(Entity):
+class Item(Entity):
     def __init__(self):
         raise NotImplementedError
