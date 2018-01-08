@@ -26,6 +26,14 @@ class Score(object):
         """
         self.score += 1
 
+    def get_replay_file(self):
+        """
+        Get the file path to the high score
+        @return: the path to the high score file
+        @rtype: str
+        """
+        return self.pseudo + str(self.score)
+
     def __eq__(self, other):
         """
         Function to check if two score are equal.
@@ -143,3 +151,6 @@ class ScoreManager(object):
         if len(self.instance.scores) > self.max_number_of_score:
             self.instance.scores.pop()
         self.update_score_file()
+
+    def __len__(self):
+        return len(self.instance.scores)

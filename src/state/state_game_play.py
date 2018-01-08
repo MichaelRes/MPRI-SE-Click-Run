@@ -21,7 +21,6 @@ class StateGamePlay(state_game.StateGame):
     """
     def __init__(self):
         """
-        @param replay: None or replay
         @rtype: None
         """
         # generate a random seed
@@ -55,9 +54,9 @@ class StateGamePlay(state_game.StateGame):
         # Something to do in case the game is over
         if all([player.is_dead for player in self.players]):
             p = score.ScoreManager().pos_as_score(self.score)
-            self.replay.save("test_save")
+            self.replay.save("last_game_replay")
             if p < score.ScoreManager().max_number_of_score:
-                self.persist = {"score": self.score, "pos": p, "MAP": self.game_map}
+                self.persist = {"SCORE": self.score, "POS": p, "REPLAY": self.replay, "MAP": self.game_map}
                 self.next_state = "ADD_SCORE"
             else:
                 self.persist = {"MAP": self.game_map}
