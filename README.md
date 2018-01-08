@@ -73,13 +73,175 @@ Authors : Dang-Nhu Hector, Marotte Joseph, Lalanne Clément.
 
 ### item
 
+`green_shroom.png`:
+
+`red_shroom.png`:
+
 ### layer0
+
+`0.png`:
+
+`1.png`:
 
 ### layer1
 
+`0.png`:
+
+`1.png`:
+
 ### monster
 
+#### monster1
+
+`1.png`:
+
+`2.png`:
+
+`3.png`:
+
+#### monster2
+
+`1.png`:
+
+`2.png`:
+
+`3.png`:
+
+#### monster3
+
+`1.png`:
+
+`2.png`:
+
+#### monster4
+
+`1.png`:
+
+`2.png`:
+
+`3.png`:
+
+`4.png`:
+
+`5.png`:
+
+`6.png`:
+
+#### monster5
+
+`1.png`:
+
+`2.png`:
+
+`3.png`:
+
+`4.png`:
+
 ### player
+
+#### luigi
+
+##### big
+
+`ascent.png`:
+
+`jump.png`:
+
+`run0.png`:
+
+`run1.png`:
+
+`run2.png`:
+
+##### small
+
+`ascent.png`:
+
+`jump.png`:
+
+`run0.png`:
+
+`run1.png`:
+
+`run2.png`:
+
+#### mario
+
+##### big
+
+`ascent.png`:
+
+`jump.png`:
+
+`run0.png`:
+
+`run1.png`:
+
+`run2.png`:
+
+##### small
+
+`ascent.png`:
+
+`jump.png`:
+
+`run0.png`:
+
+`run1.png`:
+
+`run2.png`:
+
+#### peach
+
+##### big
+
+`ascent.png`:
+
+`jump.png`:
+
+`run0.png`:
+
+`run1.png`:
+
+`run2.png`:
+
+##### small
+
+`ascent.png`:
+
+`jump.png`:
+
+`run0.png`:
+
+`run1.png`:
+
+`run2.png`:
+
+#### toad
+
+##### big
+
+`ascent.png`:
+
+`jump.png`:
+
+`run0.png`:
+
+`run1.png`:
+
+`run2.png`:
+
+##### small
+
+`ascent.png`:
+
+`jump.png`:
+
+`run0.png`:
+
+`run1.png`:
+
+`run2.png`:
 
 ## src
 
