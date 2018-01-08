@@ -68,6 +68,7 @@ class AddScore(state_engine.GameState):
             elif event.key == pg.K_RETURN:
                 if len(self.best_score.pseudo) == 3:
                     score.ScoreManager().add_score(self.best_score, self.best_score_pos)
+                    self.replay.save(self.best_score.get_replay_file())
                     self.next_state = "MAIN_MENU"
                     self.persist["MAP"] = self.add_score_map
                     self.done = True
@@ -89,8 +90,9 @@ class AddScore(state_engine.GameState):
         self.persist = persistent
         if "MAP" in self.persist:
             self.add_score_map = self.persist["MAP"]
-        self.best_score = persistent["score"]
-        self.best_score_pos = persistent["pos"]
+        self.best_score = persistent["SCORE"]
+        self.best_score_pos = persistent["POS"]
+        self.replay = persistent["REPLAY"]
 
     def draw(self, surface):
         """

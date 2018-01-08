@@ -16,6 +16,7 @@ class BestScore(state_engine.GameState):
         state_engine.GameState.__init__(self)
 
         self.best_score_map = Map()
+        self.current_select = 0
 
     def get_event(self, event):
         """
@@ -28,6 +29,15 @@ class BestScore(state_engine.GameState):
             if event.key == pg.K_ESCAPE:
                 self.next_state = "MAIN_MENU"
                 self.persist["MAP"] = self.best_score_map
+                self.done = True
+            elif event.key == pg.K_UP:
+                self.current_select = (self.current_select - 1) % len(score.ScoreManager())
+            elif event.key == pg.K_DOWN:
+                self.current_select = (self.current_select + 1) % len(score.ScoreManager())
+            elif event.key == pg.K_RETURN:
+                replay_path = score.ScoreManager().instance.scores[self.current_select].get_replay_file()
+                self.persist = {"REPLAY_PATH": replay_path}
+                self.next_state = "GAME_REPLAY"
                 self.done = True
 
     def update(self):
@@ -57,8 +67,11 @@ class BestScore(state_engine.GameState):
         """
         width, height = surface.get_size()
         self.best_score_map.display(surface)
-        text_color = 0, 0, 0
         for i, s in enumerate(score.ScoreManager().instance.scores):
+            if i == self.current_select:
+                text_color = 255, 0, 0
+            else:
+                text_color = 0, 0, 0
             text = self.font.render(str(i+1) + " " + s.pseudo + " " + str(s.score), 1, text_color)
             width_text, _ = text.get_size()
             surface.blit(text, ((width - width_text) / 2, (24 * (i + 1)) + 100))

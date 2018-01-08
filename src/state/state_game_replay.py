@@ -1,10 +1,7 @@
 import pygame as pg
-from . import state_engine
 from . import state_game
 import os
 import replay as rp
-import score
-from ressources import load_options
 
 CONFIG_JUMP_KEY = [pg.K_SPACE, pg.K_RSHIFT, pg.K_LSHIFT]
 CONST_DEFAULT_JUMP_KEY = 0
@@ -22,14 +19,21 @@ class StateGameReplay(state_game.StateGame):
     Main state for the game, is the master for the map and the player.
     """
 
-    def __init__(self):
+    def __init__(self, replay="last_game_replay"):
         """
-        @param replay: None or replay
+        @param replay: replay path
+        @type replay: str
         @rtype: None
         """
-        if os.path.isfile("test_save"):
-            self.replay = rp.Replay(path="test_save")
+        if os.path.isfile(replay):
+            self.replay = rp.Replay(path=replay)
             state_game.StateGame.__init__(self, self.replay.get_opts(), ["GAME_REPLAY", "MAIN_MENU"], self.replay.seed)
+
+    def startup(self, persistent):
+        try:
+            self = self.__init__(persistent["REPLAY_PATH"])
+        except KeyError:
+            self = self.__init__()
 
     def get_event(self, event):
         """
