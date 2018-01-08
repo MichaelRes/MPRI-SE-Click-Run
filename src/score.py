@@ -1,5 +1,5 @@
 from functools import total_ordering
-
+import os
 
 @total_ordering
 class Score(object):
@@ -149,7 +149,7 @@ class ScoreManager(object):
         """
         self.instance.scores.insert(pos, score)
         if len(self.instance.scores) > self.max_number_of_score:
-            self.instance.scores.pop()
+            os.remove(self.instance.scores.pop().get_replay_file())
         self.update_score_file()
 
     def __len__(self):
