@@ -71,6 +71,18 @@ Authors : Dang-Nhu Hector, Marotte Joseph, Lalanne Clément.
 
 ## ressources
 
+`black.png`:
+
+`green.png`:
+
+`ground_sprite.png`:
+
+`ground.png`:
+
+`layer2.png`:
+
+`red.png`:
+
 ### item
 
 `green_shroom.png`:
@@ -245,4 +257,72 @@ Authors : Dang-Nhu Hector, Marotte Joseph, Lalanne Clément.
 
 ## src
 
+`best_score.py`:
+
+`entity.py`:
+
+`item.py`:
+
+`main.py`:
+
+`map.py`:
+
+`monster.py`:
+
+`player.py`:
+
+`replay.py`:
+
+`ressources.py`:
+
+`score.py`:
+
+`test_save`:
+
+### state
+
+`__init__.py`:
+
+`state_add_score.py`:
+
+`state_best_score.py`:
+
+`state_credits.py`:
+
+`state_engine.py`:
+
+`state_game_over.py`:
+
+`state_game_play.py`:
+
+`state_game_replay.py`:
+
+`state_game.py`:
+
+`state_main_menu.py`:
+
+`state_options.py`:
+
+`state_pause.py`:
+
 ## tests
+
+### test_map
+
+`test_consistancy.py`:
+
+`test_gen_double_step.py`:
+
+`test_gen_hole.py`:
+
+`test_gen_one.py`:
+
+`test_gen_platform.py`:
+
+`test_gen_proc.py`:
+
+`test_new_map.py`:
+
+`test_on_the_ground.py`:
+
+`test_randomness.py`:
