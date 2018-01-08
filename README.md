@@ -55,3 +55,27 @@ pytest tests
 ```
 
 Authors : Dang-Nhu Hector, Marotte Joseph, Lalanne Clément.
+
+# File explanation for the developers
+
+`.travis.yml`: The Travis descriptor to be able to build tests with Travis.
+`gen_doc.sh`:
+`LICENSE`:
+`README.md`:
+`requirements.txt`:
+
+## ressources
+
+### item
+
+### layer0
+
+### layer1
+
+### monster
+
+### player
+
+## src
+
+## tests
