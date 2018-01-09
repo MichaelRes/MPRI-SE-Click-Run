@@ -11,7 +11,7 @@ from sys import maxsize
 
 # Poison time, need to be changed in items.py too
 
-POISON_TIME = 500
+POISON_TIME = 300
 
 # Const for the lehmer random generator
 CONST_LEHMER_N = maxsize
