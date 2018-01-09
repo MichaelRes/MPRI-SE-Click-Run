@@ -131,7 +131,7 @@ class Monster(MovingEntity):
             self.action = Action.RUNNING
             self.v_y = min(self.v_y, 0)
         else:
-            # Either is the player in jump state, or he stopped his ascension
+            # Either is the entity in jump state, or he stopped his ascension
             self.action = Action.JUMPING
             self.v_y = max(min(self.v_y + difficulty*acceleration_y, max_speed), -max_speed)
 
