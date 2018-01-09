@@ -9,6 +9,10 @@ from math import ceil
 from sys import maxsize
 
 
+# Poison time, need to be changed in items.py too
+
+POISON_TIME = 500
+
 # Const for the lehmer random generator
 CONST_LEHMER_N = maxsize
 CONST_LEHMER_G = 7**5
@@ -262,7 +266,7 @@ class Map(object):
                     self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
                 if id_item in (3,):
                     self.items.add(item.PoisonItem(x_item,0,HITBOX_ITEM))
-                    self.need_antidote = 2000
+                    self.need_antidote = POISON_TIME
             self.put_on_the_ground(self.items.items[-1])
 
     def gen_none(self):
