@@ -29,7 +29,7 @@ class MonsterManager:
             self.add(m)
         m = []
         for monster in self.monsters:
-            if monster.cr_frame < 3000:
+            if monster.cr_frame < 3000 and not (monster.is_dead):
                 m.append(monster)
         self.monsters = m
 
@@ -116,6 +116,9 @@ class Monster(MovingEntity):
         self.pos_x = x
 
         self.has_to_turn = is_the_game_over
+
+        if self.pos_y + self.hitbox[1] >= game_map.height * game_map.dim_bloc - 20:
+            self.is_dead = True
 
         if game_map.object_on_the_ground(self) and self.has_to_turn:
             self.has_to_turn = False
