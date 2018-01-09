@@ -2,6 +2,7 @@ import numpy as np
 import random as rd
 from enum import Enum
 import pygame as pg
+import item
 from ressources import load_image
 from ressources import load_options
 from math import ceil
@@ -24,9 +25,11 @@ class Map(object):
     """
     A class to handle the map
     """
-    def __init__(self, seed=None):
+    def __init__(self, items, seed=None):
         """
         Initialize the Map object.
+        @param items: the item manager, possibly none
+        @param seed: the seed, possibly none
         """
         self.dim_bloc = 80
 
@@ -59,6 +62,8 @@ class Map(object):
 
         self.seed = self.seed_init
 
+        self.items = items
+
     def __str__(self):
         return str(self.last_dx)
 
@@ -70,11 +75,11 @@ class Map(object):
         @return: True if the object is on the ground, False otherwise.
         @rtype: bool
         """
-        return self.on_the_ground(obj.pos_x, obj.pos_y, obj.hitbox)
+        return self.on_the_ground(obj.pos_x+self.pos, obj.pos_y, obj.hitbox)
 
     def put_on_the_ground(self, obj):
         # TODO optimiser avec dichotomie
-        for y in range(0, 720):
+        for y in range(0, self.height):
             obj.pos_y = y
             if self.object_on_the_ground(obj):
                 return
@@ -232,6 +237,14 @@ class Map(object):
                     self.gen_none()
                 else:
                     self.gen_one()
+        if self.items != None and self.randint(4)==3:
+            id_item = self.randint(2)
+            x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
+            if id_item == 0:
+                self.items.add(item.SizeUpItem(x_item,0,(30,30)))
+            if id_item == 1:
+                self.items.add(item.SizeDownItem(x_item,0,(30,30)))
+            self.put_on_the_ground(self.items.items[-1])
 
     def gen_none(self):
         """

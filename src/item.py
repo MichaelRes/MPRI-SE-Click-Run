@@ -19,7 +19,7 @@ class ItemManager:
         bisect.insort(self.items, item)
 
     def update(self, dx, player, map):
-        self.items = [item.update(dx, map) for item in self.items if not item.collide(player)]
+        self.items = [item.update(dx, map) for item in self.items if (not item.collide(player) and item.pos_x + item.hitbox[0] >= 0 ) ]
 
     def display(self, surface, low_x, high_x):
         # TODO Améliorer un peu la vitesse de ce code
