@@ -43,7 +43,7 @@ class AddScore(state_engine.GameState):
         @rtype: None
         """
         state_engine.GameState.__init__(self)
-        self.add_score_map = Map(None)
+        self.add_score_map = Map(None,None)
 
     def get_event(self, event):
         """

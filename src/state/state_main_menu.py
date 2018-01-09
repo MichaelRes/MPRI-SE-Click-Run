@@ -15,7 +15,7 @@ class MainMenu(state_engine.GameState):
         self.available_state = ["GAME", "GAME_REPLAY", "BEST_SCORE", "OPTIONS", "CREDITS"]
         self.current_select = 0
         self.next_state = None
-        self.main_menu_map = Map(None)
+        self.main_menu_map = Map(None,None)
 
     def get_event(self, event):
         """

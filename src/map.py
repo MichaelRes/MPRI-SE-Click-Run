@@ -29,7 +29,7 @@ class Map(object):
     """
     A class to handle the map
     """
-    def __init__(self, items, seed=None):
+    def __init__(self, items, seed):
         """
         Initialize the Map object.
         @param items: the item manager, possibly none
@@ -79,7 +79,7 @@ class Map(object):
         @return: True if the object is on the ground, False otherwise.
         @rtype: bool
         """
-        return self.on_the_ground(obj.pos_x + self.pos, obj.pos_y, obj.hitbox)
+        return self.on_the_ground(obj.pos_x, obj.pos_y, obj.hitbox)
 
     def put_on_the_ground(self, obj):
         # TODO optimiser avec dichotomie

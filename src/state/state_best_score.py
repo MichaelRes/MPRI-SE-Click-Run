@@ -15,7 +15,7 @@ class BestScore(state_engine.GameState):
         """
         state_engine.GameState.__init__(self)
 
-        self.best_score_map = Map(None)
+        self.best_score_map = Map(None,None)
         self.current_select = 0
 
     def get_event(self, event):

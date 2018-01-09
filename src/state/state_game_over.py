@@ -12,7 +12,7 @@ class GameOver(state_engine.GameState):
         @rtype: None
         """
         state_engine.GameState.__init__(self)
-        self.game_over_map = Map(None)
+        self.game_over_map = Map(None,None)
 
     def get_event(self, event):
         """

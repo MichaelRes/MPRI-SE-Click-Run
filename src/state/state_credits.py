@@ -9,7 +9,7 @@ class Credits(state_engine.GameState):
     """
     def __init__(self):
         state_engine.GameState.__init__(self)
-        self.credits_map = Map(None)
+        self.credits_map = Map(None,None)
 
     def get_event(self, event):
         """
