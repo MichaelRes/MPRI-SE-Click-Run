@@ -43,7 +43,7 @@ class Direction(Enum):
     The class which represent the different state in which the player can be.
     """
     RIGHT = 1
-    LEFT = 2
+    LEFT  = 2
 
 class Monster(MovingEntity):
     """
@@ -97,7 +97,7 @@ class Monster(MovingEntity):
         is_the_game_over, (x, y) = game_map.move_test(self.pos_x,
                                                       self.pos_y,
                                                       self.hitbox,
-                                                      int(self.v_x * difficulty),
+                                                      int((self.v_x) * difficulty),
                                                       int(self.v_y * difficulty))
         self.pos_y = y
 
@@ -131,7 +131,7 @@ class Monster(MovingEntity):
         if self.is_dead:
             return
 
-        if rd.random() < 0.05:
+        if rd.random() < 0.01:
             #Acts like a random command that changes the direction of the monster.
             if game_map.object_on_the_ground(self):
                 self.action = Action.HALFWAY
