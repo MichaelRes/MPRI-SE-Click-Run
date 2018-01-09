@@ -8,7 +8,7 @@ def test_gen_proc():
     """
     This function try to generate the map
     """
-    new_map = Map(None)
+    new_map = Map(None,None)
     for i in range(1000):
         new_map.gen_proc()
 
