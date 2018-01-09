@@ -4,7 +4,7 @@ myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + '/../../src')
 from map import *
 
-def test_new_map():
+def test_consistancy():
     """
     This function should test that the randomness provided by the randint fuction of map
     should not be absurd for some seed.
