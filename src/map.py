@@ -97,7 +97,7 @@ class Map(object):
                 self.data_read((x2,y1)) == Material.EMPTY):
                 obj.pos_y = (- obj.hitbox[1] +
                              (self.height - y) * self.dim_bloc)
-                return
+                return y==0
 
     def on_the_ground(self, x0, y0, hitbox):
         """
@@ -274,7 +274,8 @@ class Map(object):
                 if id_item in (6,13,20):
                     self.items.add(item.SpeedDownItem(x_item,0,HITBOX_ITEM))
             if len(self.items.items) > 0:
-                self.put_on_the_ground(self.items.items[-1])
+                if self.put_on_the_ground(self.items.items[-1]):
+                    self.items.items.pop()
 
     def gen_none(self):
         """
