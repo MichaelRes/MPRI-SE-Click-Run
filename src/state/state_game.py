@@ -31,7 +31,10 @@ class StateGame(state_engine.GameState):
                                     CONFIG_JUMP_KEY[CONST_DEFAULT_JUMP_KEY])
             self.players.append(new_player)
 
-        self.items = item.ItemManager()
+        if len(self.player) == 1:
+            self.items = item.ItemManager()
+        else:
+            self.items = None
         
         self.game_map = Map(self.items, seed)
 
