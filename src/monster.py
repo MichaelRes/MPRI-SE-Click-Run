@@ -7,21 +7,25 @@ import random as rd
 import bisect
 
 class MonsterManager:
+
     def __init__(self):
         self.monsters = []
-        """self.add(SizeUpItem(400, 589, (50, 50)))
-        self.add(SizeUpItem(500, 589, (50, 50)))
-        self.add(SizeUpItem(600, 200, (50, 50)))
-        self.add(SizeUpItem(1300, 200, (50, 50)))"""
+        self.frame_since_init = 0
 
     def add(self, monster):
         self.monsters.append(monster)
 
     def update(self, game_map, difficulty, acceleration_y, max_speed, pos_0):
-        self.monsters = [monster.update(game_map, difficulty, acceleration_y, max_speed) for monster in self.monsters]
+        self.monsters = [monster.update(game_map, difficulty, acceleration_y, max_speed, self.frame_since_init) for monster in self.monsters]
+        self.frame_since_init += 1
         if rd.random() < 0.01:
-            m = Monster(2000, 0, -4, 0, "monster1")
+            m = Monster(2000, 0, -4, 0, "monster1", self.frame_since_init)
             self.add(m)
+        m = []
+        for monster in self.monsters:
+            if monster.cr_frame < 3000:
+                m.append(monster)
+        self.monsters = m
 
     def display(self, surface, low_x, high_x):
         i = 0
@@ -50,7 +54,7 @@ class Monster(MovingEntity):
     The class for the main character
     """
 
-    def __init__(self, x0, y0, vx0, vy0, sprite_name):
+    def __init__(self, x0, y0, vx0, vy0, sprite_name, cr_frame):
         """
         @param x0: The x-axis position of the object.
         @type x0: int
@@ -64,6 +68,7 @@ class Monster(MovingEntity):
         """
         MovingEntity.__init__(self, x0, y0, vx0, vy0, (50, 50))
         self.action = Action.RUNNING
+        self.cr_frame = cr_frame
         # The sprite are stored in a dict
         self.sprite = self.load_sprite(sprite_name)
         self.time_of_a_sprite = 5
@@ -88,7 +93,8 @@ class Monster(MovingEntity):
         for sprite in self.sprite:
             self.sprite[sprite] = pg.transform.scale(self.sprite[sprite], self.hitbox)
 
-    def update(self, game_map, difficulty, acceleration_y, max_speed):
+    def update(self, game_map, difficulty, acceleration_y, max_speed, cr_frame):
+        self.cr_frame = cr_frame
         if self.is_dead:
             return
 
