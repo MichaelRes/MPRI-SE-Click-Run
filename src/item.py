@@ -7,7 +7,7 @@ MAX_ITEM_HIT_BOX_W = 100
 MAX_ITEM_HIT_BOX_H = 100
 
 # Max and Min size for the character
-MAX_SIZE_CHARACTER = 200
+MAX_SIZE_CHARACTER = 100
 MIN_SIZE_CHARACTER = 20
 
 # Modificator for items that change the size of the caracter.
