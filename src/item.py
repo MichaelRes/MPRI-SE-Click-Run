@@ -13,6 +13,7 @@ MIN_SIZE_CHARACTER = 20
 # Modificator for items
 SIZE_MODIFICATOR = 20
 SPEED_MODIFICATOR = 0.25
+GRAVITY_MODIFICATOR = 0.8
 
 
 # Time before dying thanks to the poison, needs to be changed in map.py too
@@ -82,7 +83,7 @@ class Item(Entity):
 
 
 # This item kill, as simple as that
-class ImDoneItem(Item):
+class DeathItem(Item):
     def __init__(self, x0, y0, hitbox):
         """
         @param x0: The x-axis position of the entity.
@@ -146,7 +147,7 @@ class FeatherItem(Item):
         Item.__init__(self,x0, y0, hitbox,"feather")
         
     def effect(self, player):
-        player.gravity = max(0.5,player.gravity/2)
+        player.gravity = max(0.5,player.gravity*GRAVITY_MODIFICATOR)
 
 # Speed modificators
 
