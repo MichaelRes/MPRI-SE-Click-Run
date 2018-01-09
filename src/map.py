@@ -253,7 +253,7 @@ class Map(object):
                 else:
                     self.gen_one()
         if self.items != None and (self.randint(3)==1 or self.need_antidote > 0):
-            id_item = self.randint(4)
+            id_item = self.randint(5)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
             if self.need_antidote > 0:
                 self.items.add(item.AntidoteItem(x_item, 0, HITBOX_ITEM))
@@ -267,6 +267,8 @@ class Map(object):
                 if id_item in (3,):
                     self.items.add(item.PoisonItem(x_item,0,HITBOX_ITEM))
                     self.need_antidote = POISON_TIME
+                if id_item in (4,):
+                    self.items.add(item.FeatherItem(x_item,0,HITBOX_ITEM))
             self.put_on_the_ground(self.items.items[-1])
 
     def gen_none(self):

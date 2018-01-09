@@ -128,6 +128,23 @@ class AntidoteItem(Item):
         
     def effect(self, player):
         player.poison = -1
+
+# The feather
+
+class FeatherItem(Item):
+    def __init__(self,x0, y0, hitbox):
+        """
+        @param x0: The x-axis position of the entity.
+        @type x0: int
+        @param y0: The y-axis position of the entity.
+        @type y0: int
+        @param hitbox: the hitbox of the entity
+        @type hitbox: int, int
+        """
+        Item.__init__(self,x0, y0, hitbox,"feather")
+        
+    def effect(self, player):
+        player.gravity = max(0.5,player.gravity/2)
         
 class SizeItem(Item):
     def __init__(self, x0, y0, hitbox, sprite_name, hit_box_change):
