@@ -4,6 +4,7 @@ from ressources import load_image
 from item import SizeItem
 import pygame as pg
 import random as rd
+import bisect
 
 class MonsterManager:
     def __init__(self):
@@ -14,16 +15,18 @@ class MonsterManager:
         self.add(SizeUpItem(1300, 200, (50, 50)))"""
 
     def add(self, monster):
-        bisect.insort(self.monsters, monster)
+        self.monsters.append(monster)
 
-    def update(self, dx, player, map):
-        self.items = [monster.update(dx, map) for monster in self.monsters]
+    def update(self, game_map, difficulty, acceleration_y, max_speed, pos_0):
+        self.monsters = [monster.update(game_map, difficulty, acceleration_y, max_speed) for monster in self.monsters]
+        if rd.random() < 0.01:
+            m = Monster(2000, 0, -4, 0, "monster1")
+            self.add(m)
 
     def display(self, surface, low_x, high_x):
-        # TODO Améliorer un peu la vitesse de ce code
         i = 0
-        while i < len(self.items):
-            if self.monsters[i].pos_x >= (low_x - MAX_ITEM_HIT_BOX_W) and self.monsters[i].pos_y <= high_x:
+        while i < len(self.monsters):
+            if True:#self.monsters[i].pos_x >= (low_x - MAX_ITEM_HIT_BOX_W) and self.monsters[i].pos_y <= high_x:
                 self.monsters[i].draw(surface)
             i += 1
 
@@ -34,6 +37,13 @@ class Action(Enum):
     RUNNING = 1
     HALFWAY = 2
     JUMPING = 3
+
+class Direction(Enum):
+    """
+    The class which represent the different state in which the player can be.
+    """
+    RIGHT = 1
+    LEFT = 2
 
 class Monster(MovingEntity):
     """
@@ -62,6 +72,7 @@ class Monster(MovingEntity):
         self.anterior_running_sprite_number = 1  # The anterior sprite for running
         self.is_dead = False
         self.has_to_turn = False
+        self.dir = Direction.RIGHT
 
         self.nb_frame = 0
         self.old_hit_box = []
@@ -81,6 +92,8 @@ class Monster(MovingEntity):
         if self.is_dead:
             return
 
+        self.get_event(game_map)
+
         is_the_game_over, (x, y) = game_map.move_test(self.pos_x,
                                                       self.pos_y,
                                                       self.hitbox,
@@ -93,9 +106,15 @@ class Monster(MovingEntity):
         self.has_to_turn = is_the_game_over
 
         if game_map.object_on_the_ground(self) and self.has_to_turn:
+            self.has_to_turn = False
             self.action = Action.HALFWAY
             self.v_y = min(self.v_y, 0)
-            self.v_x = -self.v_x
+            if self.dir == Direction.LEFT:
+                self.v_x = self.v_x +8
+                self.dir = Direction.RIGHT
+            else:
+                self.v_x = self.v_x -8
+                self.dir = Direction.LEFT
         elif game_map.object_on_the_ground(self):
             self.action = Action.RUNNING
             self.v_y = min(self.v_y, 0)
@@ -104,17 +123,25 @@ class Monster(MovingEntity):
             self.action = Action.JUMPING
             self.v_y = max(min(self.v_y + difficulty*acceleration_y, max_speed), -max_speed)
 
+        self.v_x = max(min(self.v_x, max_speed), -max_speed)
+
+        return self
+
     def get_event(self, game_map):
         if self.is_dead:
             return
 
-        if rd.random() < 0.1:
+        if rd.random() < 0.05:
             #Acts like a random command that changes the direction of the monster.
             if game_map.object_on_the_ground(self):
                 self.action = Action.HALFWAY
                 self.v_y = min(self.v_y, 0)
-                self.v_x = -self.v_x
-
+                if self.dir == Direction.LEFT:
+                    self.v_x = self.v_x +8
+                    self.dir = Direction.RIGHT
+                else:
+                    self.v_x = self.v_x -8
+                    self.dir = Direction.LEFT
 
     def choose_sprite(self):
         """
@@ -124,14 +151,17 @@ class Monster(MovingEntity):
         """
         if self.is_dead:
             return pg.Surface((0, 0))
+        else:
+            return self.sprite["RUN0"]
 
-        if self.action == Action.JUMPING:
+
+        """if self.action == Action.JUMPING:
             return self.sprite["RUN0"]
         elif self.action == Action.RUNNING:
             self.current_time = (self.current_time + 1) % self.time_of_a_sprite
             if self.current_time != 0:
                 return self.sprite["RUN%d" % self.running_sprite_number]
-            max_running_sprite = 2
+            max_running_sprite = 1
             min_running_sprite = 0
             tmp = self.running_sprite_number
             if self.running_sprite_number == max_running_sprite or self.running_sprite_number == min_running_sprite:
@@ -141,7 +171,8 @@ class Monster(MovingEntity):
             self.anterior_running_sprite_number = tmp
             return self.sprite["RUN%d" % self.running_sprite_number]
         elif self.action == Action.ASCEND:
-            return self.sprite["ASCEND"]
+            return self.sprite["ASCEND"]"""
+
 
     def draw(self, surface):
         """
