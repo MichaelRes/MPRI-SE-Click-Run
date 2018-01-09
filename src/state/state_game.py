@@ -87,7 +87,7 @@ class StateGame(state_engine.GameState):
         self.game_map.need_antidote = max(0, self.game_map.need_antidote -1)
 
         #Update the monsters
-        self.monsters.update(self.game_map, self.difficulty, self.acceleration_y, self.max_speed, 0)
+        self.monsters.update(self.game_map, self.difficulty, self.acceleration_y, self.max_speed, 0, self.players)
 
         # This part got to stay updated
         self.frame += 1

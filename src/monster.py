@@ -10,14 +10,20 @@ class MonsterManager:
 
     def __init__(self):
         self.monsters = []
+
         self.frame_since_init = 0
+
 
     def add(self, monster):
         self.monsters.append(monster)
 
-    def update(self, game_map, difficulty, acceleration_y, max_speed, pos_0):
+    def update(self, game_map, difficulty, acceleration_y, max_speed, pos_0, players):
         self.monsters = [monster.update(game_map, difficulty, acceleration_y, max_speed, self.frame_since_init) for monster in self.monsters]
         self.frame_since_init += 1
+        for player in players:
+            for monster in self.monsters:
+                if monster.collide(player):
+                    player.is_dead = True
         if rd.random() < 0.01:
             m = Monster(2000, 0, -4, 0, "monster1", self.frame_since_init)
             self.add(m)
@@ -55,7 +61,7 @@ class Monster(MovingEntity):
     """
 
     def __init__(self, x0, y0, vx0, vy0, sprite_name, cr_frame):
-        """
+        """<<<<<<< HEAD
         @param x0: The x-axis position of the object.
         @type x0: int
         @param y0: The y-axis position of the object.
