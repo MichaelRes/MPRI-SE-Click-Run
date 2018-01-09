@@ -4,6 +4,7 @@ from player import Action, Player
 from map import Map
 import score
 import item
+import monster
 
 CONFIG_JUMP_KEY = [pg.K_SPACE, pg.K_RSHIFT, pg.K_LSHIFT]
 CONST_DEFAULT_JUMP_KEY = 0
@@ -35,7 +36,9 @@ class StateGame(state_engine.GameState):
             self.items = item.ItemManager()
         else:
             self.items = None
-        
+
+        self.monsters = monster.MonsterManager()
+
         self.game_map = Map(self.items, seed)
 
         self.acceleration_x = 0  # As said, x variables is not of any use at the moment
@@ -83,6 +86,9 @@ class StateGame(state_engine.GameState):
 
         self.game_map.need_antidote = max(0, self.game_map.need_antidote -1)
 
+        #Update the monsters
+        self.monsters.update(self.game_map, self.difficulty, self.acceleration_y, self.max_speed, 0)
+
         # This part got to stay updated
         self.frame += 1
 
@@ -109,3 +115,4 @@ class StateGame(state_engine.GameState):
             player.draw(surface)
         self.items.display(surface, 0, 1200)
         self.score.draw(surface, self.font)
+        self.monsters.display(surface, 0, 500)
