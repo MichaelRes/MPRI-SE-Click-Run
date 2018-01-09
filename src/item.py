@@ -13,6 +13,9 @@ MIN_SIZE_CHARACTER = 20
 # Modificator for items that change the size of the caracter.
 SIZE_MODIFICATOR = 20
 
+# Time before dying thanks to the poison, needs to be changed in map.py too
+POISON_TIME = 500
+
 class ItemManager:
     def __init__(self):
         self.items = []
@@ -107,7 +110,7 @@ class PoisonItem(Item):
         
     def effect(self, player):
         if player.poison == -1:
-            player.poison = 2000
+            player.poison = POISON_TIME
 
 # The antidote
 
