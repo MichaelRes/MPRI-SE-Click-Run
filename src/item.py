@@ -6,6 +6,12 @@ import bisect
 MAX_ITEM_HIT_BOX_W = 100
 MAX_ITEM_HIT_BOX_H = 100
 
+# Max and Min size for the character
+MAX_SIZE_CHARACTER = 200
+MIN_SIZE_CHARACTER = 20
+
+# Modificator for items that change the size of the caracter.
+SIZE_MODIFICATOR = 20
 
 class ItemManager:
     def __init__(self):
@@ -84,17 +90,19 @@ class SizeItem(Item):
         self.hit_box_change = hit_box_change
 
     def effect(self, player):
-        new_hit_box = (player.hitbox[0] + self.hit_box_change, player.hitbox[1] + self.hit_box_change)
+        new_hit_box = (min(max(player.hitbox[0] + self.hit_box_change,MIN_SIZE_CHARACTER),MAX_SIZE_CHARACTER),
+                       min(max(player.hitbox[1] + self.hit_box_change,MIN_SIZE_CHARACTER),MAX_SIZE_CHARACTER))
+
         player.pos_y += (player.hitbox[1] - new_hit_box[1])
         player.switch_hit_box(new_hit_box)
 
 
 class SizeUpItem(SizeItem):
     def __init__(self, x0, y0, hitbox):
-        SizeItem.__init__(self, x0, y0, hitbox, "red_shroom", 20)
+        SizeItem.__init__(self, x0, y0, hitbox, "red_shroom", SIZE_MODIFICATOR)
 
 
 class SizeDownItem(SizeItem):
     def __init__(self, x0, y0, hitbox):
-        SizeItem.__init__(self, x0, y0, hitbox, "green_shroom", -20)
+        SizeItem.__init__(self, x0, y0, hitbox, "green_shroom", -SIZE_MODIFICATOR )
 

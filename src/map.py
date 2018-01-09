@@ -8,9 +8,13 @@ from ressources import load_options
 from math import ceil
 from sys import maxsize
 
+
+# Const for the lehmer random generator
 CONST_LEHMER_N = maxsize
 CONST_LEHMER_G = 7**5
 
+# Hitbox used for the items that spawn
+HITBOX_ITEM = (30,30)
 
 class Material(Enum):
     """
@@ -75,7 +79,7 @@ class Map(object):
         @return: True if the object is on the ground, False otherwise.
         @rtype: bool
         """
-        return self.on_the_ground(obj.pos_x+self.pos, obj.pos_y, obj.hitbox)
+        return self.on_the_ground(obj.pos_x + self.pos, obj.pos_y, obj.hitbox)
 
     def put_on_the_ground(self, obj):
         # TODO optimiser avec dichotomie
@@ -241,9 +245,9 @@ class Map(object):
             id_item = self.randint(2)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
             if id_item == 0:
-                self.items.add(item.SizeUpItem(x_item,0,(30,30)))
+                self.items.add(item.SizeUpItem(x_item,0,HITBOX_ITEM))
             if id_item == 1:
-                self.items.add(item.SizeDownItem(x_item,0,(30,30)))
+                self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
             self.put_on_the_ground(self.items.items[-1])
 
     def gen_none(self):
