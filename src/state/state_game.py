@@ -31,7 +31,9 @@ class StateGame(state_engine.GameState):
                                     CONFIG_JUMP_KEY[CONST_DEFAULT_JUMP_KEY])
             self.players.append(new_player)
 
-        self.game_map = Map(seed)
+        self.items = item.ItemManager()
+        
+        self.game_map = Map(self.items, seed)
 
         self.acceleration_x = 0  # As said, x variables is not of any use at the moment
         self.acceleration_y = 1
@@ -41,7 +43,7 @@ class StateGame(state_engine.GameState):
         self.score = score.Score("", 0)
         self.difficulty = 1
 
-        self.items = item.ItemManager()
+
 
     def get_event(self, event):
         """

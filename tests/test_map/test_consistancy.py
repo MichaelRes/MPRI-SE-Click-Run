@@ -10,8 +10,8 @@ def test_new_map():
     should not be absurd for some seed.
     """
     for i in range(10):
-        map1 = Map(i*1000)
-        map2 = Map(i*1000)
+        map1 = Map(None,i*1000)
+        map2 = Map(None,i*1000)
         for j in range(100):
             map1.gen_one()
             map2.gen_one()

@@ -8,7 +8,7 @@ def test_new_map():
     """
     This function try to generate the double step pattern
     """
-    new_map = Map()
+    new_map = Map(None,)
     for i in range(1000):
         new_map.gen_double_step()
 
