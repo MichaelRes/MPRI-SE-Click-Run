@@ -261,7 +261,7 @@ class Map(object):
                 if id_item in (0,7,14):
                     self.items.add(item.SizeUpItem(x_item,0,HITBOX_ITEM))
                 if id_item in (1,8,15):
-                    self.items.add(item.ImDoneItem(x_item,0,HITBOX_ITEM))
+                    self.items.add(item.DeathItem(x_item,0,HITBOX_ITEM))
                 if id_item in (2,9,16):
                     self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
                 if id_item in (3,10,17):
