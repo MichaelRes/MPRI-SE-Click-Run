@@ -8,5 +8,5 @@ def test_new_map():
     """
     This function gives an instance for the map class without going further
     """
-    new_map = Map(None,)
+    new_map = Map(None,None)
 
