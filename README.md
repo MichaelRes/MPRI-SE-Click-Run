@@ -53,6 +53,33 @@ chmod +x gen_doc.sh
 ```
 pytest tests
 ```
+## Gameplay
+
+Different levels of difficulty.
+
+Adaptive speed.
+
+Enemies (hint: DO NOT TOUCH THEM)
+
+Single or two players mode.
+
+You can even replay your best games.
+
+### Items
+
+Red Shroom: Size Up.
+
+Green Shroom: Size Down.
+
+Torch: Instant Death.
+
+Green Flower: Poison.
+
+Yellow Flower: The antidote.
+
+Feather: Moon gravity.
+
+Boots: Increase or diminish speed.
 
 Authors : Dang-Nhu Hector, Marotte Joseph, Lalanne Clément.
 
@@ -283,7 +310,27 @@ Authors : Dang-Nhu Hector, Marotte Joseph, Lalanne Clément.
 
 Here we enter into the implementation of the state machine of the game.
 
-`__init__.py`: The list of available states.
+`__init__.py`: The list of available states.## tests
+
+### test_map
+
+`test_consistancy.py`:
+
+`test_gen_double_step.py`:
+
+`test_gen_hole.py`:
+
+`test_gen_one.py`:
+
+`test_gen_platform.py`:
+
+`test_gen_proc.py`:
+
+`test_new_map.py`:
+
+`test_on_the_ground.py`:
+
+`test_randomness.py`:
 
 `state_add_score.py`: The state for adding a score.
 
@@ -306,25 +353,3 @@ Here we enter into the implementation of the state machine of the game.
 `state_options.py`: The state for the options.
 
 `state_pause.py`: The state in pause.
-
-## tests
-
-### test_map
-
-`test_consistancy.py`:
-
-`test_gen_double_step.py`:
-
-`test_gen_hole.py`:
-
-`test_gen_one.py`:
-
-`test_gen_platform.py`:
-
-`test_gen_proc.py`:
-
-`test_new_map.py`:
-
-`test_on_the_ground.py`:
-
-`test_randomness.py`:
