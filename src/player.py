@@ -49,6 +49,9 @@ class Player(MovingEntity):
         self.running_sprite_number = 0  # The number of the sprite for running
         self.anterior_running_sprite_number = 1  # The anterior sprite for running
         self.is_dead = False
+        self.poison = -1
+
+        self.font = pg.font.Font(None, 24)
 
         self.nb_frame = 0
         self.old_hit_box = []
@@ -92,6 +95,13 @@ class Player(MovingEntity):
             self.v_y = max(min(self.v_y + difficulty*acceleration_y, max_speed), -max_speed)
         elif self.action == Action.ASCEND:  # In that case, the player continues his ascension
             self.v_y = max(min(self.v_y + difficulty*acceleration_y/2, max_speed), -max_speed)
+
+        if self.poison == 0:
+            self.is_dead = True
+            
+        if self.poison != -1:
+            self.poison -=1
+            
 
     def get_event(self, event, game_map):
         if self.is_dead:
@@ -149,3 +159,5 @@ class Player(MovingEntity):
         @rtype: None
         """
         surface.blit(self.choose_sprite(), (self.pos_x, self.pos_y))
+        if self.poison != -1:
+            surface.blit(self.font.render(str(self.poison),1, (0,0,0)), (self.pos_x - 25, self.pos_y - 25))

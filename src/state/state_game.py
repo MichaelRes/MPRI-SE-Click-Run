@@ -31,7 +31,7 @@ class StateGame(state_engine.GameState):
                                     CONFIG_JUMP_KEY[CONST_DEFAULT_JUMP_KEY])
             self.players.append(new_player)
 
-        if len(self.player) == 1:
+        if len(self.players) == 1:
             self.items = item.ItemManager()
         else:
             self.items = None
@@ -78,6 +78,10 @@ class StateGame(state_engine.GameState):
         self.game_map.update(int(self.players[0].v_x * self.difficulty))
 
         self.items.update(int(self.players[0].v_x * self.difficulty), self.players[0], self.game_map)
+
+        #
+
+        self.game_map.need_antidote = max(0, self.game_map.need_antidote -1)
 
         # This part got to stay updated
         self.frame += 1
