@@ -26,7 +26,7 @@ class Options(state_engine.GameState):
             self.current_opts[elem] = self.all_opts[elem].index(self.current_opts[elem])
         self.available_opts = list(self.all_opts)
         self.available_opts.sort()
-        self.options_map = Map(None)
+        self.options_map = Map(None,None)
 
     def write_opts(self):
         dict_opts = {}
