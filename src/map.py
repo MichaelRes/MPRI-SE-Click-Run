@@ -254,7 +254,6 @@ class Map(object):
                     self.gen_one()
         if self.items != None and (self.randint(4)%10<5 or self.need_antidote > 0):
             id_item = self.randint(22)
-            print(id_item)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
             if self.need_antidote > 0:
                 self.items.add(item.AntidoteItem(x_item, 0, HITBOX_ITEM))
