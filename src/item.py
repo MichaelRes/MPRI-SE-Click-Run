@@ -90,7 +90,7 @@ class ImDoneItem(Item):
         @param hitbox: the hitbox of the entity
         @type hitbox: int, int
         """
-        Item.__init__(self,x0, y0, hitbox,"red_shroom")
+        Item.__init__(self,x0, y0, hitbox,"flame")
         
     def effect(self,player):
         player.is_dead = True
@@ -106,7 +106,7 @@ class PoisonItem(Item):
         @param hitbox: the hitbox of the entity
         @type hitbox: int, int
         """
-        Item.__init__(self,x0, y0, hitbox,"red_shroom")
+        Item.__init__(self,x0, y0, hitbox,"poison")
         
     def effect(self, player):
         if player.poison == -1:
@@ -124,7 +124,7 @@ class AntidoteItem(Item):
         @param hitbox: the hitbox of the entity
         @type hitbox: int, int
         """
-        Item.__init__(self,x0, y0, hitbox,"red_shroom")
+        Item.__init__(self,x0, y0, hitbox,"antidote")
         
     def effect(self, player):
         player.poison = -1

@@ -252,7 +252,7 @@ class Map(object):
                     self.gen_none()
                 else:
                     self.gen_one()
-        if self.items != None and self.randint(2)==1:
+        if self.items != None and (self.randint(3)==1 or self.need_antidote > 0):
             id_item = self.randint(4)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
             if self.need_antidote > 0:
