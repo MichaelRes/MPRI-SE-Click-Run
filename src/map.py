@@ -119,8 +119,8 @@ class Map(object):
         return False
 
     def has_a_wall_on_the_left(self, entity):
-        return self.data_read((entity.pos_x - 1,entity.pos_y + entity.hitbox[1])) == Material.WALL
-    
+        return self.data_read((entity.pos_x - 1,entity.pos_y + entity.hitbox[1])) != Material.EMPTY
+
     def point_on_the_ground(self, x, y):
         """
         This function return a boolean indication whether the given

@@ -6,6 +6,9 @@ import pygame as pg
 import random as rd
 import bisect
 
+CONST_JUMP = 18
+CONST_ASCEND_TIME = 12
+
 class MonsterManager:
 
     def __init__(self):
@@ -22,7 +25,7 @@ class MonsterManager:
                 
         self.monsters = [monster.update(game_map, difficulty, acceleration_y, max_speed) for monster in self.monsters]
         if rd.random() < 0.01:
-            m = Monster(2000, 0, -4, 0, "monster1", self.frame_since_init)
+            m = Monster(2000, 0, -10, 0, "monster1", self.frame_since_init)
             self.add(m)
         m = []
         for monster in self.monsters:
@@ -42,8 +45,8 @@ class Action(Enum):
     The class which represent the different state in which the player can be.
     """
     RUNNING = 1
-    HALFWAY = 2
-    JUMPING = 3
+    JUMPING = 2
+    ASCEND = 3
 
 class Direction(Enum):
     """
@@ -80,15 +83,17 @@ class Monster(MovingEntity):
         self.anterior_running_sprite_number = 1  # The anterior sprite for running
         self.is_dead = False
         self.has_to_turn = False
-        self.dir = Direction.RIGHT
+        self.dir = Direction.LEFT
+        self.has_to_jump = False
 
         self.nb_frame = 0
         self.old_hit_box = []
+        self.frame_since_last_jump = 0
 
     def load_sprite(self, sprite_name):
         return {"RUN0": load_image("monster/%s/1.png" % sprite_name, self.hitbox),
                 "RUN1": load_image("monster/%s/1.png" % sprite_name, self.hitbox),
-                "HALFWAY": load_image("monster/%s/1.png" % sprite_name, self.hitbox)}
+                "JUMP": load_image("monster/%s/1.png" % sprite_name, self.hitbox)}
 
     def switch_hit_box(self, hit_box):
         self.old_hit_box = [self.hitbox] + self.old_hit_box
@@ -101,9 +106,8 @@ class Monster(MovingEntity):
         if self.is_dead:
             return
 
-        self.get_event(game_map)
-
-        is_the_game_over, (x, y) = game_map.move_test(self.pos_x,
+        
+        has_to_jump, (x, y) = game_map.move_test(self.pos_x,
                                                       self.pos_y,
                                                       self.hitbox,
                                                       int((self.v_x) * difficulty),
@@ -112,22 +116,14 @@ class Monster(MovingEntity):
 
         self.pos_x = x
 
-        self.has_to_turn = is_the_game_over
+        self.has_to_jump = game_map.has_a_wall_on_the_left(self)
+
+        self.get_event(game_map)
 
         if self.pos_y + self.hitbox[1] >= game_map.height * game_map.dim_bloc - 20:
             self.is_dead = True
 
-        if game_map.object_on_the_ground(self) and self.has_to_turn:
-            self.has_to_turn = False
-            self.action = Action.HALFWAY
-            self.v_y = min(self.v_y, 0)
-            if self.dir == Direction.LEFT:
-                self.v_x = self.v_x +8
-                self.dir = Direction.RIGHT
-            else:
-                self.v_x = self.v_x -8
-                self.dir = Direction.LEFT
-        elif game_map.object_on_the_ground(self):
+        if game_map.object_on_the_ground(self):
             self.action = Action.RUNNING
             self.v_y = min(self.v_y, 0)
         else:
@@ -143,17 +139,12 @@ class Monster(MovingEntity):
         if self.is_dead:
             return
 
-        if rd.random() < 0.01:
-            #Acts like a random command that changes the direction of the monster.
-            if game_map.object_on_the_ground(self):
-                self.action = Action.HALFWAY
-                self.v_y = min(self.v_y, 0)
-                if self.dir == Direction.LEFT:
-                    self.v_x = self.v_x +8
-                    self.dir = Direction.RIGHT
-                else:
-                    self.v_x = self.v_x -8
-                    self.dir = Direction.LEFT
+        if self.has_to_jump: #and game_map.on_the_ground(self):
+            self.v_y = min(-CONST_JUMP, self.v_y)
+            # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
+            self.action = Action.ASCEND
+            self.frame_since_last_jump = 0
+            self.has_to_jump = False
 
     def choose_sprite(self):
         """
