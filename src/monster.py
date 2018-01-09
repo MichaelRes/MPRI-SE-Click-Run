@@ -3,6 +3,29 @@ from enum import Enum
 from ressources import load_image
 from item import SizeItem
 import pygame as pg
+import random as rd
+
+class MonsterManager:
+    def __init__(self):
+        self.monsters = []
+        """self.add(SizeUpItem(400, 589, (50, 50)))
+        self.add(SizeUpItem(500, 589, (50, 50)))
+        self.add(SizeUpItem(600, 200, (50, 50)))
+        self.add(SizeUpItem(1300, 200, (50, 50)))"""
+
+    def add(self, monster):
+        bisect.insort(self.monsters, monster)
+
+    def update(self, dx, player, map):
+        self.items = [monster.update(dx, map) for monster in self.monsters]
+
+    def display(self, surface, low_x, high_x):
+        # TODO Améliorer un peu la vitesse de ce code
+        i = 0
+        while i < len(self.items):
+            if self.monsters[i].pos_x >= (low_x - MAX_ITEM_HIT_BOX_W) and self.monsters[i].pos_y <= high_x:
+                self.monsters[i].draw(surface)
+            i += 1
 
 class Action(Enum):
     """
@@ -10,13 +33,14 @@ class Action(Enum):
     """
     RUNNING = 1
     HALFWAY = 2
+    JUMPING = 3
 
 class Monster(MovingEntity):
     """
     The class for the main character
     """
 
-    def __init__(self, x0, y0, vx0, vy0, sprite_name, jump_key):
+    def __init__(self, x0, y0, vx0, vy0, sprite_name):
         """
         @param x0: The x-axis position of the object.
         @type x0: int
@@ -34,9 +58,10 @@ class Monster(MovingEntity):
         self.sprite = self.load_sprite(sprite_name)
         self.time_of_a_sprite = 5
         self.current_time = -1
-        self.running_sprite_number = 0  # The number of the sprite for running
+        self.running_sprite_number = 2  # The number of the sprite for running
         self.anterior_running_sprite_number = 1  # The anterior sprite for running
         self.is_dead = False
+        self.has_to_turn = False
 
         self.nb_frame = 0
         self.old_hit_box = []
@@ -63,40 +88,33 @@ class Monster(MovingEntity):
                                                       int(self.v_y * difficulty))
         self.pos_y = y
 
-        self.is_dead = is_the_game_over
+        self.pos_x = x
 
-        if game_map.object_on_the_ground(self) and self.action != Action.ASCEND:
+        self.has_to_turn = is_the_game_over
+
+        if game_map.object_on_the_ground(self) and self.has_to_turn:
+            self.action = Action.HALFWAY
+            self.v_y = min(self.v_y, 0)
+            self.v_x = -self.v_x
+        elif game_map.object_on_the_ground(self):
             self.action = Action.RUNNING
             self.v_y = min(self.v_y, 0)
-            self.double_jump_available = True
-        elif self.action in [Action.JUMPING, Action.RUNNING] or \
-                (self.action == Action.ASCEND and self.frame_since_last_jump > CONST_ASCEND_TIME):
+        else:
             # Either is the player in jump state, or he stopped his ascension
             self.action = Action.JUMPING
             self.v_y = max(min(self.v_y + difficulty*acceleration_y, max_speed), -max_speed)
-        elif self.action == Action.ASCEND:  # In that case, the player continues his ascension
-            self.v_y = max(min(self.v_y + difficulty*acceleration_y/2, max_speed), -max_speed)
 
-    def get_event(self, event, game_map):
+    def get_event(self, game_map):
         if self.is_dead:
             return
 
-        if event.type == pg.KEYDOWN:
-            # Let's try to make the player jump by modifiying its velocity after checking if it's on the ground
-            if event.key == self.jump_key:
-                if game_map.object_on_the_ground(self):
-                    self.v_y = min(-CONST_JUMP, self.v_y)
-                    # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
-                    self.action = Action.ASCEND
-                    self.frame_since_last_jump = 0
-                elif self.action == Action.JUMPING and self.double_jump_available:
-                    self.double_jump_available = False
-                    self.v_y = - CONST_DOUBLE_JUMP
-                    self.action = Action.JUMPING
-        if event.type == pg.KEYUP:
-            if event.key == self.jump_key:
-                if self.action == Action.ASCEND:
-                    self.action = Action.JUMPING
+        if rd.random() < 0.1:
+            #Acts like a random command that changes the direction of the monster.
+            if game_map.object_on_the_ground(self):
+                self.action = Action.HALFWAY
+                self.v_y = min(self.v_y, 0)
+                self.v_x = -self.v_x
+
 
     def choose_sprite(self):
         """
@@ -108,7 +126,7 @@ class Monster(MovingEntity):
             return pg.Surface((0, 0))
 
         if self.action == Action.JUMPING:
-            return self.sprite["JUMP"]
+            return self.sprite["RUN0"]
         elif self.action == Action.RUNNING:
             self.current_time = (self.current_time + 1) % self.time_of_a_sprite
             if self.current_time != 0:
