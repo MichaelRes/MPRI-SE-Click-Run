@@ -9,15 +9,16 @@ import bisect
 class MonsterManager:
     def __init__(self):
         self.monsters = []
-        """self.add(SizeUpItem(400, 589, (50, 50)))
-        self.add(SizeUpItem(500, 589, (50, 50)))
-        self.add(SizeUpItem(600, 200, (50, 50)))
-        self.add(SizeUpItem(1300, 200, (50, 50)))"""
 
     def add(self, monster):
         self.monsters.append(monster)
 
-    def update(self, game_map, difficulty, acceleration_y, max_speed, pos_0):
+    def update(self, game_map, difficulty, acceleration_y, max_speed, pos_0, players):
+        for player in players:
+            for monster in self.monsters:
+                if monster.collide(player):
+                    player.is_dead = True
+                
         self.monsters = [monster.update(game_map, difficulty, acceleration_y, max_speed) for monster in self.monsters]
         if rd.random() < 0.01:
             m = Monster(2000, 0, -4, 0, "monster1")
