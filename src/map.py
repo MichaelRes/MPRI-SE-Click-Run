@@ -252,24 +252,30 @@ class Map(object):
                     self.gen_none()
                 else:
                     self.gen_one()
-        if self.items != None and (self.randint(3)==1 or self.need_antidote > 0):
-            id_item = self.randint(5)
+        if self.items != None and (self.randint(4)%10<5 or self.need_antidote > 0):
+            id_item = self.randint(22)
+            print(id_item)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
             if self.need_antidote > 0:
                 self.items.add(item.AntidoteItem(x_item, 0, HITBOX_ITEM))
             else:
-                if id_item in (0,):
+                if id_item in (0,7,14):
                     self.items.add(item.SizeUpItem(x_item,0,HITBOX_ITEM))
-                if id_item in (1,):
+                if id_item in (1,8,15):
                     self.items.add(item.ImDoneItem(x_item,0,HITBOX_ITEM))
-                if id_item in (2,):
+                if id_item in (2,9,16):
                     self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
-                if id_item in (3,):
+                if id_item in (3,10,17):
                     self.items.add(item.PoisonItem(x_item,0,HITBOX_ITEM))
                     self.need_antidote = POISON_TIME
-                if id_item in (4,):
+                if id_item in (4,11,18):
                     self.items.add(item.FeatherItem(x_item,0,HITBOX_ITEM))
-            self.put_on_the_ground(self.items.items[-1])
+                if id_item in (5,12,19):
+                    self.items.add(item.SpeedUpItem(x_item,0,HITBOX_ITEM))
+                if id_item in (6,13,20):
+                    self.items.add(item.SpeedDownItem(x_item,0,HITBOX_ITEM))
+            if len(self.items.items) > 0:
+                self.put_on_the_ground(self.items.items[-1])
 
     def gen_none(self):
         """

@@ -10,8 +10,10 @@ MAX_ITEM_HIT_BOX_H = 100
 MAX_SIZE_CHARACTER = 100
 MIN_SIZE_CHARACTER = 20
 
-# Modificator for items that change the size of the caracter.
+# Modificator for items
 SIZE_MODIFICATOR = 20
+SPEED_MODIFICATOR = 0.25
+
 
 # Time before dying thanks to the poison, needs to be changed in map.py too
 POISON_TIME = 300
@@ -146,6 +148,34 @@ class FeatherItem(Item):
     def effect(self, player):
         player.gravity = max(0.5,player.gravity/2)
 
+# Speed modificators
+
+class SpeedItem(Item):
+    def __init__(self, x0, y0, hitbox, sprite_name, speed_change):
+        """
+        @param x0: The x-axis position of the entity.
+        @type x0: int
+        @param y0: The y-axis position of the entity.
+        @type y0: int
+        @param hitbox: the hitbox of the entity
+        @type hitbox: int, int
+        """
+        Item.__init__(self, x0, y0, hitbox, sprite_name)
+        self.speed_change = speed_change
+    def effect(self, player):
+        player.mod_difficulty += self.speed_change
+
+class SpeedUpItem(SpeedItem):
+    def __init__(self,x0,y0,hitbox):
+        SpeedItem.__init__(self,x0,y0,hitbox,"boots1",SPEED_MODIFICATOR)
+        
+class SpeedDownItem(SpeedItem):
+    def __init__(self,x0,y0,hitbox):
+        SpeedItem.__init__(self,x0,y0,hitbox,"boots2", -SPEED_MODIFICATOR)
+    
+
+    
+        
 # Size Items
 class SizeItem(Item):
     def __init__(self, x0, y0, hitbox, sprite_name, hit_box_change):

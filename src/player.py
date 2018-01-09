@@ -51,6 +51,7 @@ class Player(MovingEntity):
         self.is_dead = False
         self.poison = -1
 
+        self.mod_difficulty = 0
 
         self.font = pg.font.Font(None, 24)
 
