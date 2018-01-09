@@ -249,8 +249,10 @@ class Map(object):
         if self.items != None and self.randint(2)==1:
             id_item = self.randint(4)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
-            if id_item in (0,1):
+            if id_item in (0,):
                 self.items.add(item.SizeUpItem(x_item,0,HITBOX_ITEM))
+            if id_item in (1,):
+                self.items.add(item.ImDoneItem(x_item,0,HITBOX_ITEM))
             if id_item in (2,3):
                 self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
             self.put_on_the_ground(self.items.items[-1])

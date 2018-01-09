@@ -76,6 +76,22 @@ class Item(Entity):
         return self.pos_x < other.pos_x
 
 
+# This item kill, as simple as that
+class ImDoneItem(Item):
+    def __init__(self, x0, y0, hitbox):
+        """
+        @param x0: The x-axis position of the entity.
+        @type x0: int
+        @param y0: The y-axis position of the entity.
+        @type y0: int
+        @param hitbox: the hitbox of the entity
+        @type hitbox: int, int
+        """
+        Item.__init__(self,x0, y0, hitbox,"red_shroom")
+        
+    def effect(self,player):
+        player.is_dead = True
+    
 class SizeItem(Item):
     def __init__(self, x0, y0, hitbox, sprite_name, hit_box_change):
         """
