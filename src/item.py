@@ -14,7 +14,7 @@ MIN_SIZE_CHARACTER = 20
 SIZE_MODIFICATOR = 20
 
 # Time before dying thanks to the poison, needs to be changed in map.py too
-POISON_TIME = 500
+POISON_TIME = 300
 
 class ItemManager:
     def __init__(self):
@@ -145,7 +145,8 @@ class FeatherItem(Item):
         
     def effect(self, player):
         player.gravity = max(0.5,player.gravity/2)
-        
+
+# Size Items
 class SizeItem(Item):
     def __init__(self, x0, y0, hitbox, sprite_name, hit_box_change):
         """
