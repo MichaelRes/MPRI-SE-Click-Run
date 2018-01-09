@@ -83,9 +83,14 @@ class Map(object):
 
     def put_on_the_ground(self, obj):
         # TODO optimiser avec dichotomie
+        x1 = obj.pos_x
+        x2 = (obj.pos_x +obj.hitbox[0])
         for y in range(0, self.height):
-            obj.pos_y = y
-            if self.object_on_the_ground(obj):
+            y1 = (self.height - y)*self.dim_bloc - self.dim_bloc//2
+            if (self.data_read((x1,y1)) == Material.EMPTY and
+                self.data_read((x2,y1)) == Material.EMPTY):
+                obj.pos_y = (- obj.hitbox[1] +
+                             (self.height - y) * self.dim_bloc)
                 return
 
     def on_the_ground(self, x0, y0, hitbox):
@@ -241,12 +246,12 @@ class Map(object):
                     self.gen_none()
                 else:
                     self.gen_one()
-        if self.items != None and self.randint(4)==3:
-            id_item = self.randint(2)
+        if self.items != None and self.randint(2)==1:
+            id_item = self.randint(4)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
-            if id_item == 0:
+            if id_item in (0,1):
                 self.items.add(item.SizeUpItem(x_item,0,HITBOX_ITEM))
-            if id_item == 1:
+            if id_item in (2,3):
                 self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
             self.put_on_the_ground(self.items.items[-1])
 
