@@ -86,7 +86,7 @@ class StateGame(state_engine.GameState):
         # This part got to stay updated
         self.frame += 1
 
-        self.difficulty = 1 + self.score.score / 2000
+        self.difficulty = 1 + self.score.score / 2000 + self.players[0].mod_difficulty
 
     def startup(self, persistent):
         """
