@@ -59,6 +59,8 @@ class Map(object):
 
         self.last_dx = 0
 
+        self.need_antidote = 0
+
         if seed is None:
             self.seed_init = rd.randint(1, CONST_LEHMER_N-1)
         else:
@@ -249,12 +251,18 @@ class Map(object):
         if self.items != None and self.randint(2)==1:
             id_item = self.randint(4)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
-            if id_item in (0,):
-                self.items.add(item.SizeUpItem(x_item,0,HITBOX_ITEM))
-            if id_item in (1,):
-                self.items.add(item.ImDoneItem(x_item,0,HITBOX_ITEM))
-            if id_item in (2,3):
-                self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
+            if self.need_antidote > 0:
+                self.items.add(item.AntidoteItem(x_item, 0, HITBOX_ITEM))
+            else:
+                if id_item in (0,):
+                    self.items.add(item.SizeUpItem(x_item,0,HITBOX_ITEM))
+                if id_item in (1,):
+                    self.items.add(item.ImDoneItem(x_item,0,HITBOX_ITEM))
+                if id_item in (2,):
+                    self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
+                if id_item in (3,):
+                    self.items.add(item.PoisonItem(x_item,0,HITBOX_ITEM))
+                    self.need_antidote = 2000
             self.put_on_the_ground(self.items.items[-1])
 
     def gen_none(self):

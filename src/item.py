@@ -91,7 +91,41 @@ class ImDoneItem(Item):
         
     def effect(self,player):
         player.is_dead = True
-    
+
+# The poison
+class PoisonItem(Item):
+    def __init__(self,x0, y0, hitbox):
+        """
+        @param x0: The x-axis position of the entity.
+        @type x0: int
+        @param y0: The y-axis position of the entity.
+        @type y0: int
+        @param hitbox: the hitbox of the entity
+        @type hitbox: int, int
+        """
+        Item.__init__(self,x0, y0, hitbox,"red_shroom")
+        
+    def effect(self, player):
+        if player.poison == -1:
+            player.poison = 2000
+
+# The antidote
+
+class AntidoteItem(Item):
+    def __init__(self,x0, y0, hitbox):
+        """
+        @param x0: The x-axis position of the entity.
+        @type x0: int
+        @param y0: The y-axis position of the entity.
+        @type y0: int
+        @param hitbox: the hitbox of the entity
+        @type hitbox: int, int
+        """
+        Item.__init__(self,x0, y0, hitbox,"red_shroom")
+        
+    def effect(self, player):
+        player.poison = -1
+        
 class SizeItem(Item):
     def __init__(self, x0, y0, hitbox, sprite_name, hit_box_change):
         """
