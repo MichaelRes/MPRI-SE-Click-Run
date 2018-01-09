@@ -42,3 +42,4 @@ class MovingEntity(Entity):
         Entity.__init__(self, x0, y0, hitbox)
         self.v_x = vx0
         self.v_y = vy0
+        self.gravity = 1

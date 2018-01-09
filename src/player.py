@@ -51,6 +51,7 @@ class Player(MovingEntity):
         self.is_dead = False
         self.poison = -1
 
+
         self.font = pg.font.Font(None, 24)
 
         self.nb_frame = 0
@@ -92,9 +93,9 @@ class Player(MovingEntity):
                 (self.action == Action.ASCEND and self.frame_since_last_jump > CONST_ASCEND_TIME):
             # Either is the player in jump state, or he stopped his ascension
             self.action = Action.JUMPING
-            self.v_y = max(min(self.v_y + difficulty*acceleration_y, max_speed), -max_speed)
+            self.v_y = max(min(self.v_y + difficulty*acceleration_y*self.gravity, max_speed), -max_speed)
         elif self.action == Action.ASCEND:  # In that case, the player continues his ascension
-            self.v_y = max(min(self.v_y + difficulty*acceleration_y/2, max_speed), -max_speed)
+            self.v_y = max(min(self.v_y + difficulty*acceleration_y/2*self.gravity, max_speed), -max_speed)
 
         if self.poison == 0:
             self.is_dead = True
