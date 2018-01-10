@@ -27,7 +27,7 @@ class MonsterManager:
             for monster in self.monsters:
                 if monster.collide(player):
                     player.is_dead = True
-        if rd.random() < 0.01:
+        if game_map.randint(1000) < 5:
             m = Monster(2000, 0, -10, 0, "monster1", self.frame_since_init)
             self.add(m)
         m = []
