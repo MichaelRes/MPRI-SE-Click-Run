@@ -40,7 +40,7 @@ class MonsterManager:
 
 class Action(Enum):
     """
-    The class which represent the different state in which the player can be.
+    The class which represent the different state in which the monster can be.
     """
     RUNNING = 1
     JUMPING = 2
@@ -48,25 +48,25 @@ class Action(Enum):
 
 class Direction(Enum):
     """
-    The class which represent the different state in which the player can be.
+    The class which directions the different state in which the monster can be.
     """
     RIGHT = 1
     LEFT  = 2
 
 class Monster(MovingEntity):
     """
-    The class for the main character
+    The class for the monsters
     """
 
     def __init__(self, x0, y0, vx0, vy0, sprite_name, cr_frame):
         """
-        @param x0: The x-axis position of the object.
+        @param x0: The x-axis position of the monster.
         @type x0: int
-        @param y0: The y-axis position of the object.
+        @param y0: The y-axis position of the monster.
         @type y0: int
-        @param vx0: The speed of the object on the x-axis.
+        @param vx0: The speed of the monster on the x-axis.
         @type vx0: int
-        @param vy0: The speed of the object on the y-axis.
+        @param vy0: The speed of the monster on the y-axis.
         @type vy0: int
         @rtype: None
         """
@@ -104,7 +104,7 @@ class Monster(MovingEntity):
         if self.is_dead:
             return
 
-        
+
         has_to_jump, (x, y) = game_map.move_test(self.pos_x,
                                                       self.pos_y,
                                                       self.hitbox,
@@ -154,25 +154,6 @@ class Monster(MovingEntity):
             return pg.Surface((0, 0))
         else:
             return self.sprite["RUN0"]
-
-
-        """if self.action == Action.JUMPING:
-            return self.sprite["RUN0"]
-        elif self.action == Action.RUNNING:
-            self.current_time = (self.current_time + 1) % self.time_of_a_sprite
-            if self.current_time != 0:
-                return self.sprite["RUN%d" % self.running_sprite_number]
-            max_running_sprite = 1
-            min_running_sprite = 0
-            tmp = self.running_sprite_number
-            if self.running_sprite_number == max_running_sprite or self.running_sprite_number == min_running_sprite:
-                self.running_sprite_number = self.anterior_running_sprite_number
-            else:
-                self.running_sprite_number += self.running_sprite_number - self.anterior_running_sprite_number
-            self.anterior_running_sprite_number = tmp
-            return self.sprite["RUN%d" % self.running_sprite_number]
-        elif self.action == Action.ASCEND:
-            return self.sprite["ASCEND"]"""
 
 
     def draw(self, surface):
