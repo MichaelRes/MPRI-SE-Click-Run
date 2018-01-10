@@ -20,6 +20,7 @@ CONST_LEHMER_G = 7**5
 # Hitbox used for the items that spawn
 HITBOX_ITEM = (30,30)
 
+
 class Material(Enum):
     """
     Class for the different material of the map
@@ -88,7 +89,12 @@ class Map(object):
         return self.on_the_ground(obj.pos_x, obj.pos_y, obj.hitbox)
 
     def put_on_the_ground(self, obj):
-        # TODO optimiser avec dichotomie
+        """
+        Function to put a object on the ground given his current pos_x
+        @param obj: the object to put on the ground
+        @type obj: entity
+        @return: None
+        """
         x1 = obj.pos_x
         x2 = (obj.pos_x +obj.hitbox[0])
         for y in range(0, self.height):
@@ -119,7 +125,14 @@ class Map(object):
         return False
 
     def has_a_wall_on_the_left(self, entity):
-        return self.data_read((entity.pos_x - 1,entity.pos_y + entity.hitbox[1])) != Material.EMPTY
+        """
+        Function to check if an entity has a wall on its left
+        @param entity: the entity
+        @type entity: entity
+        @return: True if there is a wall, False otherwise
+        @rtype: bool
+        """
+        return self.data_read((entity.pos_x - 1, entity.pos_y + entity.hitbox[1])) != Material.EMPTY
 
     def point_on_the_ground(self, x, y):
         """
@@ -255,27 +268,27 @@ class Map(object):
                     self.gen_none()
                 else:
                     self.gen_one()
-        if self.items != None and (self.randint(4)%10<5 or self.need_antidote > 0):
+        if self.items is not None and (self.randint(4)%10<5 or self.need_antidote > 0):
             id_item = self.randint(22)
             x_item = (self.gen + old_pos)//2*self.dim_bloc-self.pos
             if self.need_antidote > 0:
                 self.items.add(item.AntidoteItem(x_item, 0, HITBOX_ITEM))
             else:
-                if id_item in (0,7,14):
-                    self.items.add(item.SizeUpItem(x_item,0,HITBOX_ITEM))
-                if id_item in (1,8,15):
-                    self.items.add(item.DeathItem(x_item,0,HITBOX_ITEM))
-                if id_item in (2,9,16):
-                    self.items.add(item.SizeDownItem(x_item,0,HITBOX_ITEM))
-                if id_item in (3,10,17):
-                    self.items.add(item.PoisonItem(x_item,0,HITBOX_ITEM))
+                if id_item in (0, 7, 14):
+                    self.items.add(item.SizeUpItem(x_item, 0, HITBOX_ITEM))
+                elif id_item in (1, 8, 15):
+                    self.items.add(item.DeathItem(x_item, 0, HITBOX_ITEM))
+                elif id_item in (2, 9, 16):
+                    self.items.add(item.SizeDownItem(x_item, 0, HITBOX_ITEM))
+                elif id_item in (3, 10, 17):
+                    self.items.add(item.PoisonItem(x_item, 0, HITBOX_ITEM))
                     self.need_antidote = POISON_TIME
-                if id_item in (4,11,18):
-                    self.items.add(item.FeatherItem(x_item,0,HITBOX_ITEM))
-                if id_item in (5,12,19):
-                    self.items.add(item.SpeedUpItem(x_item,0,HITBOX_ITEM))
-                if id_item in (6,13,20):
-                    self.items.add(item.SpeedDownItem(x_item,0,HITBOX_ITEM))
+                elif id_item in (4, 11, 18):
+                    self.items.add(item.FeatherItem(x_item, 0, HITBOX_ITEM))
+                elif id_item in (5, 12, 19):
+                    self.items.add(item.SpeedUpItem(x_item, 0, HITBOX_ITEM))
+                elif id_item in (6, 13, 20):
+                    self.items.add(item.SpeedDownItem(x_item, 0, HITBOX_ITEM))
             if len(self.items.items) > 0:
                 if self.put_on_the_ground(self.items.items[-1]):
                     self.items.items.pop()

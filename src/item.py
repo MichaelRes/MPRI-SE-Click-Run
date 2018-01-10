@@ -19,6 +19,7 @@ GRAVITY_MODIFICATOR = 0.8
 # Time before dying thanks to the poison, needs to be changed in map.py too
 POISON_TIME = 300
 
+
 class ItemManager:
     def __init__(self):
         self.items = []
@@ -31,10 +32,9 @@ class ItemManager:
         bisect.insort(self.items, item)
 
     def update(self, dx, player, map):
-        self.items = [item.update(dx, map) for item in self.items if (not item.collide(player) and item.pos_x + item.hitbox[0] >= 0 ) ]
+        self.items = [item.update(dx, map) for item in self.items if (not item.collide(player) and item.pos_x + item.hitbox[0] >= 0)]
 
     def display(self, surface, low_x, high_x):
-        # TODO Améliorer un peu la vitesse de ce code
         i = 0
         while i < len(self.items):
             if self.items[i].pos_x >= (low_x - MAX_ITEM_HIT_BOX_W) and self.items[i].pos_y <= high_x:
@@ -93,14 +93,15 @@ class DeathItem(Item):
         @param hitbox: the hitbox of the entity
         @type hitbox: int, int
         """
-        Item.__init__(self,x0, y0, hitbox,"flame")
+        Item.__init__(self, x0, y0, hitbox,"flame")
         
     def effect(self,player):
         player.is_dead = True
 
+
 # The poison
 class PoisonItem(Item):
-    def __init__(self,x0, y0, hitbox):
+    def __init__(self, x0, y0, hitbox):
         """
         @param x0: The x-axis position of the entity.
         @type x0: int
@@ -109,16 +110,16 @@ class PoisonItem(Item):
         @param hitbox: the hitbox of the entity
         @type hitbox: int, int
         """
-        Item.__init__(self,x0, y0, hitbox,"poison")
+        Item.__init__(self, x0, y0, hitbox, "poison")
         
     def effect(self, player):
         if player.poison == -1:
             player.poison = POISON_TIME
 
-# The antidote
 
+# The antidote
 class AntidoteItem(Item):
-    def __init__(self,x0, y0, hitbox):
+    def __init__(self, x0, y0, hitbox):
         """
         @param x0: The x-axis position of the entity.
         @type x0: int
@@ -127,13 +128,13 @@ class AntidoteItem(Item):
         @param hitbox: the hitbox of the entity
         @type hitbox: int, int
         """
-        Item.__init__(self,x0, y0, hitbox,"antidote")
+        Item.__init__(self, x0, y0, hitbox, "antidote")
         
     def effect(self, player):
         player.poison = -1
 
-# The feather
 
+# The feather
 class FeatherItem(Item):
     def __init__(self,x0, y0, hitbox):
         """
@@ -144,13 +145,13 @@ class FeatherItem(Item):
         @param hitbox: the hitbox of the entity
         @type hitbox: int, int
         """
-        Item.__init__(self,x0, y0, hitbox,"feather")
+        Item.__init__(self, x0, y0, hitbox, "feather")
         
     def effect(self, player):
-        player.gravity = max(0.5,player.gravity*GRAVITY_MODIFICATOR)
+        player.gravity = max(0.5, player.gravity*GRAVITY_MODIFICATOR)
+
 
 # Speed modificators
-
 class SpeedItem(Item):
     def __init__(self, x0, y0, hitbox, sprite_name, speed_change):
         """
@@ -163,20 +164,21 @@ class SpeedItem(Item):
         """
         Item.__init__(self, x0, y0, hitbox, sprite_name)
         self.speed_change = speed_change
+
     def effect(self, player):
         player.mod_difficulty += self.speed_change
 
-class SpeedUpItem(SpeedItem):
-    def __init__(self,x0,y0,hitbox):
-        SpeedItem.__init__(self,x0,y0,hitbox,"boots1",SPEED_MODIFICATOR)
-        
-class SpeedDownItem(SpeedItem):
-    def __init__(self,x0,y0,hitbox):
-        SpeedItem.__init__(self,x0,y0,hitbox,"boots2", -SPEED_MODIFICATOR)
-    
 
-    
-        
+class SpeedUpItem(SpeedItem):
+    def __init__(self, x0, y0, hitbox):
+        SpeedItem.__init__(self, x0, y0, hitbox, "boots1", SPEED_MODIFICATOR)
+
+
+class SpeedDownItem(SpeedItem):
+    def __init__(self, x0, y0, hitbox):
+        SpeedItem.__init__(self, x0, y0, hitbox, "boots2", -SPEED_MODIFICATOR)
+
+
 # Size Items
 class SizeItem(Item):
     def __init__(self, x0, y0, hitbox, sprite_name, hit_box_change):
@@ -207,4 +209,3 @@ class SizeUpItem(SizeItem):
 class SizeDownItem(SizeItem):
     def __init__(self, x0, y0, hitbox):
         SizeItem.__init__(self, x0, y0, hitbox, "green_shroom", -SIZE_MODIFICATOR )
-

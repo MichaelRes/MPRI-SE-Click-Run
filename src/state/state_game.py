@@ -1,6 +1,6 @@
 import pygame as pg
 from . import state_engine
-from player import Action, Player
+from player import Player
 from map import Map
 import score
 import item
@@ -115,4 +115,4 @@ class StateGame(state_engine.GameState):
             player.draw(surface)
         self.items.display(surface, 0, 1200)
         self.score.draw(surface, self.font)
-        self.monsters.display(surface, 0, 500)
+        self.monsters.display(surface)
