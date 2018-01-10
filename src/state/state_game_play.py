@@ -1,10 +1,6 @@
 import pygame as pg
 from sys import maxsize
-from . import state_engine
 from . import state_game
-from player import Action, Player
-import pickle
-from map import Map
 import replay as rp
 import score
 from ressources import load_options

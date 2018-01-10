@@ -1,23 +1,42 @@
 from entity import MovingEntity
 from enum import Enum
 from ressources import load_image
-from item import SizeItem
 import pygame as pg
-import random as rd
-import bisect
 
 CONST_JUMP = 18
 CONST_ASCEND_TIME = 12
 
-class MonsterManager:
 
+class MonsterManager:
+    """
+    A class to manage the monster
+    """
     def __init__(self):
         self.monsters = []
+        self.frame_since_init = 0
 
     def add(self, monster):
+        """
+        A function to add a monster to the monster manager
+        @param monster: the monster to add
+        @type monster: monster
+        @return: None
+        """
         self.monsters.append(monster)
 
     def update(self, game_map, difficulty, acceleration_y, max_speed, pos_0, players):
+        """
+        A function to update all the monsters
+        @param game_map: the map the monsters are one
+        @type game_map: map
+        @param difficulty: the current difficulty
+        @param acceleration_y: the current acceleration on y
+        @param max_speed: the max speed
+        @param players: the players
+        @return: None
+        """
+        self.monsters = [monster.update(game_map, difficulty, acceleration_y, max_speed, self.frame_since_init) for monster in self.monsters]
+        self.frame_since_init += 1
         for player in players:
             for monster in self.monsters:
                 if monster.collide(player):
@@ -31,12 +50,18 @@ class MonsterManager:
                 m.append(monster)
         self.monsters = m
 
-    def display(self, surface, low_x, high_x):
+    def display(self, surface):
+        """
+        A function to display the monsters
+        @param surface: The place to display the monster on
+        @return: None
+        """
         i = 0
         while i < len(self.monsters):
-            if True:#self.monsters[i].pos_x >= (low_x - MAX_ITEM_HIT_BOX_W) and self.monsters[i].pos_y <= high_x:
+            if True:
                 self.monsters[i].draw(surface)
             i += 1
+
 
 class Action(Enum):
     """
@@ -46,18 +71,19 @@ class Action(Enum):
     JUMPING = 2
     ASCEND = 3
 
+
 class Direction(Enum):
     """
     The class which directions the different state in which the monster can be.
     """
     RIGHT = 1
-    LEFT  = 2
+    LEFT = 2
+
 
 class Monster(MovingEntity):
     """
     The class for the monsters
     """
-
     def __init__(self, x0, y0, vx0, vy0, sprite_name, cr_frame):
         """
         @param x0: The x-axis position of the monster.
@@ -89,34 +115,54 @@ class Monster(MovingEntity):
         self.frame_since_last_jump = 0
 
     def load_sprite(self, sprite_name):
+        """
+        Function to load the sprite of a monster
+        @param sprite_name: the name of the sprite
+        @type sprite_name: str
+        @return: the sprite of the monster loaded in a dict
+        @rtype: dict(str, sprites)
+        """
         return {"RUN0": load_image("monster/%s/1.png" % sprite_name, self.hitbox),
                 "RUN1": load_image("monster/%s/1.png" % sprite_name, self.hitbox),
                 "JUMP": load_image("monster/%s/1.png" % sprite_name, self.hitbox)}
 
     def switch_hit_box(self, hit_box):
+        """
+        Function to switch the hit_box of a monster
+        @param hit_box: the new hitbox of the monster
+        @return: None
+        """
         self.old_hit_box = [self.hitbox] + self.old_hit_box
         self.hitbox = hit_box
         for sprite in self.sprite:
             self.sprite[sprite] = pg.transform.scale(self.sprite[sprite], self.hitbox)
 
     def update(self, game_map, difficulty, acceleration_y, max_speed, cr_frame):
+        """
+        Function to update a monster
+        @param game_map: the map of the game
+        @param difficulty: the difficulty of the game
+        @param acceleration_y: the acceleration of y
+        @param max_speed: the max speed
+        @param cr_frame: the frame
+        @return: None
+        """
         self.cr_frame = cr_frame
         if self.is_dead:
             return
 
-
         has_to_jump, (x, y) = game_map.move_test(self.pos_x,
-                                                      self.pos_y,
-                                                      self.hitbox,
-                                                      int((self.v_x) * difficulty),
-                                                      int(self.v_y * difficulty))
+                                                 self.pos_y,
+                                                 self.hitbox,
+                                                 int(self.v_x * difficulty),
+                                                 int(self.v_y * difficulty))
         self.pos_y = y
 
         self.pos_x = x
 
         self.has_to_jump = game_map.has_a_wall_on_the_left(self)
 
-        self.get_event(game_map)
+        self.get_event()
 
         if self.pos_y + self.hitbox[1] >= game_map.height * game_map.dim_bloc - 20:
             self.is_dead = True
@@ -133,13 +179,17 @@ class Monster(MovingEntity):
 
         return self
 
-    def get_event(self, game_map):
+    def get_event(self):
+        """
+        Function to get the event for a monster
+        @return: None
+        """
         if self.is_dead:
             return
 
-        if self.has_to_jump: #and game_map.on_the_ground(self):
+        if self.has_to_jump:
             self.v_y = min(-CONST_JUMP, self.v_y)
-            # Player get an ascending phase that lasts some frame where he can still gain some vertical velocity
+            # Monster get an ascending phase that lasts some frame where he can still gain some vertical velocity
             self.action = Action.ASCEND
             self.frame_since_last_jump = 0
             self.has_to_jump = False
@@ -154,7 +204,6 @@ class Monster(MovingEntity):
             return pg.Surface((0, 0))
         else:
             return self.sprite["RUN0"]
-
 
     def draw(self, surface):
         """

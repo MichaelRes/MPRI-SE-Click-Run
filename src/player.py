@@ -1,7 +1,6 @@
 from entity import MovingEntity
 from enum import Enum
 from ressources import load_image
-from item import SizeItem
 import pygame as pg
 
 CONST_JUMP = 18
@@ -59,6 +58,12 @@ class Player(MovingEntity):
         self.old_hit_box = []
 
     def load_sprite(self, sprite_name):
+        """
+        Function to load the sprite of a player
+        @param sprite_name: the name of the sprite
+        @type sprite_name: str
+        @return: dict(str, sprite)
+        """
         return {"JUMP": load_image("player/%s/big/jump.png" % sprite_name, self.hitbox),
                 "RUN0": load_image("player/%s/big/run0.png" % sprite_name, self.hitbox),
                 "RUN1": load_image("player/%s/big/run1.png" % sprite_name, self.hitbox),
@@ -66,12 +71,25 @@ class Player(MovingEntity):
                 "ASCEND": load_image("player/%s/big/ascend.png" % sprite_name, self.hitbox)}
 
     def switch_hit_box(self, hit_box):
+        """
+        Function to switch the hit_box of a player
+        @param hit_box: the new hit_box
+        @return: None
+        """
         self.old_hit_box = [self.hitbox] + self.old_hit_box
         self.hitbox = hit_box
         for sprite in self.sprite:
             self.sprite[sprite] = pg.transform.scale(self.sprite[sprite], self.hitbox)
 
     def update(self, game_map, difficulty, acceleration_y, max_speed):
+        """
+        Function to update a player
+        @param game_map: the map the player is on
+        @param difficulty: the difficulty of the game
+        @param acceleration_y: the acceleration
+        @param max_speed: the maximal speed the player can reach
+        @return: None
+        """
         if self.is_dead:
             return
 
@@ -103,9 +121,16 @@ class Player(MovingEntity):
             
         if self.poison != -1:
             self.poison -=1
-            
 
     def get_event(self, event, game_map):
+        """
+        Function to thread the event on the player
+        @param event: the event on the player
+        @type event: pg.event
+        @param game_map: the map the player is on
+        @type game_map: Map
+        @return: None
+        """
         if self.is_dead:
             return
 
