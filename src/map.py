@@ -146,7 +146,7 @@ class Map(object):
         @rtype: bool
         """
         if y % self.dim_bloc == self.dim_bloc - 1:
-            return self.data_read([x, y + self.dim_bloc + 1]) == Material.GROUND
+            return self.data_read([x, y + self.dim_bloc - 1]) == Material.GROUND
         return False  # This case should not occur
 
     def data_read(self, loc_pixel):
